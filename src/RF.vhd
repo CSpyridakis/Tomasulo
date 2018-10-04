@@ -58,7 +58,6 @@
 ----------------------------------------------------------------------------------
 
 -- TODO LIST:
---     * V and Q RF -> RS  MUX
 --     * V Update if CDB_Q == Qn : 0 < n < 32 , nεN
 
 library IEEE;
@@ -116,7 +115,153 @@ signal EQ1,EQ2,EQ3,EQ4,EQ5,EQ6,EQ7,EQ8,EQ9,EQ10,EQ11,EQ12,EQ13,EQ14,EQ15,EQ16,EQ
 signal Q0,Q1,Q2,Q3,Q4,Q5,Q6,Q7,Q8,Q9,Q10,Q11,Q12,Q13,Q14,Q15,Q16,Q17,Q18,Q19,Q20,Q21,Q22,Q23,Q24,Q25,Q26,Q27,Q28,Q29,Q30,Q31: STD_LOGIC_VECTOR (4 downto 0);
 
 begin
+------------------------------------------------------------------------ Multiplexers
+------------------------------------ MUX Vk
+WITH K SELECT
+Vk <=
+     V0 WHEN "00000",
+	  V1 WHEN "00001",
+	  V2 WHEN "00010",
+	  V3 WHEN "00011",
+	  V4 WHEN "00100",
+	  V5 WHEN "00101",
+	  V6 WHEN "00110",
+	  V7 WHEN "00111",
+	  V8 WHEN "01000",
+	  V9 WHEN "01001",
+	  V10 WHEN "01010",
+	  V11 WHEN "01011",
+	  V12 WHEN "01100",
+	  V13 WHEN "01101",
+	  V14 WHEN "01110",
+	  V15 WHEN "01111",
+	  V16 WHEN "10000",
+	  V17 WHEN "10001",
+	  V18 WHEN "10010",
+	  V19 WHEN "10011",
+	  V20 WHEN "10100",
+	  V21 WHEN "10101",
+	  V22 WHEN "10110",
+	  V23 WHEN "10111",
+	  V24 WHEN "11000",
+	  V25 WHEN "11001",
+	  V26 WHEN "11010",
+	  V27 WHEN "11011",
+	  V28 WHEN "11100",
+	  V29 WHEN "11101",
+	  V30 WHEN "11110",
+	  V31 WHEN OTHERS;
 
+------------------------------------ MUX Qk
+WITH K SELECT
+Qk <=
+     Q0 WHEN "00000",
+	  Q1 WHEN "00001",
+	  Q2 WHEN "00010",
+	  Q3 WHEN "00011",
+	  Q4 WHEN "00100",
+	  Q5 WHEN "00101",
+	  Q6 WHEN "00110",
+	  Q7 WHEN "00111",
+	  Q8 WHEN "01000",
+	  Q9 WHEN "01001",
+	  Q10 WHEN "01010",
+	  Q11 WHEN "01011",
+	  Q12 WHEN "01100",
+	  Q13 WHEN "01101",
+	  Q14 WHEN "01110",
+	  Q15 WHEN "01111",
+	  Q16 WHEN "10000",
+	  Q17 WHEN "10001",
+	  Q18 WHEN "10010",
+	  Q19 WHEN "10011",
+	  Q20 WHEN "10100",
+	  Q21 WHEN "10101",
+	  Q22 WHEN "10110",
+	  Q23 WHEN "10111",
+	  Q24 WHEN "11000",
+	  Q25 WHEN "11001",
+	  Q26 WHEN "11010",
+	  Q27 WHEN "11011",
+	  Q28 WHEN "11100",
+	  Q29 WHEN "11101",
+	  Q30 WHEN "11110",
+	  Q31 WHEN OTHERS;	  
+
+------------------------------------ MUX Vk
+WITH J SELECT
+Vj <=
+     V0 WHEN "00000",
+	  V1 WHEN "00001",
+	  V2 WHEN "00010",
+	  V3 WHEN "00011",
+	  V4 WHEN "00100",
+	  V5 WHEN "00101",
+	  V6 WHEN "00110",
+	  V7 WHEN "00111",
+	  V8 WHEN "01000",
+	  V9 WHEN "01001",
+	  V10 WHEN "01010",
+	  V11 WHEN "01011",
+	  V12 WHEN "01100",
+	  V13 WHEN "01101",
+	  V14 WHEN "01110",
+	  V15 WHEN "01111",
+	  V16 WHEN "10000",
+	  V17 WHEN "10001",
+	  V18 WHEN "10010",
+	  V19 WHEN "10011",
+	  V20 WHEN "10100",
+	  V21 WHEN "10101",
+	  V22 WHEN "10110",
+	  V23 WHEN "10111",
+	  V24 WHEN "11000",
+	  V25 WHEN "11001",
+	  V26 WHEN "11010",
+	  V27 WHEN "11011",
+	  V28 WHEN "11100",
+	  V29 WHEN "11101",
+	  V30 WHEN "11110",
+	  V31 WHEN OTHERS;
+
+------------------------------------ MUX Qk
+WITH J SELECT
+Qj <=
+     Q0 WHEN "00000",
+	  Q1 WHEN "00001",
+	  Q2 WHEN "00010",
+	  Q3 WHEN "00011",
+	  Q4 WHEN "00100",
+	  Q5 WHEN "00101",
+	  Q6 WHEN "00110",
+	  Q7 WHEN "00111",
+	  Q8 WHEN "01000",
+	  Q9 WHEN "01001",
+	  Q10 WHEN "01010",
+	  Q11 WHEN "01011",
+	  Q12 WHEN "01100",
+	  Q13 WHEN "01101",
+	  Q14 WHEN "01110",
+	  Q15 WHEN "01111",
+	  Q16 WHEN "10000",
+	  Q17 WHEN "10001",
+	  Q18 WHEN "10010",
+	  Q19 WHEN "10011",
+	  Q20 WHEN "10100",
+	  Q21 WHEN "10101",
+	  Q22 WHEN "10110",
+	  Q23 WHEN "10111",
+	  Q24 WHEN "11000",
+	  Q25 WHEN "11001",
+	  Q26 WHEN "11010",
+	  Q27 WHEN "11011",
+	  Q28 WHEN "11100",
+	  Q29 WHEN "11101",
+	  Q30 WHEN "11110",
+	  Q31 WHEN OTHERS;	 
+
+
+------------------------------------------------------------------------ Registers
 ------------------------------------ R 0
 R_V0 : Reg_32bits 
 Port map(  CLK  =>CLK,
@@ -625,6 +770,7 @@ Port map(  CLK  =>CLK,
            EN   =>EQ31,
            INN  =>Q,
            OUTT =>Q31);
+
 			  
 end Behavioral;
 
