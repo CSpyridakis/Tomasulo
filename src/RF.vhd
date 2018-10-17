@@ -126,7 +126,7 @@ begin
 R_V: FOR n IN 31 DOWNTO 0 GENERATE                    -- Values
     v_reg:Reg_32bits
     Port map( 
-			  CLK  => CLK,
+		   CLK  => CLK,
            RST  => RST,
            EN   => EVQ(n),
            INN  => VI(n),
@@ -136,7 +136,7 @@ END GENERATE R_V;
 R_Q: FOR n IN 31 DOWNTO 0 GENERATE                    -- Tags
     q_reg:Reg_5bits
     Port map( 
-			  CLK  => CLK,
+		   CLK  => CLK,
            RST  => RST,
            EN   => EVQ(n),
            INN  => QI(n),
