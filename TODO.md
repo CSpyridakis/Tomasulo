@@ -4,7 +4,6 @@
 		diagram
 
 	* RF : 
-		diagram
 
 	* RS :
 
@@ -13,15 +12,14 @@
 		1) Maybe add from FU ready to accept signal
 
 	* CDB :
-		diagram
 
 	*Else:
-		tomasulo's full diagram
 
 # Completed:
 	* Issue :
 
 	* RF : 
+		block diagram v1
 
 	* RS :
 		block diagram v1
@@ -30,5 +28,7 @@
 		block diagram v1
 
 	* CDB :
+		block diagram v1
 
 	*Else:
+		Top module block diagram v1
