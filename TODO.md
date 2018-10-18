@@ -1,8 +1,8 @@
 # Todo List:
 	
 	* Issue :
-		diagram
-
+		check diagram
+		
 	* RF : 
 
 	* RS :
@@ -17,6 +17,7 @@
 
 # Completed:
 	* Issue :
+		block diagram v1
 
 	* RF : 
 		block diagram v1
