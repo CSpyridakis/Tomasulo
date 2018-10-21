@@ -1,15 +1,12 @@
 # Todo List:
 	
 	* Issue :
-		check diagram
 		
 	* RF : 
 
 	* RS :
 
-
 	* FU :
-		1) Maybe add from FU ready to accept signal
 
 	* CDB :
 
