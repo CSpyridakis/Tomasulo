@@ -3,149 +3,76 @@
 -- Engineer:                  Spyridakis Christos 
 --                            Bellonias Panagiotis
 -- 
--- Create Date:                
+-- Create Date:               10/22/2018
 -- Design Name: 	 
--- Module Name:               RF - Behavioral  
+-- Module Name:               RF - Behavioral 
 -- Project Name:              Tomasulo
 -- Target Devices:            NONE
 -- Tool versions:             Xilinx ISE 14.7 --TODO: VIVADO
 -- Description:               Introduction in Dynamic Instruction Scheduling (Advanced Computer Architecture)
 --                            implementing Tomasulo's Algorithm 	 
 --
--- Dependencies:              IEEE.numeric_std.all
+-- Dependencies:              NONE
 --
 -- Revision:                  0.01
 -- Revision                   0.01 - File Created
--- Additional Comments:       Register File implementation (RF)
---
---
---                                          ABSTRACT: I/O Connections    
---               
---                                                     RF                                            
---                            ++ ------------------------------------------- ++              + ---------- + 
---                            ||                                             ||              |            |
---                            ||                                             ||              |            |                       
---   + ------- +              ||                                             ||    CDB_V     |            |
---   |         |       E      ||        + ------------------------- +        || <----------- |            | 
---   |         | -----------> ||        |     Q       |     V       |        ||              |            |   
---   |         |              ||        + ----------- + ----------- +        ||              |            |                       
---   |    I    |              ||       0|     5       |     3       |        ||              |            |                 
---   |    S    |       K      ||       1|             |     2       |        ||     CDB_Q    |    CDB     | 
---   |    S    | -----------> ||       2|             |             |        || <----------- |            |
---   |    U    |              ||       .|     b       |     b       |        ||              |            |
---   |    E    |       J      ||       .|     i       |     i       |        ||              |            |
---   |         | -----------> ||       .|     t       |     t       |        ||              |            |
---   |         |              ||      31|     s       |     s       |        ||    CDB_E     |            |
---   |         |       R      ||        + ------------------------- +        || <----------- |            |
---   |         | -----------> ||                                             ||              |            |
---   |         |              ||                                             ||              |            | 
---   + ------- +              ||                                             ||              |            |
---                            ++ ------------------------------------------- ++              + ---------- +                         
---                                       					              
---                                         ||   ||   ||   ||     /\         
---                                         ||   ||   ||   ||     ||         
---                                       Vk|| Qk|| Vj|| Qj|| Q_WB||         
---                                         ||   ||   ||   ||     ||         
---                                         \/   \/   \/   \/     ||                       
---                                      + ------------------------- +    
---                                      |                           |    
---                                      |                           |    
---                                      |             RS            |   
---                                      |                           |    
---                                      |                           |    
---                                      + ------------------------- +    
+-- Additional Comments: 
 --
 ----------------------------------------------------------------------------------
-
--- TODO LIST:
---     * V Update if CDB_Q == Qn : 0 < n < 32 , nεN
-
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.numeric_std.all;
+use IEEE.NUMERIC_STD.ALL;
 
 entity RF is
-    Port ( CLK  : in  STD_LOGIC;
-           RST  : in  STD_LOGIC;
-			  
-	        --PHASE 1 (Concurrent steps - TOTAL time: 1 CC)
-			  K : in  STD_LOGIC_VECTOR (4 downto 0);          --Step 1: ISSUE -> RF -- Issue registers' addresses to read (AKA Rs and Rt on R-type MIPS instructions)
-           J : in  STD_LOGIC_VECTOR (4 downto 0);
-			  
-			  Vk : out  STD_LOGIC_VECTOR (31 downto 0);       --Step 2: RF -> RS -- Registers' data
-           Qk : out  STD_LOGIC_VECTOR (4 downto 0);
-           Vj : out  STD_LOGIC_VECTOR (31 downto 0);
-           Qj : out  STD_LOGIC_VECTOR (4 downto 0);
-			  
-           R : in  STD_LOGIC_VECTOR (4 downto 0);          --Step 3: RS -> RF -- Renaming Rd tag
-           Q_WB : in  STD_LOGIC_VECTOR (4 downto 0);
-           
-			  E : in STD_LOGIC;                               --Step 4: Execute
-			  
-			  --PHASE 2 ( CDB -> RF - TOTAL time: 1 CC)
-			  CDB_E : in STD_LOGIC;                           -- New Tag on CDB (Execute actions needed)
+    Port ( RD : in  STD_LOGIC_VECTOR (4 downto 0);
+           RS : in  STD_LOGIC_VECTOR (4 downto 0);
+           RT : in  STD_LOGIC_VECTOR (4 downto 0);
+           ISSUE_WE : in  STD_LOGIC;
+           Q_INSTRCT : in  STD_LOGIC_VECTOR (3 downto 0);
+           CDB_Q : in  STD_LOGIC_VECTOR (3 downto 0);
            CDB_V : in  STD_LOGIC_VECTOR (31 downto 0);
-           CDB_Q : in  STD_LOGIC_VECTOR (4 downto 0));
+           CLK : in  STD_LOGIC;
+           RST : in  STD_LOGIC;
+           Q_RS : out  STD_LOGIC_VECTOR (3 downto 0);
+           Q_RT : out  STD_LOGIC_VECTOR (3 downto 0);
+           READ_RS : out  STD_LOGIC_VECTOR (31 downto 0);
+           READ_RT : out  STD_LOGIC_VECTOR (31 downto 0));
 end RF;
 
 architecture Behavioral of RF is
-
--- REGISTERS FOR STORING VALUES - 32 bits
-component Reg_32bits 
-Port (     CLK  : in  STD_LOGIC;
-           RST  : in  STD_LOGIC;
-           EN   : in  STD_LOGIC;
-           INN  : in  STD_LOGIC_VECTOR (31 downto 0);
-           OUTT : out  STD_LOGIC_VECTOR (31 downto 0));
-end component;
-
--- REGISTERS FOR STORING TAGS	- 5 bits
-component Reg_5bits is
-    Port ( CLK  : in  STD_LOGIC;
-           RST  : in  STD_LOGIC;
-           EN   : in  STD_LOGIC;
-           INN  : in  STD_LOGIC_VECTOR (4 downto 0);
-           OUTT : out  STD_LOGIC_VECTOR (4 downto 0));
-end component;
-
---Signal types
-type T_32x1 is array (31 downto 0) of STD_LOGIC;
-type T_32x5 is array (31 downto 0) of STD_LOGIC_VECTOR (4 downto 0);
-type T_32x32 is array (31 downto 0) of STD_LOGIC_VECTOR (31 downto 0);
-
---Register's tmp signals 
-signal EVQ : T_32x1;    --Value and Tag Write Enable 	
-signal VI : T_32x32;    --Values I/O 
-signal VO : T_32x32;			
-signal QI : T_32x5;     --Tags I/O 		
-signal QO : T_32x5;			
-
+	type REGISTERS is array(31 downto 0) of STD_LOGIC_VECTOR(31 downto 0);
+	signal V : REGISTERS := (others => (others => '0'));
 begin
+process
+	begin
+	
+		wait until rising_edge(CLK);
+		
+		if (RST = '1') then
+			V <= (others => (others => '0'));
+			L_X: for I in 0 to 10 loop 
+				V(I) <= STD_LOGIC_VECTOR(to_unsigned(I, V(I)'LENGTH));      
+			end loop L_X; 
+		else
+			if ISSUE_WE = '1' then
+				V(to_integer(UNSIGNED(RD))) <= CDB_V;
+			end if;			
+			if RD = RS then
+				READ_RS <= CDB_V;
+				Q_RS <= CDB_Q;
+			else 
+				READ_RS <= V(to_integer(UNSIGNED(RS)));
+			end if;			
+			if RD = RT THEN
+				READ_RT <= CDB_V;
+				Q_RT <= CDB_Q;
+			else 
+				READ_RT <= V(to_integer(UNSIGNED(RT)));
+			end if;
+		end if;
+	
+	end process;
 
------------------------------------------------------------------------- Registers
-R_V: FOR n IN 31 DOWNTO 0 GENERATE                    -- Values
-    v_reg:Reg_32bits
-    Port map( 
-		   CLK  => CLK,
-           RST  => RST,
-           EN   => EVQ(n),
-           INN  => VI(n),
-           OUTT => VO(n));
-END GENERATE R_V;
 
-R_Q: FOR n IN 31 DOWNTO 0 GENERATE                    -- Tags
-    q_reg:Reg_5bits
-    Port map( 
-		   CLK  => CLK,
-           RST  => RST,
-           EN   => EVQ(n),
-           INN  => QI(n),
-           OUTT => QO(n));
-END GENERATE R_Q;
-
------------------------------------------------------------------------- Multiplexers
-Vk <= VO(to_integer(unsigned(K))); 
-
-			  
 end Behavioral;
 

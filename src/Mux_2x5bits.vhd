@@ -3,16 +3,16 @@
 -- Engineer:                  Spyridakis Christos 
 --                            Bellonias Panagiotis
 -- 
--- Create Date:                
+-- Create Date:               10/22/2018
 -- Design Name: 	 
--- Module Name:               Reg_32bits - Behavioral 
+-- Module Name:               Mux_2x5bits - Behavioral 
 -- Project Name:              Tomasulo
 -- Target Devices:            NONE
 -- Tool versions:             Xilinx ISE 14.7 --TODO: VIVADO
 -- Description:               Introduction in Dynamic Instruction Scheduling (Advanced Computer Architecture)
 --                            implementing Tomasulo's Algorithm 	 
 --
--- Dependencies:              NONE
+-- Dependencies:              IEEE.NUMERIC_STD
 --
 -- Revision:                  0.01
 -- Revision                   0.01 - File Created
@@ -22,26 +22,18 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
-entity Reg_32bits is
-    Port ( CLK  : in  STD_LOGIC;
-           RST  : in  STD_LOGIC;
-           EN   : in  STD_LOGIC;
-           INN  : in  STD_LOGIC_VECTOR (31 downto 0);
-           OUTT : out  STD_LOGIC_VECTOR (31 downto 0));
-end Reg_32bits;
+entity Mux_2x5bits is
+    Port ( In0 : in  STD_LOGIC_VECTOR (4 downto 0);
+           In1 : in  STD_LOGIC_VECTOR (4 downto 0);
+           Sel : in  STD_LOGIC;
+           Outt : out  STD_LOGIC_VECTOR (4 downto 0));
+end Mux_2x5bits;
 
-architecture Behavioral of Reg_32bits is
+architecture Behavioral of Mux_2x5bits is
 
 begin
-   process(CLK,RST)
-	begin
-		if (rising_edge(CLK)) then
-			if (RST='1') then                 --RST
-	         	OUTT<="00000000000000000000000000000000";
-			elsif (EN='1') then               --Write Enable
-				OUTT<=INN;
-			end if;
-		end if;
-   end process;
+	WITH Sel SELECT
+	Outt <= In0 WHEN '0',
+			  In1 WHEN OTHERS;   
 end Behavioral;
 

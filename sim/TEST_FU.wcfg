@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="/home/chspyman/Desktop/VHDL/Toma23_10/TEST_FU_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="std_logic_1164" />
+            <top_module name="std_logic_arith" />
+            <top_module name="std_logic_signed" />
+            <top_module name="test_fu" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="13" />
+   <wave_markers>
+      <marker time="99900000" label="" />
+      <marker time="109900000" label="" />
+      <marker time="119870000" label="" />
+      <marker time="130000000" label="" />
+      <marker time="139920000" label="" />
+      <marker time="149920000" label="" />
+      <marker time="159920000" label="" />
+   </wave_markers>
+   <wvobject fp_name="divider24" type="divider">
+      <obj_property name="label">Arithmetic</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">#00ffff</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_fu/a_ready" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">a_ready</obj_property>
+      <obj_property name="ObjectShortName">a_ready</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#800000</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_fu/a_grant" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">a_grant</obj_property>
+      <obj_property name="ObjectShortName">a_grant</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#800000</obj_property>
+   </wvobject>
+   <wvobject fp_name="group31" type="group">
+      <obj_property name="label">IO</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/test_fu/clk" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">clk</obj_property>
+         <obj_property name="ObjectShortName">clk</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#ffffff</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_fu/rst" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">rst</obj_property>
+         <obj_property name="ObjectShortName">rst</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#ffffff</obj_property>
+      </wvobject>
+      <wvobject fp_name="divider64" type="divider">
+         <obj_property name="label">IN</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="BkColor">128 128 255</obj_property>
+         <obj_property name="TextColor">230 230 230</obj_property>
+      </wvobject>
+      <wvobject fp_name="group113" type="group">
+         <obj_property name="label">IN</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <wvobject fp_name="/test_fu/a_op" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">a_op[1:0]</obj_property>
+            <obj_property name="ObjectShortName">a_op[1:0]</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="CustomSignalColor">#ffa500</obj_property>
+         </wvobject>
+         <wvobject fp_name="/test_fu/a_vj" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">a_vj[31:0]</obj_property>
+            <obj_property name="ObjectShortName">a_vj[31:0]</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="CustomSignalColor">#00ffff</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/test_fu/a_vk" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">a_vk[31:0]</obj_property>
+            <obj_property name="ObjectShortName">a_vk[31:0]</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="CustomSignalColor">#00ffff</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/test_fu/a_tag" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">a_tag[4:0]</obj_property>
+            <obj_property name="ObjectShortName">a_tag[4:0]</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="CustomSignalColor">#00ff00</obj_property>
+            <obj_property name="Radix">BINARYRADIX</obj_property>
+         </wvobject>
+      </wvobject>
+      <wvobject fp_name="divider65" type="divider">
+         <obj_property name="label">OUT</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="BkColor">128 128 255</obj_property>
+         <obj_property name="TextColor">230 230 230</obj_property>
+      </wvobject>
+      <wvobject fp_name="group114" type="group">
+         <obj_property name="label">OUT</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <wvobject fp_name="/test_fu/a_accepted" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">a_accepted</obj_property>
+            <obj_property name="ObjectShortName">a_accepted</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="CustomSignalColor">#800000</obj_property>
+         </wvobject>
+         <wvobject fp_name="/test_fu/a_q" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">a_q[4:0]</obj_property>
+            <obj_property name="ObjectShortName">a_q[4:0]</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="CustomSignalColor">#00ff00</obj_property>
+            <obj_property name="Radix">BINARYRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/test_fu/a_v" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">a_v[31:0]</obj_property>
+            <obj_property name="ObjectShortName">a_v[31:0]</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="CustomSignalColor">#00ffff</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/test_fu/a_request" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">a_request</obj_property>
+            <obj_property name="ObjectShortName">a_request</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="CustomSignalColor">#800000</obj_property>
+         </wvobject>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group32" type="group">
+      <obj_property name="label">A1</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/test_fu/uut/Fu_control_Unit/a1_empty" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">a1_empty</obj_property>
+         <obj_property name="ObjectShortName">a1_empty</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#ffa500</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_fu/uut/A1/en" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">en</obj_property>
+         <obj_property name="ObjectShortName">en</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#800000</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_fu/uut/A1/vin" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">vin[31:0]</obj_property>
+         <obj_property name="ObjectShortName">vin[31:0]</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#00ffff</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_fu/uut/A1/qin" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">qin[4:0]</obj_property>
+         <obj_property name="ObjectShortName">qin[4:0]</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#00ff00</obj_property>
+         <obj_property name="Radix">BINARYRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_fu/uut/A1/vout" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">vout[31:0]</obj_property>
+         <obj_property name="ObjectShortName">vout[31:0]</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#00ffff</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_fu/uut/A1/qout" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">qout[4:0]</obj_property>
+         <obj_property name="ObjectShortName">qout[4:0]</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#00ff00</obj_property>
+         <obj_property name="Radix">BINARYRADIX</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group33" type="group">
+      <obj_property name="label">A2</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/test_fu/uut/Fu_control_Unit/a2_empty" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">a2_empty</obj_property>
+         <obj_property name="ObjectShortName">a2_empty</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#ffa500</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_fu/uut/A2/en" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">en</obj_property>
+         <obj_property name="ObjectShortName">en</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#800000</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_fu/uut/A2/vin" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">vin[31:0]</obj_property>
+         <obj_property name="ObjectShortName">vin[31:0]</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#00ffff</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_fu/uut/A2/qin" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">qin[4:0]</obj_property>
+         <obj_property name="ObjectShortName">qin[4:0]</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#00ff00</obj_property>
+         <obj_property name="Radix">BINARYRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_fu/uut/A2/vout" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">vout[31:0]</obj_property>
+         <obj_property name="ObjectShortName">vout[31:0]</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#00ffff</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_fu/uut/A2/qout" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">qout[4:0]</obj_property>
+         <obj_property name="ObjectShortName">qout[4:0]</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#00ff00</obj_property>
+         <obj_property name="Radix">BINARYRADIX</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group34" type="group">
+      <obj_property name="label">A3</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/test_fu/uut/Fu_control_Unit/a3_empty" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">a3_empty</obj_property>
+         <obj_property name="ObjectShortName">a3_empty</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#ffa500</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_fu/uut/A3/en" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">en</obj_property>
+         <obj_property name="ObjectShortName">en</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#800000</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_fu/uut/A3/vin" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">vin[31:0]</obj_property>
+         <obj_property name="ObjectShortName">vin[31:0]</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#00ffff</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_fu/uut/A3/qin" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">qin[4:0]</obj_property>
+         <obj_property name="ObjectShortName">qin[4:0]</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#00ff00</obj_property>
+         <obj_property name="Radix">BINARYRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_fu/uut/A3/vout" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">vout[31:0]</obj_property>
+         <obj_property name="ObjectShortName">vout[31:0]</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#00ffff</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_fu/uut/A3/qout" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">qout[4:0]</obj_property>
+         <obj_property name="ObjectShortName">qout[4:0]</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#00ff00</obj_property>
+         <obj_property name="Radix">BINARYRADIX</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="divider25" type="divider">
+      <obj_property name="label">Logical</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">#00ffff</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_fu/l_ready" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">l_ready</obj_property>
+      <obj_property name="ObjectShortName">l_ready</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#800000</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_fu/l_grant" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">l_grant</obj_property>
+      <obj_property name="ObjectShortName">l_grant</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#800000</obj_property>
+   </wvobject>
+   <wvobject fp_name="group30" type="group">
+      <obj_property name="label">IO</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/test_fu/clk" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">clk</obj_property>
+         <obj_property name="ObjectShortName">clk</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#ffffff</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_fu/rst" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">rst</obj_property>
+         <obj_property name="ObjectShortName">rst</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#ffffff</obj_property>
+      </wvobject>
+      <wvobject fp_name="divider62" type="divider">
+         <obj_property name="label">IN</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="BkColor">128 128 255</obj_property>
+         <obj_property name="TextColor">230 230 230</obj_property>
+      </wvobject>
+      <wvobject fp_name="group115" type="group">
+         <obj_property name="label">IN</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <wvobject fp_name="/test_fu/l_tag" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">l_tag[4:0]</obj_property>
+            <obj_property name="ObjectShortName">l_tag[4:0]</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="CustomSignalColor">#00ff00</obj_property>
+            <obj_property name="Radix">BINARYRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/test_fu/l_op" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">l_op[1:0]</obj_property>
+            <obj_property name="ObjectShortName">l_op[1:0]</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="CustomSignalColor">#ffa500</obj_property>
+         </wvobject>
+         <wvobject fp_name="/test_fu/l_vj" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">l_vj[31:0]</obj_property>
+            <obj_property name="ObjectShortName">l_vj[31:0]</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="CustomSignalColor">#00ffff</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/test_fu/l_vk" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">l_vk[31:0]</obj_property>
+            <obj_property name="ObjectShortName">l_vk[31:0]</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="CustomSignalColor">#00ffff</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+      </wvobject>
+      <wvobject fp_name="divider63" type="divider">
+         <obj_property name="label">OUT</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="BkColor">128 128 255</obj_property>
+         <obj_property name="TextColor">230 230 230</obj_property>
+      </wvobject>
+      <wvobject fp_name="group116" type="group">
+         <obj_property name="label">OUT</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <wvobject fp_name="/test_fu/l_accepted" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">l_accepted</obj_property>
+            <obj_property name="ObjectShortName">l_accepted</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="CustomSignalColor">#800000</obj_property>
+         </wvobject>
+         <wvobject fp_name="/test_fu/l_q" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">l_q[4:0]</obj_property>
+            <obj_property name="ObjectShortName">l_q[4:0]</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="CustomSignalColor">#00ff00</obj_property>
+            <obj_property name="Radix">BINARYRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/test_fu/l_v" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">l_v[31:0]</obj_property>
+            <obj_property name="ObjectShortName">l_v[31:0]</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="CustomSignalColor">#00ffff</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/test_fu/l_request" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">l_request</obj_property>
+            <obj_property name="ObjectShortName">l_request</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="CustomSignalColor">#800000</obj_property>
+         </wvobject>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group35" type="group">
+      <obj_property name="label">L1</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/test_fu/uut/Fu_control_Unit/l1_empty" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">l1_empty</obj_property>
+         <obj_property name="ObjectShortName">l1_empty</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#ffa500</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_fu/uut/L1/en" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">en</obj_property>
+         <obj_property name="ObjectShortName">en</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#800000</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_fu/uut/L1/vin" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">vin[31:0]</obj_property>
+         <obj_property name="ObjectShortName">vin[31:0]</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#00ffff</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_fu/uut/L1/qin" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">qin[4:0]</obj_property>
+         <obj_property name="ObjectShortName">qin[4:0]</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#00ff00</obj_property>
+         <obj_property name="Radix">BINARYRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_fu/uut/L1/vout" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">vout[31:0]</obj_property>
+         <obj_property name="ObjectShortName">vout[31:0]</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#00ffff</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_fu/uut/L1/qout" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">qout[4:0]</obj_property>
+         <obj_property name="ObjectShortName">qout[4:0]</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#00ff00</obj_property>
+         <obj_property name="Radix">BINARYRADIX</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group36" type="group">
+      <obj_property name="label">L2</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/test_fu/uut/Fu_control_Unit/l2_empty" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">l2_empty</obj_property>
+         <obj_property name="ObjectShortName">l2_empty</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#ffa500</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_fu/uut/L2/en" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">en</obj_property>
+         <obj_property name="ObjectShortName">en</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#800000</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_fu/uut/L2/vin" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">vin[31:0]</obj_property>
+         <obj_property name="ObjectShortName">vin[31:0]</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#00ffff</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_fu/uut/L2/qin" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">qin[4:0]</obj_property>
+         <obj_property name="ObjectShortName">qin[4:0]</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#00ff00</obj_property>
+         <obj_property name="Radix">BINARYRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_fu/uut/L2/vout" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">vout[31:0]</obj_property>
+         <obj_property name="ObjectShortName">vout[31:0]</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#00ffff</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_fu/uut/L2/qout" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">qout[4:0]</obj_property>
+         <obj_property name="ObjectShortName">qout[4:0]</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#008000</obj_property>
+         <obj_property name="Radix">BINARYRADIX</obj_property>
+      </wvobject>
+   </wvobject>
+</wave_config>

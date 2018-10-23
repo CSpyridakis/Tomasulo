@@ -33,19 +33,15 @@ end Reg_5bits;
 architecture Behavioral of Reg_5bits is
 
 begin
-
    process(CLK,RST)
 	begin
-	   if (RST='1') then                 --RST
-	         OUTT<="00000";
-		end if;
-		
 		if (rising_edge(CLK)) then
-			if (EN='1') then               --Write Enable
+			if (RST='1') then                 --RST
+	         	OUTT<="00000";
+			elsif (EN='1') then               --Write Enable
 				OUTT<=INN;
 			end if;
 		end if;
    end process;
-	
 end Behavioral;
 

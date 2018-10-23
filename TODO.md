@@ -7,6 +7,7 @@
 	* RS :
 
 	* FU :
+		Test FU that is working properly
 
 	* CDB :
 
@@ -24,6 +25,7 @@
 
 	* FU :
 		block diagram v1
+		FU implemented 
 
 	* CDB :
 		block diagram v1
