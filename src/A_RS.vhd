@@ -88,6 +88,14 @@ component Mux_3x32bits is
            Outt : out  STD_LOGIC_VECTOR (31 downto 0));
 end component;
 
+component Mux_3x5bits is
+    Port ( In1 : in  STD_LOGIC_VECTOR (4 downto 0);
+           In2 : in  STD_LOGIC_VECTOR (4 downto 0);
+           In3 : in  STD_LOGIC_VECTOR (4 downto 0);
+           Sel : in  STD_LOGIC_VECTOR (1 downto 0);
+           Outt : out  STD_LOGIC_VECTOR (4 downto 0));
+end component;
+
 signal A1_Available, A2_Available, A3_Available: STD_LOGIC;
 signal A1_Ready, A2_Ready, A3_Ready: STD_LOGIC;
 
@@ -95,6 +103,12 @@ begin
 
 A_Available <= A1_Available OR A2_Available OR A3_Available;
 A_Ready <= A1_Ready OR A2_Ready OR A3_Ready;
+
+
+-- TODO :
+--			1) A_Accepted for each Reg based on global 
+--			2) AX_ISSUE based on global ISSUE
+--			3) Tag Return fix
 
 A1 : Reg_RS 
     Port map( CLK       => CLK,
@@ -157,7 +171,7 @@ A3 : Reg_RS
               Accepted  => A_Accepted);
 
 --Output Mux
-Op : Mux_3x32bits		 --TODO 3x2bits 
+Op : Mux_3x5bits		 
     Port map( In1  => A1_Op,
               In2  => A2_Op,
               In3  => A3_Op,

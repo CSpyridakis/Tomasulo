@@ -89,50 +89,45 @@ signal  Avail, Av_RST, Av_EN, J_RST, J_EN, K_RST, K_EN, Re_RST, Re_EN : STD_LOGI
 signal  J_Vin, K_Vin: STD_LOGIC_VECTOR (31 downto 0);
 signal  J_Qin, J_Q, K_Qin, K_Q: STD_LOGIC_VECTOR (4 downto 0);
 
-type states is (ResetS, AvailableS, IssueS, L_MatchS, R_MatchS, ReadyS, ExecutingS);
-signal State: states := AvailableS;
-
 begin
-
-	---------------------------------------------------------- Reservation Station CONTROL
-	--Resets
-	Av_RST <= '1' WHEN STATE=ResetS ELSE	--System RST
-	          '0';
-	
-	Re_RST <= '1' WHEN STATE=ResetS ELSE	--System RST
-	          '0';
-	
-	J_RST <= '1' WHEN STATE=ResetS ELSE	--System RST
-	         '0';
-	
-	K_RST <= '1' WHEN STATE=ResetS ELSE	--System RST
-	         '0';
-
-	--Enables
-	Av_EN <= '1' WHEN STATE=IssueS ELSE	--ISSUE
-	         '0';
-	
-	J_EN <= '1' WHEN STATE=IssueS ELSE	--ISSUE
-	        '0';
-	
-	K_EN <= '1' WHEN STATE=IssueS ELSE	--ISSUE
-	        '0';
-	
-	Re_EN<='0';
 		
 	---------------------------------------------------------- Reservation Station FSM			  
-	PROCESS(CLK, RST, STATE, J_Q, K_Q)
+	PROCESS(CLK, RST, Avail, ISSUE, Qj, Qk, CDB_Q)
 	BEGIN
 		IF (rising_edge(CLK)) THEN
-			IF (RST='1') THEN                 --RST
-	         STATE <= ResetS;
-			ELSIF (STATE=ResetS) THEN               
-				STATE <= AvailableS;
-			ELSIF (ISSUE='1' AND STATE=AvailableS) THEN
-				STATE <= IssueS;
-			END IF;
-			IF (J_Q="00000" AND K_Q="00000") THEN
-				STATE <=ReadyS;
+			IF (RST='1') THEN                 														--RST
+	         --Resets
+				Av_RST <='1'; 
+				Re_RST <='1';
+				J_RST  <='1';
+				K_RST  <='1';
+				--Enables
+				Av_EN  <='0';
+				J_EN   <='0';
+				K_EN   <='0';
+				Re_EN  <='0';
+			ELSIF (Avail='1' AND ISSUE='1' AND Qj="00000" AND Qk="00000") THEN 			--Issue with valid Data               
+				--Resets
+				Av_RST <='0'; 
+				Re_RST <='0';
+				J_RST  <='0';
+				K_RST  <='0';
+				--Enables
+				Av_EN  <='1';
+				J_EN   <='1';
+				K_EN   <='1';
+				Re_EN  <='1';
+			ELSIF (Avail='1' AND ISSUE='1')	THEN													--Issue with One OR none of them Ready
+				--Resets
+				Av_RST <='0'; 
+				Re_RST <='0';
+				J_RST  <='0';
+				K_RST  <='0';
+				--Enables
+				Av_EN  <='1';
+				J_EN   <='1';
+				K_EN   <='1';
+				Re_EN  <='0';
 			END IF;
 		END IF;
 	END PROCESS;
@@ -142,7 +137,7 @@ begin
 		 Port map( CLK  => CLK,
 					  RST  => Av_RST,
 					  EN   => Av_EN,
-					  INN  => '1',
+					  INN  => '0',											-- TODO : negative Logic
 					  OUTT => Avail);
 	Available <= Avail;
 

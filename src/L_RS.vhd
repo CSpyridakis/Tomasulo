@@ -87,6 +87,14 @@ component Mux_3x32bits is
            Outt : out  STD_LOGIC_VECTOR (31 downto 0));
 end component;
 
+component Mux_3x5bits is
+    Port ( In1 : in  STD_LOGIC_VECTOR (4 downto 0);
+           In2 : in  STD_LOGIC_VECTOR (4 downto 0);
+           In3 : in  STD_LOGIC_VECTOR (4 downto 0);
+           Sel : in  STD_LOGIC_VECTOR (1 downto 0);
+           Outt : out  STD_LOGIC_VECTOR (4 downto 0));
+end component;
+
 signal L1_Available, L2_Available: STD_LOGIC;
 signal L1_Ready, L2_Ready: STD_LOGIC;
 
@@ -136,7 +144,7 @@ L2 : Reg_RS
               Accepted  => A_Accepted);
 
 --Output Mux
-Op : Mux_3x32bits		  
+Op : Mux_3x5bits		  
     Port map( In1  => L1_Op,
               In2  => L2_Op,
               In3  => "00",
