@@ -25,20 +25,22 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity FU_Control is
     Port ( CLK : in  STD_LOGIC;
            A_Ready : in  STD_LOGIC;
-	        A1_Q : in  STD_LOGIC_VECTOR (4 downto 0);
+           A_Tag : in  STD_LOGIC_VECTOR (4 downto 0);
+           A1_Q : in  STD_LOGIC_VECTOR (4 downto 0);
            A2_Q : in  STD_LOGIC_VECTOR (4 downto 0);
            A3_Q : in  STD_LOGIC_VECTOR (4 downto 0);
-           A_Accepted : out  STD_LOGIC;
-			  A_Request : out  STD_LOGIC;
-			  A_Grant : in  STD_LOGIC;
-			  A1_EN : out  STD_LOGIC;
+           A_Accepted : out  STD_LOGIC_VECTOR (4 downto 0);
+           A_Request : out  STD_LOGIC;
+           A_Grant : in  STD_LOGIC;
+           A1_EN : out  STD_LOGIC;
            A2_EN : out  STD_LOGIC;
            A3_EN : out  STD_LOGIC;
 			  
-			  L_Ready : in  STD_LOGIC;
-			  L1_Q : in  STD_LOGIC_VECTOR (4 downto 0);
+           L_Ready : in  STD_LOGIC;
+           L_Tag : in  STD_LOGIC_VECTOR (4 downto 0);
+           L1_Q : in  STD_LOGIC_VECTOR (4 downto 0);
            L2_Q : in  STD_LOGIC_VECTOR (4 downto 0);
-           L_Accepted : out  STD_LOGIC;
+           L_Accepted : out  STD_LOGIC_VECTOR (4 downto 0);
            L_Request : out  STD_LOGIC;
            L_Grant : in  STD_LOGIC;
            L1_EN : out  STD_LOGIC;
@@ -64,16 +66,16 @@ BEGIN
 			-------------------------------------------------------------------------------------------- X_Accept
 			--Arithmetic 
 			IF (A_Ready='1' AND (A_Grant='1' OR (A1_EMPTY='1' OR A2_EMPTY='1' OR A3_EMPTY='1'))) THEN	
-				A_Accepted <= '1';
+				A_Accepted <= A_Tag;
 			ELSE
-				A_Accepted <= '0';
+				A_Accepted <= "00000";
 			END IF;
 			
 			--Logical 
 			IF (L_Ready='1' AND (L_Grant='1' OR (L1_EMPTY='1' OR L2_EMPTY='1')))THEN	
-				L_Accepted <= '1';
+				L_Accepted <= L_Tag;
 			ELSE
-				L_Accepted <= '0';
+				L_Accepted <= "00000";
 			END IF;
 			
 			-------------------------------------------------------------------------------------------- X_Request
@@ -130,7 +132,7 @@ BEGIN
 				L1_EN <= '0';
 			END IF;
 			
-			--L2_EN																															L1     L2
+			--L2_EN															    																L1     L2
 			IF (L1_EMPTY='0' AND L2_EMPTY='1') THEN																				-- [1] -> [0]
 				L2_EN <= '1';
 			ELSIF (L2_EMPTY='0' AND L_Grant='1') THEN																				-- [X] -> [1] AND L is Granted

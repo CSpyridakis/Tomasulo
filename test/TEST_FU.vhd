@@ -44,7 +44,7 @@ ARCHITECTURE behavior OF TEST_FU IS
          A_Op : IN  std_logic_vector(1 downto 0);
          A_Vj : IN  std_logic_vector(31 downto 0);
          A_Vk : IN  std_logic_vector(31 downto 0);
-         A_Accepted : OUT  std_logic;
+         A_Accepted : OUT  std_logic_vector(4 downto 0);
          A_Request : OUT  std_logic;
          A_Grant : IN  std_logic;
          A_Q : OUT  std_logic_vector(4 downto 0);
@@ -54,7 +54,7 @@ ARCHITECTURE behavior OF TEST_FU IS
          L_Op : IN  std_logic_vector(1 downto 0);
          L_Vj : IN  std_logic_vector(31 downto 0);
          L_Vk : IN  std_logic_vector(31 downto 0);
-         L_Accepted : OUT  std_logic;
+         L_Accepted : OUT  std_logic_vector(4 downto 0);
          L_Request : OUT  std_logic;
          L_Grant : IN  std_logic;
          L_Q : OUT  std_logic_vector(4 downto 0);
@@ -80,11 +80,11 @@ ARCHITECTURE behavior OF TEST_FU IS
    signal L_Grant : std_logic := '0';
 
  	--Outputs
-   signal A_Accepted : std_logic;
+   signal A_Accepted : std_logic_vector(4 downto 0);
    signal A_Request : std_logic;
    signal A_Q : std_logic_vector(4 downto 0);
    signal A_V : std_logic_vector(31 downto 0);
-   signal L_Accepted : std_logic;
+   signal L_Accepted : std_logic_vector(4 downto 0);
    signal L_Request : std_logic;
    signal L_Q : std_logic_vector(4 downto 0);
    signal L_V : std_logic_vector(31 downto 0);

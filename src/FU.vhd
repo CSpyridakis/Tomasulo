@@ -26,25 +26,25 @@ entity FU is
     Port ( CLK : in  STD_LOGIC;
            RST : in  STD_LOGIC;
 			  
-			  --Aritmetic FU
+           --Aritmetic FU
            A_Ready : in  STD_LOGIC;							
            A_Tag : in  STD_LOGIC_VECTOR (4 downto 0);
            A_Op : in  STD_LOGIC_VECTOR (1 downto 0);
            A_Vj : in  STD_LOGIC_VECTOR (31 downto 0);
            A_Vk : in  STD_LOGIC_VECTOR (31 downto 0);
-           A_Accepted : out  STD_LOGIC;							
+           A_Accepted : out  STD_LOGIC_VECTOR (4 downto 0);							
            A_Request : out  STD_LOGIC;							
            A_Grant : in  STD_LOGIC;							
            A_Q : out  STD_LOGIC_VECTOR (4 downto 0);
            A_V : out  STD_LOGIC_VECTOR (31 downto 0);
 			  
-			  --Logical FU
+           --Logical FU
            L_Ready : in  STD_LOGIC;							
            L_Tag : in  STD_LOGIC_VECTOR (4 downto 0);
            L_Op : in  STD_LOGIC_VECTOR (1 downto 0);
            L_Vj : in  STD_LOGIC_VECTOR (31 downto 0);
            L_Vk : in  STD_LOGIC_VECTOR (31 downto 0);
-           L_Accepted : out  STD_LOGIC;							
+           L_Accepted : out  STD_LOGIC_VECTOR (4 downto 0);							
            L_Request : out  STD_LOGIC;							
            L_Grant : in  STD_LOGIC;							
            L_Q : out  STD_LOGIC_VECTOR (4 downto 0);
@@ -55,21 +55,23 @@ architecture Behavioral of FU is
 
 component FU_Control is
     Port ( CLK : in  STD_LOGIC;
-	        A_Ready : in  STD_LOGIC;
-	        A1_Q : in  STD_LOGIC_VECTOR (4 downto 0);
+           A_Ready : in  STD_LOGIC;
+           A_Tag : in  STD_LOGIC_VECTOR (4 downto 0);
+           A1_Q : in  STD_LOGIC_VECTOR (4 downto 0);
            A2_Q : in  STD_LOGIC_VECTOR (4 downto 0);
            A3_Q : in  STD_LOGIC_VECTOR (4 downto 0);
-           A_Accepted : out  STD_LOGIC;
-			  A_Request : out  STD_LOGIC;
-			  A_Grant : in  STD_LOGIC;
-			  A1_EN : out  STD_LOGIC;
+           A_Accepted : out  STD_LOGIC_VECTOR (4 downto 0);
+           A_Request : out  STD_LOGIC;
+           A_Grant : in  STD_LOGIC;
+           A1_EN : out  STD_LOGIC;
            A2_EN : out  STD_LOGIC;
            A3_EN : out  STD_LOGIC;
 			  
-			  L_Ready : in  STD_LOGIC;
-			  L1_Q : in  STD_LOGIC_VECTOR (4 downto 0);
+           L_Ready : in  STD_LOGIC;
+           L_Tag : in  STD_LOGIC_VECTOR (4 downto 0);
+           L1_Q : in  STD_LOGIC_VECTOR (4 downto 0);
            L2_Q : in  STD_LOGIC_VECTOR (4 downto 0);
-           L_Accepted : out  STD_LOGIC;
+           L_Accepted : out  STD_LOGIC_VECTOR (4 downto 0);
            L_Request : out  STD_LOGIC;
            L_Grant : in  STD_LOGIC;
            L1_EN : out  STD_LOGIC;
@@ -115,18 +117,18 @@ begin
 --MUX for A1_Q and L1_Q 	  
 A1_Qin : Mux_2x5bits 
     Port map( In0  => "00000",
-				  In1  => A_Tag,
+              In1  => A_Tag,
               Sel  => A_Ready,
               Outt => A0_Q);
 L1_Qin : Mux_2x5bits 
     Port map( In0  => "00000",
-				  In1  => L_Tag,
+              In1  => L_Tag,
               Sel  => L_Ready,
               Outt => L0_Q);
 				  
 --ALU
 A_L_ALU : ALU 
-	Port map(  A_Vj => A_Vj,
+	Port map( A_Vj => A_Vj,
               A_Vk => A_Vk,
               A_Op => A_Op,
               A0_V => A0_V,
@@ -188,19 +190,21 @@ L_Q<=L2_Q;
 --FU control unit			
 Fu_control_Unit : FU_Control
     Port map( CLK        => CLK,
-	           A_Ready    => A_Ready,
-	           A1_Q       => A1_Q,
+              A_Ready    => A_Ready,
+              A_Tag      => A_Tag,
+              A1_Q       => A1_Q,
               A2_Q       => A2_Q,
               A3_Q       => A3_Q,
               A_Accepted => A_Accepted,
-			     A_Request  => A_Request,
-			     A_Grant    => A_Grant,
-			     A1_EN      => A1_EN,
+              A_Request  => A_Request,
+              A_Grant    => A_Grant,
+              A1_EN      => A1_EN,
               A2_EN      => A2_EN,
               A3_EN      => A3_EN,
 			   
-			     L_Ready    => L_Ready,
-			     L1_Q       => L1_Q,
+              L_Ready    => L_Ready,
+              L_Tag      => L_Tag,
+              L1_Q       => L1_Q,
               L2_Q       => L2_Q,
               L_Accepted => L_Accepted,
               L_Request  => L_Request,
