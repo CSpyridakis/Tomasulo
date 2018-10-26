@@ -79,7 +79,8 @@ component A_RS is
            Qj : in  STD_LOGIC_VECTOR (4 downto 0);
            Vk : in  STD_LOGIC_VECTOR (31 downto 0);
            Qk : in  STD_LOGIC_VECTOR (4 downto 0);
-           
+           A_Tag_Accepted : out STD_LOGIC_VECTOR (4 downto 0);
+				
            --CDB
            CDB_V : in  STD_LOGIC_VECTOR (31 downto 0);
            CDB_Q : in  STD_LOGIC_VECTOR (4 downto 0);
@@ -106,7 +107,8 @@ component L_RS is
            Qj : in  STD_LOGIC_VECTOR (4 downto 0);
            Vk : in  STD_LOGIC_VECTOR (31 downto 0);
            Qk : in  STD_LOGIC_VECTOR (4 downto 0);
-           
+           L_Tag_Accepted : out STD_LOGIC_VECTOR (4 downto 0);
+				
            --CDB
            CDB_V : in  STD_LOGIC_VECTOR (31 downto 0);
            CDB_Q : in  STD_LOGIC_VECTOR (4 downto 0);
@@ -121,14 +123,20 @@ component L_RS is
 end component ;
 
 signal A_Issue, L_Issue : STD_LOGIC;				
+signal A_Tag_Accepted, L_Tag_Accepted : STD_LOGIC_VECTOR (4 downto 0) := "00000";
 
 begin
 
 A_Issue <= '1' WHEN ISSUE = '1' AND FU_type="01" ELSE '0';
 
 L_Issue <= '1' WHEN ISSUE = '1' AND FU_type="00" ELSE '0';
-			  
-A_RS : A_RS 
+			
+
+Tag_Accepted <= A_Tag_Accepted WHEN A_Issue = '1' AND L_Issue = '0' ELSE
+                L_Tag_Accepted WHEN A_Issue = '0' AND L_Issue = '1' ELSE
+                "00000";         
+ 
+A_R : A_RS 
     Port map( CLK 		  => CLK,
               RST 		  => RST,
               A_Available => A_Available,
@@ -138,6 +146,7 @@ A_RS : A_RS
               Qj          => Qj,
               Vk          => Vk,
               Qk          => Qk,
+				  A_Tag_Accepted => A_Tag_Accepted,
               CDB_V  	  => CDB_V,
               CDB_Q  	  => CDB_Q,
               A_Ready 	  => A_Ready,
@@ -147,24 +156,25 @@ A_RS : A_RS
               A_Tag  	  => A_Tag,
               A_Accepted  => A_Accepted);
 
-L_RS : L_RS 
-    Port map( CLK 		  => CLK,
-              RST 		  => RST,
-              L_Available => L_Available,
-              ISSUE       => L_Issue,
-              FOP 		  => FOP,
-              Vj          => Vj,
-              Qj          => Qj,
-              Vk          => Vk,
-              Qk          => Qk,
-              CDB_V  	  => CDB_V,
-              CDB_Q  	  => CDB_Q,
-              L_Ready 	  => L_Ready,
-              L_Op 		  => L_Op,
-              L_Vj        => L_Vj,
-              L_Vk        => L_Vk,
-              L_Tag  	  => L_Tag,
-              L_Accepted  => L_Accepted);
+--L_R : L_RS 
+--    Port map( CLK 		  => CLK,
+--              RST 		  => RST,
+--              L_Available => L_Available,
+--              ISSUE       => L_Issue,
+--              FOP 		  => FOP,
+--              Vj          => Vj,
+--              Qj          => Qj,
+--              Vk          => Vk,
+--              Qk          => Qk,
+--				  L_Tag_Accepted => L_Tag_Accepted,
+--              CDB_V  	  => CDB_V,
+--              CDB_Q  	  => CDB_Q,
+--              L_Ready 	  => L_Ready,
+--              L_Op 		  => L_Op,
+--              L_Vj        => L_Vj,
+--              L_Vk        => L_Vk,
+--              L_Tag  	  => L_Tag,
+--              L_Accepted  => L_Accepted);
 				  
 end Behavioral;
 

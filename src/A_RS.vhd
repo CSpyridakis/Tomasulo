@@ -35,7 +35,8 @@ entity A_RS is
            Qj : in  STD_LOGIC_VECTOR (4 downto 0);
            Vk : in  STD_LOGIC_VECTOR (31 downto 0);
            Qk : in  STD_LOGIC_VECTOR (4 downto 0);
-           
+           A_Tag_Accepted : out STD_LOGIC_VECTOR (4 downto 0);
+			  
            --CDB
            CDB_V : in  STD_LOGIC_VECTOR (31 downto 0);
            CDB_Q : in  STD_LOGIC_VECTOR (4 downto 0);
@@ -46,12 +47,12 @@ entity A_RS is
            A_Vj : out  STD_LOGIC_VECTOR (31 downto 0);
            A_Vk : out  STD_LOGIC_VECTOR (31 downto 0);
            A_Tag : out  STD_LOGIC_VECTOR (4 downto 0);
-           A_Accepted : in  STD_LOGIC);
+           A_Accepted : in  STD_LOGIC_VECTOR (4 downto 0));
 end A_RS;
 
 architecture Behavioral of A_RS is
 
-
+-- Data, Tag, Available and Ready registers exist here
 component Reg_RS is
     Port ( CLK : in  STD_LOGIC;
            RST : in  STD_LOGIC;
@@ -80,6 +81,7 @@ component Reg_RS is
            Accepted : in  STD_LOGIC);
 end component;
 
+-- MUX for output data signals selection 
 component Mux_3x32bits is
     Port ( In1 : in  STD_LOGIC_VECTOR (31 downto 0);
            In2 : in  STD_LOGIC_VECTOR (31 downto 0);
@@ -88,29 +90,68 @@ component Mux_3x32bits is
            Outt : out  STD_LOGIC_VECTOR (31 downto 0));
 end component;
 
-component Mux_3x5bits is
-    Port ( In1 : in  STD_LOGIC_VECTOR (4 downto 0);
-           In2 : in  STD_LOGIC_VECTOR (4 downto 0);
-           In3 : in  STD_LOGIC_VECTOR (4 downto 0);
+-- MUX for output opcode signal selection
+component Mux_3x2bits is
+    Port ( In1 : in  STD_LOGIC_VECTOR (1 downto 0);
+           In2 : in  STD_LOGIC_VECTOR (1 downto 0);
+           In3 : in  STD_LOGIC_VECTOR (1 downto 0);
            Sel : in  STD_LOGIC_VECTOR (1 downto 0);
-           Outt : out  STD_LOGIC_VECTOR (4 downto 0));
+           Outt : out  STD_LOGIC_VECTOR (1 downto 0));
 end component;
 
 signal A1_Available, A2_Available, A3_Available: STD_LOGIC;
 signal A1_Ready, A2_Ready, A3_Ready: STD_LOGIC;
+signal A1_Accepted, A2_Accepted, A3_Accepted : STD_LOGIC;
+signal A1_ISSUE, A2_ISSUE, A3_ISSUE : STD_LOGIC;
+signal A_TagS, A1_Tag, A2_Tag, A3_Tag : STD_LOGIC_VECTOR (4 downto 0);
+signal A1_Op, A2_Op, A3_Op : STD_LOGIC_VECTOR (1 downto 0);
+signal A1_Vj, A1_Vk, A2_Vj, A2_Vk, A3_Vj, A3_Vk : STD_LOGIC_VECTOR (31 downto 0);
 
+TYPE LastAcceptedCases IS (NONE, A1, A2, A3);  
+SIGNAL Last : LastAcceptedCases := NONE;    
+ 
 begin
 
 A_Available <= A1_Available OR A2_Available OR A3_Available;
 A_Ready <= A1_Ready OR A2_Ready OR A3_Ready;
+A_Tag <= A_TagS;
+
+-- Issue to first available RS
+A1_ISSUE <= '1' WHEN ISSUE='1' AND A1_Available='1' ELSE '0';
+A2_ISSUE <= '1' WHEN ISSUE='1' AND A1_Available='0' AND A2_Available='1' ELSE	'0';
+A3_ISSUE <= '1' WHEN ISSUE='1' AND A1_Available='0' AND A2_Available='0' AND A2_Available='1' ELSE '0';
+				
+-- Return Tag of first available RS which will accept ISSUE
+A_Tag_Accepted <= "01001" WHEN ISSUE='1' AND A1_Available='1' ELSE
+                  "01010" WHEN ISSUE='1' AND A1_Available='0' AND A2_Available='1' ELSE
+						"01011" WHEN ISSUE='1' AND A1_Available='0' AND A2_Available='0' AND A3_Available='1' ELSE
+						"00000";
+
+-- Accepted From FU RS Ready bit update
+A1_Accepted <= '1' WHEN A_Accepted="01001" ELSE '0';
+A2_Accepted <= '1' WHEN A_Accepted="01010" ELSE '0';
+A3_Accepted <= '1' WHEN A_Accepted="01011" ELSE '0';
 
 
--- TODO :
---			1) A_Accepted for each Reg based on global 
---			2) AX_ISSUE based on global ISSUE
---			3) Tag Return fix
+-- Select Which Ready RS forward to FU
+PROCESS(Last, A1_Ready, A2_Ready, A3_Ready, A1_Tag, A2_Tag, A3_Tag)
+BEGIN
+	IF (A1_Ready='1' AND (Last=None OR (Last=A3) OR (Last=A2 AND A3_Ready='0'))) THEN
+		Last<=A1;
+		A_TagS<=A1_Tag;
+	ELSIF(A2_Ready='1' AND (Last=None OR (Last=A1) OR (Last=A3 AND A1_Ready='0'))) THEN
+		Last<=A2;
+		A_TagS<=A2_Tag;
+	ELSIF(A3_Ready='1' AND (Last=None OR (Last=A2) OR (Last=A1 AND A2_Ready='0'))) THEN
+		Last<=A3;
+		A_TagS<=A3_Tag;
+	ELSE
+		Last<=Last;
+		A_TagS<="00000";
+	END IF;
+END PROCESS;
 
-A1 : Reg_RS 
+A1_R : Reg_RS 
     Port map( CLK       => CLK,
               RST       => RST,
               ID        => "01001",
@@ -128,9 +169,9 @@ A1 : Reg_RS
               Tag       => A1_Tag,
               Vj        => A1_Vj,
               Vk        => A1_Vk,
-              Accepted  => A_Accepted);
+              Accepted  => A1_Accepted);
 				  
-A2 : Reg_RS 
+A2_R : Reg_RS 
     Port map( CLK       => CLK,
               RST       => RST,
               ID        => "01010",
@@ -148,9 +189,9 @@ A2 : Reg_RS
               Tag       => A2_Tag,
               Vj        => A2_Vj,
               Vk        => A2_Vk,
-              Accepted  => A_Accepted);
+              Accepted  => A2_Accepted);
 				  
-A3 : Reg_RS 
+A3_R : Reg_RS 
     Port map( CLK       => CLK,
               RST       => RST,
               ID        => "01011",
@@ -168,28 +209,28 @@ A3 : Reg_RS
               Tag       => A3_Tag,
               Vj        => A3_Vj,
               Vk        => A3_Vk,
-              Accepted  => A_Accepted);
+              Accepted  => A3_Accepted);
 
 --Output Mux
-Op : Mux_3x5bits		 
+Op_M : Mux_3x2bits		 
     Port map( In1  => A1_Op,
               In2  => A2_Op,
               In3  => A3_Op,
-              Sel  => A_Tag(2 downto 0),
+              Sel  => A_TagS(1 downto 0),
               Outt => A_Op); 
 				  
-Vj : Mux_3x32bits		  
+Vj_M : Mux_3x32bits		  
     Port map( In1  => A1_Vj,
               In2  => A2_Vj,
               In3  => A3_Vj,
-              Sel  => A_Tag(2 downto 0),
+              Sel  => A_TagS(1 downto 0),
               Outt => A_Vj);
 				  
-Vk : Mux_3x32bits		  
+Vk_M : Mux_3x32bits		  
     Port map( In1  => A1_Vk,
               In2  => A2_Vk,
               In3  => A3_Vk,
-              Sel  => A_Tag(2 downto 0),
+              Sel  => A_TagS(1 downto 0),
               Outt => A_Vk);
 				  
 end Behavioral;

@@ -3,16 +3,16 @@
 -- Engineer:                  Spyridakis Christos 
 --                            Bellonias Panagiotis
 -- 
--- Create Date:               10/22/2018
+-- Create Date:                
 -- Design Name: 	 
--- Module Name:               Mux_3x5bits - Behavioral 
+-- Module Name:               Reg_1bit_N - Behavioral 
 -- Project Name:              Tomasulo
 -- Target Devices:            NONE
 -- Tool versions:             Xilinx ISE 14.7 --TODO: VIVADO
 -- Description:               Introduction in Dynamic Instruction Scheduling (Advanced Computer Architecture)
 --                            implementing Tomasulo's Algorithm 	 
 --
--- Dependencies:              IEEE.NUMERIC_STD
+-- Dependencies:              NONE
 --
 -- Revision:                  0.01
 -- Revision                   0.01 - File Created
@@ -22,23 +22,27 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
-entity Mux_3x5bits is
-    Port ( In1 : in  STD_LOGIC_VECTOR (4 downto 0);
-           In2 : in  STD_LOGIC_VECTOR (4 downto 0);
-           In3 : in  STD_LOGIC_VECTOR (4 downto 0);
-           Sel : in  STD_LOGIC_VECTOR (1 downto 0);
-           Outt : out  STD_LOGIC_VECTOR (4 downto 0));
-end Mux_3x5bits;
+entity Reg_1bit_N is
+    Port ( CLK  : in  STD_LOGIC;
+           RST  : in  STD_LOGIC;
+           EN   : in  STD_LOGIC;
+           INN  : in  STD_LOGIC;
+           OUTT : out  STD_LOGIC);
+end Reg_1bit_N;
 
-architecture Behavioral of Mux_3x5bits is
-signal TMP : STD_LOGIC_VECTOR (4 downto 0);
+architecture Behavioral of Reg_1bit_N is
 
 begin
-	WITH Sel SELECT
-	TMP <= "00000" WHEN "00", 
-	       In1 WHEN "01",
-			 In2 WHEN "10",
-			 In3 WHEN "11",
-			 TMP WHEN OTHERS;   
-	Outt<=TMP;
+   process(CLK,RST)
+	begin
+		if (rising_edge(CLK)) then
+			if (RST='1') then                 --RST
+	         	OUTT<='1';
+			elsif (EN='1') then               --Write Enable
+				OUTT<=INN;
+			end if;
+		end if;
+   end process;
 end Behavioral;
+
+

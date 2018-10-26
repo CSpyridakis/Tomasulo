@@ -35,7 +35,8 @@ entity L_RS is
            Qj : in  STD_LOGIC_VECTOR (4 downto 0);
            Vk : in  STD_LOGIC_VECTOR (31 downto 0);
            Qk : in  STD_LOGIC_VECTOR (4 downto 0);
-           
+           L_Tag_Accepted : out STD_LOGIC_VECTOR (4 downto 0);
+				
            --CDB
            CDB_V : in  STD_LOGIC_VECTOR (31 downto 0);
            CDB_Q : in  STD_LOGIC_VECTOR (4 downto 0);
@@ -46,11 +47,12 @@ entity L_RS is
            L_Vj : out  STD_LOGIC_VECTOR (31 downto 0);
            L_Vk : out  STD_LOGIC_VECTOR (31 downto 0);
            L_Tag : out  STD_LOGIC_VECTOR (4 downto 0);
-           L_Accepted : in  STD_LOGIC);
+           L_Accepted : in  STD_LOGIC_VECTOR (4 downto 0));
 end L_RS ;
 
 architecture Behavioral of L_RS  is
 
+-- Data, Tag, Available and Ready registers exist here
 component Reg_RS is
     Port ( CLK : in  STD_LOGIC;
            RST : in  STD_LOGIC;
@@ -79,6 +81,7 @@ component Reg_RS is
            Accepted : in  STD_LOGIC);
 end component;
 
+-- MUX for output data signals selection 
 component Mux_3x32bits is
     Port ( In1 : in  STD_LOGIC_VECTOR (31 downto 0);
            In2 : in  STD_LOGIC_VECTOR (31 downto 0);
@@ -87,6 +90,7 @@ component Mux_3x32bits is
            Outt : out  STD_LOGIC_VECTOR (31 downto 0));
 end component;
 
+-- MUX for output opcode signal selection
 component Mux_3x5bits is
     Port ( In1 : in  STD_LOGIC_VECTOR (4 downto 0);
            In2 : in  STD_LOGIC_VECTOR (4 downto 0);
@@ -97,6 +101,7 @@ end component;
 
 signal L1_Available, L2_Available: STD_LOGIC;
 signal L1_Ready, L2_Ready: STD_LOGIC;
+signal L1_Accepted, L2_Accepted: STD_LOGIC;
 
 begin
 
@@ -121,7 +126,7 @@ L1 : Reg_RS
               Tag       => L1_Tag,
               Vj        => L1_Vj,
               Vk        => L1_Vk,
-              Accepted  => L_Accepted);
+              Accepted  => L1_Accepted);
 				  
 L2 : Reg_RS 
     Port map( CLK       => CLK,
@@ -141,28 +146,28 @@ L2 : Reg_RS
               Tag       => L2_Tag,
               Vj        => L2_Vj,
               Vk        => L2_Vk,
-              Accepted  => A_Accepted);
+              Accepted  => L2_Accepted);
 
 --Output Mux
 Op : Mux_3x5bits		  
     Port map( In1  => L1_Op,
               In2  => L2_Op,
               In3  => "00",
-              Sel  => L_Tag(2 downto 0),
+              Sel  => L_Tag(1 downto 0),
               Outt => L_Op);
 				  
 Vj : Mux_3x32bits		  
     Port map( In1  => L1_Vj,
               In2  => L2_Vj,
               In3  => "00000000000000000000000000000000",
-              Sel  => L_Tag(2 downto 0),
+              Sel  => L_Tag(1 downto 0),
               Outt => L_Vj);
 				  
 Vk : Mux_3x32bits		  
     Port map( In1  => L1_Vk,
               In2  => L2_Vk,
               In3  => "00000000000000000000000000000000",
-              Sel  => L_Tag(2 downto 0),
+              Sel  => L_Tag(1 downto 0),
               Outt => L_Vk);
   
 end Behavioral;

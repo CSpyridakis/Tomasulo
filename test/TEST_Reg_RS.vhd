@@ -2,16 +2,16 @@
 -- Company/University:        Technical University of Crete (TUC) - GR
 -- Engineer:                  Spyridakis Christos 
 --                            Bellonias Panagiotis
---
--- Create Date:   				01:30:07 10/25/2018
+-- Create Date:   				18:35:19 10/26/2018
 -- Design Name:   
--- Module Name:   				Tomasulo/TEST_Reg_RS.vhd
--- Project Name:  				Tomasulo
--- Target Device:  				NONE
--- Tool versions:  				Xilinx ISE 14.7 --TODO: VIVADO
+-- Module Name:   				/Tomasulo/TEST_Reg_RS.vhd
+-- Project Name:              Tomasulo
+-- Target Devices:            NONE
+-- Tool versions:             Xilinx ISE 14.7 --TODO: VIVADO
 -- Description:               Introduction in Dynamic Instruction Scheduling (Advanced Computer Architecture)
 --                            implementing Tomasulo's Algorithm 	 
 --
+-- 
 -- VHDL Test Bench Created by ISE for module: Reg_RS
 -- 
 -- Dependencies:
@@ -29,6 +29,10 @@
 --------------------------------------------------------------------------------
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
+ 
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--USE ieee.numeric_std.ALL;
  
 ENTITY TEST_Reg_RS IS
 END TEST_Reg_RS;
@@ -126,70 +130,136 @@ BEGIN
       -- hold reset state for 100 ns.
       wait for 100 ns;	
 		
-		ID       <="11011";
 		
-		---------------------------------------------------------CC:1
-		RST      <= '1';
-		ISSUE    <= '0';
-		Op_ISSUE <= "01";
-		Vj_ISSUE <= "00000000000000000000000000001110";
-		Vk_ISSUE <= "00000000000000000000000000100111";
-		Qj       <= "01000";
-		Qk       <= "01010";
-		CDB_V    <= "11000000000000000010000000000011";
-		CDB_Q    <= "00101";
-		wait for CLK_period*1;
-		---------------------------------------------------------CC:2
-		RST      <= '0';
-		ISSUE    <= '1';
-		Op_ISSUE <= "01";
-		Vj_ISSUE <= "00000000000000000000010000000110";
-		Vk_ISSUE <= "00000000000000000010000000000111";
-		Qj       <= "00100";
-		Qk       <= "01010";
-		CDB_V    <= "11000000100100010000000000000011";
-		CDB_Q    <= "10101";
-		wait for CLK_period*2;
-		---------------------------------------------------------CC:3
-		RST      <= '0';
-		ISSUE    <= '0';
-		Op_ISSUE <= "01";
-		Vj_ISSUE <= "00010001000100010000000000000110";
-		Vk_ISSUE <= "01001000010000010001000000000111";
-		Qj       <= "01001";
-		Qk       <= "01010";
-		CDB_V    <= "11000000000000000000000000000011";
-		CDB_Q    <= "00100";
-		wait for CLK_period*1;
-		---------------------------------------------------------CC:4
-		RST      <= '0';
-		ISSUE    <= '1';
-		Op_ISSUE <= "00";
-		Vj_ISSUE <= "00000000000000000000000000000001";
-		Vk_ISSUE <= "00000000000000000000000000000011";
-		Qj       <= "00000";
-		Qk       <= "00000";
-		CDB_V    <= "11000000000000000000000000000011";
-		CDB_Q    <= "00100";
-		wait for CLK_period*1;
-		---------------------------------------------------------CC:5
-		RST      <= '0';
-		ISSUE    <= '0';
-		Op_ISSUE <= "01";
-		Vj_ISSUE <= "00110100000000000000000000000110";
-		Vk_ISSUE <= "00100100000000000000000000000111";
-		Qj       <= "00100";
-		Qk       <= "00110";
-		CDB_V    <= "11000010001000000000000000000011";
-		CDB_Q    <= "00111";
-		wait for CLK_period*1;
-
+		ID <="10101";
 		
+		------------------------------------------------------------CC:1
+		RST <='1';
+		--
+		ISSUE <='0';
+		Op_ISSUE <="01";
+		Vj_ISSUE <="00000000000000000000000000000000";
+		Qj <="00000";
+		Vk_ISSUE <="00000000000000000000000000000000";
+		Qk <="00000";
+		--
+		CDB_V <="00000000000000000000000000000000";
+		CDB_Q <="00000";
+		--
+		Accepted <='0';
       wait for CLK_period*1;
 
-      -- insert stimulus here 
+      ------------------------------------------------------------CC:2
+		RST <='0';
+		--
+		ISSUE <='0';
+		Op_ISSUE <="00";
+		Vj_ISSUE <="00000000000000000000000000000000";
+		Qj <="00000";
+		Vk_ISSUE <="00000000000000000000000000000000";
+		Qk <="00000";
+		--
+		CDB_V <="00000000000000000000000000000000";
+		CDB_Q <="00000";
+		--
+		Accepted <='0';
+      wait for CLK_period*3;
+		
+		------------------------------------------------------------CC:6   ISSUE with k valid
+		RST <='0';
+		--
+		ISSUE <='1';
+		Op_ISSUE <="01";
+		Vj_ISSUE <="00000000000000000000000000000001";
+		Qj <="00001";
+		Vk_ISSUE <="00000000000000000000000000000010";
+		Qk <="00000";
+		--
+		CDB_V <="00000000000000000000000000000000";
+		CDB_Q <="00000";
+		--
+		Accepted <='0';
+      wait for CLK_period*1;
 
-      wait;
+		------------------------------------------------------------CC:7   CDB_Q = J_Q
+		RST <='0';
+		--
+		ISSUE <='0';
+		Op_ISSUE <="11";
+		Vj_ISSUE <="00000000000000000000000000000010";
+		Qj <="01000";
+		Vk_ISSUE <="00000000100000000100000000000000";
+		Qk <="01010";
+		--
+		CDB_V <="00000000000000000000000000000100";
+		CDB_Q <="00001";
+		--
+		Accepted <='0';
+      wait for CLK_period*1;
+		
+		------------------------------------------------------------CC:8   RS Accepted
+		RST <='0';
+		--
+		ISSUE <='0';
+		Op_ISSUE <="10";
+		Vj_ISSUE <="00000010000000000000100001000000";
+		Qj <="01010";
+		Vk_ISSUE <="00000010000000001000000001000000";
+		Qk <="01001";
+		--
+		CDB_V <="00001000000000001000000000000100";
+		CDB_Q <="00011";
+		--
+		Accepted <='1';
+      wait for CLK_period*1;
+		
+		------------------------------------------------------------CC:9   STALL
+		RST <='0';
+		--
+		ISSUE <='0';
+		Op_ISSUE <="00";
+		Vj_ISSUE <="10000000000000000001000000000000";
+		Qj <="01000";
+		Vk_ISSUE <="00000000000001000000000000000000";
+		Qk <="01010";
+		--
+		CDB_V <="00000000000000001000000000000100";
+		CDB_Q <="00110";
+		--
+		Accepted <='0';
+      wait for CLK_period*2;
+
+		------------------------------------------------------------CC:11   Operation Completed
+		RST <='0';
+		--
+		ISSUE <='0';
+		Op_ISSUE <="01";
+		Vj_ISSUE <="10000000100000100001000010000000";
+		Qj <="01110";
+		Vk_ISSUE <="00000000100001001000000010000000";
+		Qk <="01011";
+		--
+		CDB_V <="00000000000000001000000000000100";
+		CDB_Q <="10101";
+		--
+		Accepted <='0';
+      wait for CLK_period*1;
+		
+		---------------------------------------------------------CC:12   END
+		RST <='0';
+		--
+		ISSUE <='0';
+		Op_ISSUE <="10";
+		Vj_ISSUE <="10000000100000100001011110000000";
+		Qj <="01011";
+		Vk_ISSUE <="00000000100001001000100010000000";
+		Qk <="00011";
+		--
+		CDB_V <="00000000010010001000000010100100";
+		CDB_Q <="10010";
+		--
+		Accepted <='0';
+      wait for CLK_period*1;      wait;
    end process;
 
 END;

@@ -5,7 +5,7 @@
 -- 
 -- Create Date:               10/22/2018
 -- Design Name: 	 
--- Module Name:               Mux_3x5bits - Behavioral 
+-- Module Name:               Mux_3x2bits - Behavioral 
 -- Project Name:              Tomasulo
 -- Target Devices:            NONE
 -- Tool versions:             Xilinx ISE 14.7 --TODO: VIVADO
@@ -22,20 +22,20 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
-entity Mux_3x5bits is
-    Port ( In1 : in  STD_LOGIC_VECTOR (4 downto 0);
-           In2 : in  STD_LOGIC_VECTOR (4 downto 0);
-           In3 : in  STD_LOGIC_VECTOR (4 downto 0);
+entity Mux_3x2bits is
+    Port ( In1 : in  STD_LOGIC_VECTOR (1 downto 0);
+           In2 : in  STD_LOGIC_VECTOR (1 downto 0);
+           In3 : in  STD_LOGIC_VECTOR (1 downto 0);
            Sel : in  STD_LOGIC_VECTOR (1 downto 0);
-           Outt : out  STD_LOGIC_VECTOR (4 downto 0));
-end Mux_3x5bits;
+           Outt : out  STD_LOGIC_VECTOR (1 downto 0));
+end Mux_3x2bits;
 
-architecture Behavioral of Mux_3x5bits is
-signal TMP : STD_LOGIC_VECTOR (4 downto 0);
+architecture Behavioral of Mux_3x2bits is
+signal TMP : STD_LOGIC_VECTOR (1 downto 0);
 
 begin
 	WITH Sel SELECT
-	TMP <= "00000" WHEN "00", 
+	TMP <= "00" WHEN "00", 
 	       In1 WHEN "01",
 			 In2 WHEN "10",
 			 In3 WHEN "11",
