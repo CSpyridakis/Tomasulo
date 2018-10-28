@@ -20,6 +20,7 @@ Implementation of Tomasulo's Algorithm with following specifications:
 
 	* Common Data Bus
 
+	* Issue Unit
 
 # Import and Run 
 
@@ -29,6 +30,8 @@ Implementation of Tomasulo's Algorithm with following specifications:
 	
 	* Select "Add copy of source"
 	
-	* Select all .vhd files from ./src and ./test
+	* Select all .vhd files from ./src 
 	
-	* Have fun :)
+	* If you want to run our test code import all .vhd files from ./test and open simulation files from ./sim (Simulation screenshots are included on ./doc/sim)
+
+	* Reports path  : ./doc/Milestone-X.pdf
