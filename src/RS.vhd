@@ -54,7 +54,7 @@ entity RS is
            A_Accepted : in  STD_LOGIC_VECTOR (4 downto 0);
 
            --L_RS to L_FU
-           L_Ready : in  STD_LOGIC;
+           L_Ready : out  STD_LOGIC;
            L_Op : out  STD_LOGIC_VECTOR (1 downto 0);
            L_Vj : out  STD_LOGIC_VECTOR (31 downto 0);
            L_Vk : out  STD_LOGIC_VECTOR (31 downto 0);
@@ -127,11 +127,14 @@ signal A_Tag_Accepted, L_Tag_Accepted : STD_LOGIC_VECTOR (4 downto 0) := "00000"
 
 begin
 
+
+-- Arithmetic Or Logical ISSUE Selection
 A_Issue <= '1' WHEN ISSUE = '1' AND FU_type="01" ELSE '0';
 
 L_Issue <= '1' WHEN ISSUE = '1' AND FU_type="00" ELSE '0';
 			
 
+-- Based on Arithmetic Or Logical Issue Return Tag of RS which accepted (if accepted) instruction 
 Tag_Accepted <= A_Tag_Accepted WHEN A_Issue = '1' AND L_Issue = '0' ELSE
                 L_Tag_Accepted WHEN A_Issue = '0' AND L_Issue = '1' ELSE
                 "00000";         
@@ -156,25 +159,25 @@ A_R : A_RS
               A_Tag  	  => A_Tag,
               A_Accepted  => A_Accepted);
 
---L_R : L_RS 
---    Port map( CLK 		  => CLK,
---              RST 		  => RST,
---              L_Available => L_Available,
---              ISSUE       => L_Issue,
---              FOP 		  => FOP,
---              Vj          => Vj,
---              Qj          => Qj,
---              Vk          => Vk,
---              Qk          => Qk,
---				  L_Tag_Accepted => L_Tag_Accepted,
---              CDB_V  	  => CDB_V,
---              CDB_Q  	  => CDB_Q,
---              L_Ready 	  => L_Ready,
---              L_Op 		  => L_Op,
---              L_Vj        => L_Vj,
---              L_Vk        => L_Vk,
---              L_Tag  	  => L_Tag,
---              L_Accepted  => L_Accepted);
+L_R : L_RS 
+    Port map( CLK 		  => CLK,
+              RST 		  => RST,
+              L_Available => L_Available,
+              ISSUE       => L_Issue,
+              FOP 		  => FOP,
+              Vj          => Vj,
+              Qj          => Qj,
+              Vk          => Vk,
+              Qk          => Qk,
+				  L_Tag_Accepted => L_Tag_Accepted,
+              CDB_V  	  => CDB_V,
+              CDB_Q  	  => CDB_Q,
+              L_Ready 	  => L_Ready,
+              L_Op 		  => L_Op,
+              L_Vj        => L_Vj,
+              L_Vk        => L_Vk,
+              L_Tag  	  => L_Tag,
+              L_Accepted  => L_Accepted);
 				  
 end Behavioral;
 

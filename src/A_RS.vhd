@@ -109,33 +109,48 @@ signal A1_Vj, A1_Vk, A2_Vj, A2_Vk, A3_Vj, A3_Vk : STD_LOGIC_VECTOR (31 downto 0)
 
 TYPE LastAcceptedCases IS (NONE, A1, A2, A3);  
 SIGNAL Last : LastAcceptedCases := NONE;    
- 
+  
 begin
-
-A_Available <= A1_Available OR A2_Available OR A3_Available;
-A_Ready <= A1_Ready OR A2_Ready OR A3_Ready;
-A_Tag <= A_TagS;
-
--- Issue to first available RS
-A1_ISSUE <= '1' WHEN ISSUE='1' AND A1_Available='1' ELSE '0';
-A2_ISSUE <= '1' WHEN ISSUE='1' AND A1_Available='0' AND A2_Available='1' ELSE	'0';
-A3_ISSUE <= '1' WHEN ISSUE='1' AND A1_Available='0' AND A2_Available='0' AND A2_Available='1' ELSE '0';
-				
--- Return Tag of first available RS which will accept ISSUE
-A_Tag_Accepted <= "01001" WHEN ISSUE='1' AND A1_Available='1' ELSE
-                  "01010" WHEN ISSUE='1' AND A1_Available='0' AND A2_Available='1' ELSE
-						"01011" WHEN ISSUE='1' AND A1_Available='0' AND A2_Available='0' AND A3_Available='1' ELSE
-						"00000";
 
 -- Accepted From FU RS Ready bit update
 A1_Accepted <= '1' WHEN A_Accepted="01001" ELSE '0';
 A2_Accepted <= '1' WHEN A_Accepted="01010" ELSE '0';
 A3_Accepted <= '1' WHEN A_Accepted="01011" ELSE '0';
 
+A_Tag <= A_TagS;
 
--- Select Which Ready RS forward to FU
-PROCESS(Last, A1_Ready, A2_Ready, A3_Ready, A1_Tag, A2_Tag, A3_Tag)
+PROCESS(CLK, ISSUE, A1_Available, A2_Available, A3_Available)
 BEGIN
+		A_Available <= A1_Available OR A2_Available OR A3_Available;
+		A_Ready <= A1_Ready OR A2_Ready OR A3_Ready;
+		
+		IF (ISSUE='1' AND A1_Available='1' AND CLK='0' ) THEN															 -- IF A_RS1 is available will accept next instruction
+			A1_ISSUE <= '1';
+			A2_ISSUE <= '0';
+			A3_ISSUE <= '0';
+			A_Tag_Accepted <= "01001";
+		ELSIF (ISSUE='1' AND A1_Available='0' AND A2_Available='1' AND CLK='0') THEN							 -- IF A_RS2 is available will accept next instruction
+			A1_ISSUE <= '0';
+			A2_ISSUE <= '1';
+			A3_ISSUE <= '0';
+			A_Tag_Accepted <= "01010";
+		ELSIF (ISSUE='1' AND A1_Available='0' AND A2_Available='0' AND A3_Available='1' AND CLK='0') THEN -- IF A_RS3 is available will accept next instruction
+			A1_ISSUE <= '0';
+			A2_ISSUE <= '0';
+			A3_ISSUE <= '1';
+			A_Tag_Accepted <= "01011";
+		ELSE
+			A1_ISSUE <= '0';
+			A2_ISSUE <= '0';
+			A3_ISSUE <= '0';
+			A_Tag_Accepted <= "00000";
+		END IF;
+END PROCESS;
+
+-- Select Which Ready RS forward to FU (Round Robin Selection)
+PROCESS(CLK, Last, A1_Ready, A2_Ready, A3_Ready, A1_Tag, A2_Tag, A3_Tag)
+BEGIN
+ IF (rising_edge(CLK)) THEN
 	IF (A1_Ready='1' AND (Last=None OR (Last=A3) OR (Last=A2 AND A3_Ready='0'))) THEN
 		Last<=A1;
 		A_TagS<=A1_Tag;
@@ -149,6 +164,7 @@ BEGIN
 		Last<=Last;
 		A_TagS<="00000";
 	END IF;
+END IF;
 END PROCESS;
 
 A1_R : Reg_RS 

@@ -91,24 +91,71 @@ component Mux_3x32bits is
 end component;
 
 -- MUX for output opcode signal selection
-component Mux_3x5bits is
-    Port ( In1 : in  STD_LOGIC_VECTOR (4 downto 0);
-           In2 : in  STD_LOGIC_VECTOR (4 downto 0);
-           In3 : in  STD_LOGIC_VECTOR (4 downto 0);
+component Mux_3x2bits is
+    Port ( In1 : in  STD_LOGIC_VECTOR (1 downto 0);
+           In2 : in  STD_LOGIC_VECTOR (1 downto 0);
+           In3 : in  STD_LOGIC_VECTOR (1 downto 0);
            Sel : in  STD_LOGIC_VECTOR (1 downto 0);
-           Outt : out  STD_LOGIC_VECTOR (4 downto 0));
+           Outt : out  STD_LOGIC_VECTOR (1 downto 0));
 end component;
 
 signal L1_Available, L2_Available: STD_LOGIC;
 signal L1_Ready, L2_Ready: STD_LOGIC;
 signal L1_Accepted, L2_Accepted: STD_LOGIC;
+signal L1_ISSUE, L2_ISSUE: STD_LOGIC;
+signal L_TagS, L1_Tag, L2_Tag: STD_LOGIC_VECTOR (4 downto 0);
+signal L1_Op, L2_Op : STD_LOGIC_VECTOR (1 downto 0);
+signal L1_Vj, L1_Vk, L2_Vj, L2_Vk: STD_LOGIC_VECTOR (31 downto 0);
+
+TYPE LastAcceptedCases IS (NONE, L1, L2);  
+SIGNAL Last : LastAcceptedCases := NONE;
 
 begin
 
-L_Available <= L1_Available OR L2_Available;
-L_Ready <= L1_Ready OR L2_Ready;
+-- Accepted From FU RS Ready bit update
+L1_Accepted <= '1' WHEN L_Accepted="00001" ELSE '0';
+L2_Accepted <= '1' WHEN L_Accepted="00010" ELSE '0';
 
-L1 : Reg_RS 
+L_Tag <= L_TagS;
+
+PROCESS(CLK, ISSUE, L1_Available, L2_Available)
+BEGIN
+		L_Available <= L1_Available OR L2_Available;
+		L_Ready <= L1_Ready OR L2_Ready;
+		
+		IF (ISSUE='1' AND L1_Available='1' AND CLK='0' ) THEN
+			L1_ISSUE <= '1';
+			L2_ISSUE <= '0';
+			L_Tag_Accepted <= "00001";
+		ELSIF (ISSUE='1' AND L1_Available='0' AND L2_Available='1' AND CLK='0') THEN
+			L1_ISSUE <= '0';
+			L2_ISSUE <= '1';
+			L_Tag_Accepted <= "01010";
+		ELSE
+			L1_ISSUE <= '0';
+			L2_ISSUE <= '0';
+			L_Tag_Accepted <= "00000";
+		END IF;
+END PROCESS;
+
+-- Select Which Ready RS forward to FU (Round Robin Selection)
+PROCESS(CLK, Last, L1_Ready, L2_Ready, L1_Tag, L2_Tag)
+BEGIN
+ IF (rising_edge(CLK)) THEN
+	IF (L1_Ready='1' AND (Last=None OR Last=L2)) THEN
+		Last<=L1;
+		L_TagS<=L1_Tag;
+	ELSIF(L2_Ready='1' AND (Last=None OR Last=L1)) THEN
+		Last<=L2;
+		L_TagS<=L2_Tag;
+	ELSE
+		Last<=Last;
+		L_TagS<="00000";
+	END IF;
+END IF;
+END PROCESS;
+
+L1_R : Reg_RS 
     Port map( CLK       => CLK,
               RST       => RST,
               ID        => "00001",
@@ -128,7 +175,7 @@ L1 : Reg_RS
               Vk        => L1_Vk,
               Accepted  => L1_Accepted);
 				  
-L2 : Reg_RS 
+L2_R : Reg_RS 
     Port map( CLK       => CLK,
               RST       => RST,
               ID        => "00010",
@@ -149,25 +196,25 @@ L2 : Reg_RS
               Accepted  => L2_Accepted);
 
 --Output Mux
-Op : Mux_3x5bits		  
+Op_M : Mux_3x2bits		  
     Port map( In1  => L1_Op,
               In2  => L2_Op,
               In3  => "00",
-              Sel  => L_Tag(1 downto 0),
+              Sel  => L_TagS(1 downto 0),
               Outt => L_Op);
 				  
-Vj : Mux_3x32bits		  
+Vj_M : Mux_3x32bits		  
     Port map( In1  => L1_Vj,
               In2  => L2_Vj,
               In3  => "00000000000000000000000000000000",
-              Sel  => L_Tag(1 downto 0),
+              Sel  => L_TagS(1 downto 0),
               Outt => L_Vj);
 				  
-Vk : Mux_3x32bits		  
+Vk_M : Mux_3x32bits		  
     Port map( In1  => L1_Vk,
               In2  => L2_Vk,
               In3  => "00000000000000000000000000000000",
-              Sel  => L_Tag(1 downto 0),
+              Sel  => L_TagS(1 downto 0),
               Outt => L_Vk);
   
 end Behavioral;

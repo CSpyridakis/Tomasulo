@@ -112,7 +112,7 @@ signal  J_Qin, J_Q, K_Qin, K_Q: STD_LOGIC_VECTOR (4 downto 0);
 
 begin
 	---------------------------------------------------------- Reservation Station FSM			  
-	PROCESS(RST, AvailableS, ReadyS, ISSUE, Qj, Qk, CDB_Q, J_Q, K_Q, Accepted, ID) --TODO: TEST them
+	PROCESS(CLK, RST, AvailableS, ReadyS, ISSUE, Qj, Qk, CDB_Q, J_Q, K_Q, Accepted, ID) --TODO: TEST them
 	BEGIN
 		IF (RST='1') THEN                 																			--RST
 			--Resets
@@ -153,7 +153,7 @@ begin
 			J_EN   <='1';
 			K_EN   <='1';
 			Re_EN  <='0';
-		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='0' AND CDB_Q=J_Q AND K_Q="00000")	THEN			--CDB_Q is equal with J's Tag And K is valid
+		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='0' AND CDB_Q/="00000" AND CDB_Q=J_Q AND K_Q="00000")	THEN			--CDB_Q is equal with J's Tag And K is valid
 			--Resets
 			Av_RST <='0'; 
 			Op_RST <='0';
@@ -166,7 +166,7 @@ begin
 			J_EN   <='1';
 			K_EN   <='0';
 			Re_EN  <='1';
-		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='0' AND J_Q="00000" AND CDB_Q=K_Q)	THEN			--CDB_Q is equal with K's Tag And J is valid
+		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='0' AND J_Q="00000" AND CDB_Q/="00000" AND CDB_Q=K_Q)	THEN			--CDB_Q is equal with K's Tag And J is valid
 			--Resets
 			Av_RST <='0'; 
 			Op_RST <='0';
@@ -179,7 +179,7 @@ begin
 			J_EN   <='0';
 			K_EN   <='1';
 			Re_EN  <='1';
-		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='0' AND CDB_Q=J_Q AND CDB_Q=K_Q)	THEN				--CDB_Q is equal with K's and J's Tag
+		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='0' AND CDB_Q/="00000" AND CDB_Q=J_Q AND CDB_Q=K_Q)	THEN				--CDB_Q is equal with K's and J's Tag
 			--Resets
 			Av_RST <='0'; 
 			Op_RST <='0';
