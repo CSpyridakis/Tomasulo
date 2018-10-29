@@ -1,15 +1,17 @@
---------------------------------------------------------------------------------
--- Company: 
--- Engineer:
---
--- Create Date:   17:02:06 10/27/2018
--- Design Name:   
--- Module Name:   /home/pb/Xilinx/PC_Architecture/TEST_CDB.vhd
--- Project Name:  PC_Architecture
--- Target Device:  
--- Tool versions:  
--- Description:   
+----------------------------------------------------------------------------------
+-- Company/University:        Technical University of Crete (TUC) - GR
+-- Engineer:                  Spyridakis Christos 
+--                            Bellonias Panagiotis
 -- 
+-- Create Date:               17:02:06 10/27/2018
+-- Design Name:   
+-- Module Name:   			      /Tomasulo/TEST_CDB.vhd
+-- Project Name:              Tomasulo
+-- Target Devices:            NONE
+-- Tool versions:             Xilinx ISE 14.7 --TODO: VIVADO
+-- Description:               Introduction in Dynamic Instruction Scheduling (Advanced Computer Architecture)
+--                            implementing Tomasulo's Algorithm
+--  
 -- VHDL Test Bench Created by ISE for module: CDB
 -- 
 -- Dependencies:
@@ -25,12 +27,9 @@
 -- to guarantee that the testbench will bind correctly to the post-implementation 
 -- simulation model.
 --------------------------------------------------------------------------------
+
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
- 
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---USE ieee.numeric_std.ALL;
  
 ENTITY TEST_CDB IS
 END TEST_CDB;
@@ -110,53 +109,53 @@ BEGIN
       -- hold reset state for 100 ns.
 		
       wait for 100 ns;	
-			A_REQUEST <='0';
-			A_V <="00000000000000000000000000000001";
-         A_Q <= "00001";
-         L_REQUEST <='0';
-         L_V <= "00000000000000000000000000001101";
-         L_Q <= "00101";
-         RST <= '1';
+		A_REQUEST <='0';
+		A_V <="00000000000000000000000000000001";
+        A_Q <= "00001";
+        L_REQUEST <='0';
+        L_V <= "00000000000000000000000000001101";
+        L_Q <= "00101";
+        RST <= '1';
       wait for CLK_period*1;
 		A_REQUEST <='1';
-			A_V <="00000000000000000000000000000001";
-         A_Q <= "00001";
-         L_REQUEST <='0';
-         L_V <= "00000000000000000000000000001101";
-         L_Q <= "00101";
-         RST <= '0';
+		A_V <="00000000000000000000000000000001";
+        A_Q <= "00001";
+        L_REQUEST <='0';
+        L_V <= "00000000000000000000000000001101";
+        L_Q <= "00101";
+        RST <= '0';
       wait for CLK_period*1;
 		A_REQUEST <='0';
-			A_V <="00000000000000000000000000000001";
-         A_Q <= "00001";
-         L_REQUEST <='1';
-         L_V <= "00000000000000000000000000001101";
-         L_Q <= "00101";
-         RST <= '0';
+		A_V <="00000000000000000000000000000001";
+        A_Q <= "00001";
+        L_REQUEST <='1';
+        L_V <= "00000000000000000000000000001101";
+        L_Q <= "00101";
+        RST <= '0';
       wait for CLK_period*1;
 		A_REQUEST <='1';
-			A_V <="00000000000000000000000000000001";
-         A_Q <= "00001";
-         L_REQUEST <='1';
-         L_V <= "00000000000000000000000000001101";
-         L_Q <= "00101";
-         RST <= '0';
+		A_V <="00000000000000000000000000000001";
+        A_Q <= "00001";
+        L_REQUEST <='1';
+        L_V <= "00000000000000000000000000001101";
+        L_Q <= "00101";
+        RST <= '0';
       wait for CLK_period*1;
 		A_REQUEST <='1';
-			A_V <="00000000000000000000000000000001";
-         A_Q <= "00001";
-         L_REQUEST <='1';
-         L_V <= "00000000000000000000000000001101";
-         L_Q <= "00101";
-         RST <= '0';
+		A_V <="00000000000000000000000000000001";
+        A_Q <= "00001";
+        L_REQUEST <='1';
+        L_V <= "00000000000000000000000000001101";
+        L_Q <= "00101";
+        RST <= '0';
       wait for CLK_period*1;
 		A_REQUEST <='1';
-			A_V <="00000000000000000000000000000001";
-         A_Q <= "00001";
-         L_REQUEST <='1';
-         L_V <= "00000000000000000000000000001101";
-         L_Q <= "00101";
-         RST <= '1';
+		A_V <="00000000000000000000000000000001";
+        A_Q <= "00001";
+        L_REQUEST <='1';
+        L_V <= "00000000000000000000000000001101";
+        L_Q <= "00101";
+        RST <= '1';
       wait for CLK_period*1;
 
       -- insert stimulus here 

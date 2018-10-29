@@ -1,15 +1,17 @@
---------------------------------------------------------------------------------
--- Company: 
--- Engineer:
---
--- Create Date:   21:56:43 10/23/2018
--- Design Name:   
--- Module Name:   /Tomasulo/TEST_FU.vhd
--- Project Name:  Toma23_10
--- Target Device:  
--- Tool versions:  
--- Description:   
+----------------------------------------------------------------------------------
+-- Company/University:        Technical University of Crete (TUC) - GR
+-- Engineer:                  Spyridakis Christos 
+--                            Bellonias Panagiotis
 -- 
+-- Create Date:               21:56:43 10/23/2018
+-- Design Name:   
+-- Module Name:               /Tomasulo/TEST_FU.vhd
+-- Project Name:              Tomasulo
+-- Target Devices:            NONE
+-- Tool versions:             Xilinx ISE 14.7 --TODO: VIVADO
+-- Description:               Introduction in Dynamic Instruction Scheduling (Advanced Computer Architecture)
+--                            implementing Tomasulo's Algorithm
+-- 	
 -- VHDL Test Bench Created by ISE for module: FU
 -- 
 -- Dependencies:
@@ -25,6 +27,7 @@
 -- to guarantee that the testbench will bind correctly to the post-implementation 
 -- simulation model.
 --------------------------------------------------------------------------------
+
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 

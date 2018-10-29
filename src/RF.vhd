@@ -98,6 +98,10 @@ begin
 		  WEN(n)<='0';
 		end if;
 	 end loop;
+	else
+		for n in 31 DOWNTO 0 LOOP
+		  WEN(n)<='0';
+	 end loop;
 	end if;    
      
 	-- Forwarding

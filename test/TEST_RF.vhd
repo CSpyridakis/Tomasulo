@@ -1,14 +1,17 @@
---------------------------------------------------------------------------------
--- Company: 
--- Engineer:
+----------------------------------------------------------------------------------
+-- Company/University:        Technical University of Crete (TUC) - GR
+-- Engineer:                  Spyridakis Christos 
+--                            Bellonias Panagiotis
 --
--- Create Date:   00:51:17 10/29/2018
+-- Create Date:               00:51:17 10/29/2018
 -- Design Name:   
--- Module Name:   /home/chspyman/Desktop/VHDL/Tomasulo29/TEST_RF.vhd
--- Project Name:  Tomasulo29
--- Target Device:  
--- Tool versions:  
--- Description:   
+-- Module Name:               /Tomasulo/TEST_RF.vhd
+-- Project Name:              Tomasulo
+-- Target Devices:            NONE
+-- Tool versions:             Xilinx ISE 14.7 --TODO: VIVADO
+-- Description:               Introduction in Dynamic Instruction Scheduling (Advanced Computer Architecture)
+--                            implementing Tomasulo's Algorithm    
+--
 -- 
 -- VHDL Test Bench Created by ISE for module: RF
 -- 
@@ -25,12 +28,9 @@
 -- to guarantee that the testbench will bind correctly to the post-implementation 
 -- simulation model.
 --------------------------------------------------------------------------------
+
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
- 
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---USE ieee.numeric_std.ALL;
  
 ENTITY TEST_RF IS
 END TEST_RF;

@@ -3,7 +3,7 @@
 -- Engineer:                  Spyridakis Christos 
 --                            Bellonias Panagiotis
 -- 
--- Create Date:   				22:19:27 10/28/2018
+-- Create Date:               22:19:27 10/28/2018
 -- Design Name:   
 -- Module Name:               /Tomasulo/TEST_RS.vhd
 -- Project Name:              Tomasulo
@@ -27,6 +27,7 @@
 -- to guarantee that the testbench will bind correctly to the post-implementation 
 -- simulation model.
 --------------------------------------------------------------------------------
+
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
  

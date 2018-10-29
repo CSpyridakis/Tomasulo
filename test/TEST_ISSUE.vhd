@@ -5,8 +5,8 @@
 -- 
 -- Create Date:               10/25/2018	
 -- Design Name:   
--- Module Name:   				/Tomasulo/TEST_ISSUE.vhd
--- Project Name:  				Tomasulo
+-- Module Name:               /Tomasulo/TEST_ISSUE.vhd
+-- Project Name:              Tomasulo
 -- Target Devices:            NONE
 -- Tool versions:             Xilinx ISE 14.7 --TODO: VIVADO
 -- Description:               Introduction in Dynamic Instruction Scheduling (Advanced Computer Architecture)
@@ -27,6 +27,7 @@
 -- to guarantee that the testbench will bind correctly to the post-implementation 
 -- simulation model.
 --------------------------------------------------------------------------------
+
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
  

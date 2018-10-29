@@ -55,7 +55,7 @@ end component;
 begin
     v_reg:Reg_32bits
     Port map( 
-	      CLK  => CLK,
+	     CLK  => CLK,
         RST  => RST,
         EN   => EN,
         INN  => VIN,
@@ -63,7 +63,7 @@ begin
 
     q_reg:Reg_5bits
     Port map( 
-		    CLK  => CLK,
+		  CLK  => CLK,
         RST  => RST,
         EN   => EN,
         INN  => QIN,

@@ -2,9 +2,10 @@
 -- Company/University:        Technical University of Crete (TUC) - GR
 -- Engineer:                  Spyridakis Christos 
 --                            Bellonias Panagiotis
--- Create Date:   				18:35:19 10/26/2018
+--
+-- Create Date:               18:35:19 10/26/2018
 -- Design Name:   
--- Module Name:   				/Tomasulo/TEST_Reg_RS.vhd
+-- Module Name:               /Tomasulo/TEST_Reg_RS.vhd
 -- Project Name:              Tomasulo
 -- Target Devices:            NONE
 -- Tool versions:             Xilinx ISE 14.7 --TODO: VIVADO
@@ -27,13 +28,10 @@
 -- to guarantee that the testbench will bind correctly to the post-implementation 
 -- simulation model.
 --------------------------------------------------------------------------------
+
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
- 
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---USE ieee.numeric_std.ALL;
- 
+
 ENTITY TEST_Reg_RS IS
 END TEST_Reg_RS;
  
