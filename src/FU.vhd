@@ -78,6 +78,7 @@ component FU_Control is
            L2_EN : out  STD_LOGIC);
 end component;
 
+-- Q input value selection
 component Mux_2x5bits is
     Port ( In0 : in  STD_LOGIC_VECTOR (4 downto 0);
            In1 : in  STD_LOGIC_VECTOR (4 downto 0);
@@ -97,6 +98,7 @@ component ALU is
            L0_V : out  STD_LOGIC_VECTOR (31 downto 0));
 end component;
 
+-- Pipeline Registers
 component Reg_V_Q is
     Port ( CLK : in  STD_LOGIC;
            RST : in  STD_LOGIC;

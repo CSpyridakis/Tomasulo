@@ -5,7 +5,7 @@
 -- 
 -- Create Date:               10/25/2018
 -- Design Name: 	 
--- Module Name:               RS - Behavioral 
+-- Module Name:               ISSUE - Behavioral 
 -- Project Name:              Tomasulo
 -- Target Devices:            NONE
 -- Tool versions:             Xilinx ISE 14.7 --TODO: VIVADO

@@ -1,33 +1,27 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
+-- Company/University:        Technical University of Crete (TUC) - GR
+-- Engineer:                  Spyridakis Christos 
+--                            Bellonias Panagiotis
 -- 
--- Create Date:    20:17:20 10/18/2018 
--- Design Name: 
--- Module Name:    CDB - Behavioral 
--- Project Name: 
--- Target Devices: 
--- Tool versions: 
--- Description: 
+-- Create Date:               10/22/2018
+-- Design Name: 	 
+-- Module Name:               CDB - Behavioral 
+-- Project Name:              Tomasulo
+-- Target Devices:            NONE
+-- Tool versions:             Xilinx ISE 14.7 --TODO: VIVADO
+-- Description:               Introduction in Dynamic Instruction Scheduling (Advanced Computer Architecture)
+--                            implementing Tomasulo's Algorithm 	 
 --
--- Dependencies: 
+-- Dependencies:              NONE
 --
--- Revision: 
--- Revision 0.01 - File Created
+-- Revision:                  0.01
+-- Revision                   0.01 - File Created
 -- Additional Comments: 
 --
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx primitives in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
 
 entity CDB is
     Port ( A_REQUEST : in  STD_LOGIC;
