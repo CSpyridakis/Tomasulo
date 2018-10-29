@@ -24,55 +24,105 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
 entity RF is
-    Port ( RD : in  STD_LOGIC_VECTOR (4 downto 0);
-           RS : in  STD_LOGIC_VECTOR (4 downto 0);
-           RT : in  STD_LOGIC_VECTOR (4 downto 0);
-           ISSUE_WE : in  STD_LOGIC;
-           Q_INSTRCT : in  STD_LOGIC_VECTOR (3 downto 0);
-           CDB_Q : in  STD_LOGIC_VECTOR (3 downto 0);
+    Port ( Ri : in  STD_LOGIC_VECTOR (4 downto 0);
+           Rj : in  STD_LOGIC_VECTOR (4 downto 0);
+           Rk : in  STD_LOGIC_VECTOR (4 downto 0);
+           Tag_WE : in  STD_LOGIC;
+           Tag_Accepted : in  STD_LOGIC_VECTOR (4 downto 0);
+           CDB_Q : in  STD_LOGIC_VECTOR (4 downto 0);
            CDB_V : in  STD_LOGIC_VECTOR (31 downto 0);
            CLK : in  STD_LOGIC;
            RST : in  STD_LOGIC;
-           Q_RS : out  STD_LOGIC_VECTOR (3 downto 0);
-           Q_RT : out  STD_LOGIC_VECTOR (3 downto 0);
-           READ_RS : out  STD_LOGIC_VECTOR (31 downto 0);
-           READ_RT : out  STD_LOGIC_VECTOR (31 downto 0));
+           Qj : out  STD_LOGIC_VECTOR (4 downto 0);
+           Qk : out  STD_LOGIC_VECTOR (4 downto 0);
+           Vj : out  STD_LOGIC_VECTOR (31 downto 0);
+           Vk : out  STD_LOGIC_VECTOR (31 downto 0));
 end RF;
 
 architecture Behavioral of RF is
-	type REGISTERS is array(31 downto 0) of STD_LOGIC_VECTOR(31 downto 0);
-	signal V : REGISTERS := (others => (others => '0'));
+  
+component Reg_V_Q is
+  Port ( CLK : in  STD_LOGIC;
+         RST : in  STD_LOGIC;
+         EN : in  STD_LOGIC;
+         VIN : in  STD_LOGIC_VECTOR (31 downto 0);
+         QIN : in  STD_LOGIC_VECTOR (4 downto 0);
+         VOUT : out  STD_LOGIC_VECTOR (31 downto 0);
+         QOUT : out  STD_LOGIC_VECTOR (4 downto 0));
+end component;
+    
+type REGISTERS is array(31 downto 0) of STD_LOGIC_VECTOR(31 downto 0);
+signal V : REGISTERS := (others => (others => '0'));
+
+-- V in/out Tmp signals 
+type signal_32x32 is array (31 downto 0) of STD_LOGIC_VECTOR (31 downto 0);
+signal VIN, VOUT : signal_32x32 := (others => (others => '0'));
+
+-- Q in/out Tmp singals
+type signal_32x5 is array (31 downto 0) of STD_LOGIC_VECTOR (4 downto 0);
+signal QIN, QOUT : signal_32x5 := (others => (others => '0'));
+
+-- Wen tmp signals
+type signal_32x1 is array (31 downto 0) of STD_LOGIC;
+signal WEN : signal_32x1 := (others => '0');
+
 begin
-process
-	begin
-	
-		wait until rising_edge(CLK);
-		
-		if (RST = '1') then
-			V <= (others => (others => '0'));
-			L_X: for I in 0 to 10 loop 
-				V(I) <= STD_LOGIC_VECTOR(to_unsigned(I, V(I)'LENGTH));      
-			end loop L_X; 
+  
+-- Registers generate
+RF_Regs : FOR n IN 31 DOWNTO 0 GENERATE
+ reg:Reg_V_Q
+  Port map( 
+         CLK => CLK,
+         RST => RST,
+         EN =>WEN(n),
+         VIN =>VIN(n),
+         QIN =>QIN(n),
+         VOUT =>VOUT(n),
+         QOUT =>QOUT(n));
+END GENERATE RF_Regs;
+  
+process(CLK, CDB_Q, Tag_WE)
+begin
+    
+	-- CDB Broadcasting + ISSUE
+	if(falling_edge(CLK)) then
+	 for n in 31 DOWNTO 0 LOOP
+		if (Tag_WE='1' AND n=to_integer(UNSIGNED(Ri))) then 				-- Write tag on Ri when ISSUE
+		  QIN(to_integer(UNSIGNED(Ri)))<=Tag_Accepted;
+		  WEN(to_integer(UNSIGNED(Ri)))<='1';
+		elsif (CDB_Q/="00000" AND QOUT(n)=CDB_Q) then						-- Write CDB_V when CDB_Q = Rx_Q 
+			VIN(n)<=CDB_V;
+			QIN(n)<="00000";
+			WEN(n)<='1';
 		else
-			if ISSUE_WE = '1' then
-				V(to_integer(UNSIGNED(RD))) <= CDB_V;
-			end if;			
-			if RD = RS then
-				READ_RS <= CDB_V;
-				Q_RS <= CDB_Q;
-			else 
-				READ_RS <= V(to_integer(UNSIGNED(RS)));
-			end if;			
-			if RD = RT THEN
-				READ_RT <= CDB_V;
-				Q_RT <= CDB_Q;
-			else 
-				READ_RT <= V(to_integer(UNSIGNED(RT)));
-			end if;
+		  WEN(n)<='0';
 		end if;
-	
-	end process;
+	 end loop;
+	end if;    
+     
+	-- Forwarding
+	if (CDB_Q/="00000" AND CDB_Q = QOUT(to_integer(UNSIGNED(Rj))) AND CDB_Q = QOUT(to_integer(UNSIGNED(Rk)))) then			-- Forward CDB_V to Rj and Rk when CDB_Q =Rj_Q and CDB_Q=Rk_Q 
+	  Vj<=CDB_V;
+	  Qj<="00000"; 
+	  Vk<=CDB_V;
+	  Qk<="00000";
+	elsif (CDB_Q/="00000" AND CDB_Q = QOUT(to_integer(UNSIGNED(Rj)))) then																-- Forward CDB_V to Rj when CDB_Q =Rj_Q 
+	  Vj<=CDB_V;
+	  Qj<="00000";
+	  Vk<=VOUT(to_integer(UNSIGNED(Rk)));
+	  Qk<=QOUT(to_integer(UNSIGNED(Rk)));
+	elsif (CDB_Q/="00000" AND CDB_Q = QOUT(to_integer(UNSIGNED(Rk)))) then																-- Forward CDB_V to Rk when CDB_Q =Rk_Q 
+	  Vj<=VOUT(to_integer(UNSIGNED(Rj)));
+	  Qj<=QOUT(to_integer(UNSIGNED(Rj))); 
+	  Vk<=CDB_V;
+	  Qk<="00000";
+	else
+	  Vj<=VOUT(to_integer(UNSIGNED(Rj)));
+	  Qj<=QOUT(to_integer(UNSIGNED(Rj))); 
+	  Vk<=VOUT(to_integer(UNSIGNED(Rk)));
+	  Qk<=QOUT(to_integer(UNSIGNED(Rk))); 
+	end if;   
 
-
+end process;
 end Behavioral;
 

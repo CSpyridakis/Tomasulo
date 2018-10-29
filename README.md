@@ -32,6 +32,7 @@ Implementation of Tomasulo's Algorithm with following specifications:
 	
 	* Select all .vhd files from ./src 
 	
-	* If you want to run our test code import all .vhd files from ./test and open simulation files from ./sim (Simulation screenshots are included on ./doc/sim)
+	* If you want to run our test code import all .vhd files from ./test and open 
+	simulation files from ./sim (Simulation screenshots are included on ./doc/sim)
 
 	* Reports path  : ./doc/Milestone-X.pdf
