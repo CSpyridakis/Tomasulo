@@ -5,7 +5,7 @@
 -- 
 -- Create Date:               10/22/2018
 -- Design Name: 	 
--- Module Name:               Reg_V_Q - Behavioral 
+-- Module Name:               Reg_V_Q_N - Behavioral 
 -- Project Name:              Tomasulo
 -- Target Devices:            NONE
 -- Tool versions:             Xilinx ISE 14.7 --TODO: VIVADO
@@ -22,7 +22,7 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
-entity Reg_V_Q is
+entity Reg_V_Q_N is
     Port ( CLK : in  STD_LOGIC;
            RST : in  STD_LOGIC;
            EN : in  STD_LOGIC;
@@ -30,9 +30,9 @@ entity Reg_V_Q is
            QIN : in  STD_LOGIC_VECTOR (4 downto 0);
            VOUT : out  STD_LOGIC_VECTOR (31 downto 0);
            QOUT : out  STD_LOGIC_VECTOR (4 downto 0));
-end Reg_V_Q;
+end Reg_V_Q_N;
 
-architecture Behavioral of Reg_V_Q is
+architecture Behavioral of Reg_V_Q_N is
 
 -- REGISTER FOR STORING VALUE - 32 bits
 component Reg_32bits 
@@ -44,7 +44,7 @@ component Reg_32bits
 end component;
 
 -- REGISTER FOR STORING TAG	- 5 bits
-component Reg_5bits is
+component Reg_5bits_N is
     Port ( CLK  : in  STD_LOGIC;
            RST  : in  STD_LOGIC;
            EN   : in  STD_LOGIC;
@@ -53,6 +53,7 @@ component Reg_5bits is
 end component;
 
 begin
+
 v_reg : Reg_32bits
 Port map( CLK  => CLK,
           RST  => RST,
@@ -60,7 +61,7 @@ Port map( CLK  => CLK,
           INN  => VIN,
           OUTT => VOUT);
 
-q_reg : Reg_5bits
+q_reg : Reg_5bits_N
 Port map( CLK  => CLK,
           RST  => RST,
           EN   => EN,

@@ -14,8 +14,8 @@
 --
 -- Dependencies:              NONE
 --
--- Revision:                  0.01
--- Revision                   0.01 - File Created
+-- Revision:                  1.0
+-- Revision                   1.0 - File Created
 -- Additional Comments: 
 --
 ----------------------------------------------------------------------------------
@@ -114,7 +114,7 @@ begin
 	---------------------------------------------------------- Reservation Station FSM			  
 	PROCESS(CLK, RST, AvailableS, ReadyS, ISSUE, Qj, Qk, CDB_Q, J_Q, K_Q, Accepted, ID) --TODO: TEST them
 	BEGIN
-		IF (RST='1') THEN                 																			--RST
+		IF (RST='1') THEN                 																			    --RST
 			--Resets
 			Av_RST <='1'; 
 			Op_RST <='1';
@@ -240,28 +240,28 @@ begin
 	-- When a RS is Empty Avail='1' 
 	AvailableR : Reg_1bit_N 
 		 Port map( CLK  => CLK,
-					  RST  => Av_RST,
-					  EN   => Av_EN,
-					  INN  => '0',											
-					  OUTT => AvailableS);
+                   RST  => Av_RST,
+                   EN   => Av_EN,
+                   INN  => '0',											
+                   OUTT => AvailableS);
 	Available <= AvailableS;
 
 	-- Ready Registers
 	-- When RS has valid data and is not in FU's execution queue Ready='1'
 	ReadyR : Reg_1bit 
 		 Port map( CLK  => CLK,
-					  RST  => Re_RST,
-					  EN   => Re_EN,
-					  INN  => '1',
-					  OUTT => ReadyS);	
+                   RST  => Re_RST,
+                   EN   => Re_EN,
+                   INN  => '1',
+                   OUTT => ReadyS);	
 	Ready<=ReadyS;
 	
 	OpC : Reg_2bits 
 		 Port map( CLK  => CLK,
-					  RST  => Op_RST,
-					  EN   => Op_EN,
-					  INN  => Op_ISSUE,
-					  OUTT => Op);			  
+                   RST  => Op_RST,
+                   EN   => Op_EN,
+                   INN  => Op_ISSUE,
+                   OUTT => Op);			  
 			  
 			  
 			  
@@ -271,27 +271,27 @@ begin
 	-- Vj_In and Qj_In are two MUXs for selecting properly RS Data and Tag values based on RS Availability
 	Vj_In : Mux_2x32bits 
 		 Port map( In0  => CDB_V,
-					  In1  => Vj_ISSUE,
-					  Sel  => AvailableS,
-					  Outt => J_Vin);
+                   In1  => Vj_ISSUE,
+                   Sel  => AvailableS,
+                   Outt => J_Vin);
 
 	Qj_In : Mux_2x5bits 
 		 Port map( In0  => "00000",
-					  In1  => Qj,
-					  Sel  => AvailableS,
-					  Outt => J_Qin);	
+                   In1  => Qj,
+                   Sel  => AvailableS,
+                   Outt => J_Qin);	
 	
 	-- Data and Tag Register
 	-- Input Values are based on RS Availability, in order to store (when it needs) the values, you have to enable Register's Write (K_EN)
 	-- When a RS has been executed, just reset it (K_RST)
 	J : Reg_V_Q
 		 Port map( CLK  => CLK,
-					  RST  => J_RST,
-					  EN   => J_EN,
-					  VIN  => J_Vin,
-					  QIN  => J_Qin,
-					  VOUT => Vj,
-					  QOUT => J_Q);
+                   RST  => J_RST,
+                   EN   => J_EN,
+                   VIN  => J_Vin,
+                   QIN  => J_Qin,
+                   VOUT => Vj,
+                   QOUT => J_Q);
 					 
 
 
@@ -302,26 +302,26 @@ begin
 	-- Vk_In and Qk_In are two MUXs for selecting properly RS Data and Tag values based on RS Availability	
 	Vk_In : Mux_2x32bits 
 		 Port map( In0  => CDB_V,
-					  In1  => Vk_ISSUE,
-					  Sel  => AvailableS,
-					  Outt => K_Vin);
+                   In1  => Vk_ISSUE,
+                   Sel  => AvailableS,
+                   Outt => K_Vin);
 
 	Qk_In : Mux_2x5bits 
 		 Port map( In0  => "00000",
-					  In1  => Qk,
-					  Sel  => AvailableS,
-					  Outt => K_Qin);
+                   In1  => Qk,
+                   Sel  => AvailableS,
+                   Outt => K_Qin);
 					  
 	-- Data and Tag Register
 	-- Input Values are based on RS Availability, in order to store (when it needs) the values, you have to enable Register's Write (K_EN)
 	-- When a RS has been executed, just reset it (K_RST)
 	K : Reg_V_Q
 		 Port map( CLK  => CLK,
-					  RST  => K_RST,
-					  EN   => K_EN,
-					  VIN  => K_Vin,
-					  QIN  => K_Qin,
-					  VOUT => Vk,
-					  QOUT => K_Q); 
+                   RST  => K_RST,
+                   EN   => K_EN,
+                   VIN  => K_Vin,
+                   QIN  => K_Qin,
+                   VOUT => Vk,
+                   QOUT => K_Q); 
 					  	
 end Behavioral;

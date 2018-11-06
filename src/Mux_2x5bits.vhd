@@ -12,10 +12,10 @@
 -- Description:               Introduction in Dynamic Instruction Scheduling (Advanced Computer Architecture)
 --                            implementing Tomasulo's Algorithm 	 
 --
--- Dependencies:              IEEE.NUMERIC_STD
+-- Dependencies:              NONE
 --
--- Revision:                  0.01
--- Revision                   0.01 - File Created
+-- Revision:                  1.0
+-- Revision                   1.0 - File Created
 -- Additional Comments: 
 --
 ----------------------------------------------------------------------------------
@@ -34,6 +34,6 @@ architecture Behavioral of Mux_2x5bits is
 begin
 	WITH Sel SELECT
 	Outt <= In0 WHEN '0',
-			  In1 WHEN OTHERS;   
+            In1 WHEN OTHERS;   
 end Behavioral;
 

@@ -14,8 +14,8 @@
 --
 -- Dependencies:              NONE
 --
--- Revision:                  0.01
--- Revision                   0.01 - File Created
+-- Revision:                  1.0
+-- Revision                   1.0 - File Created
 -- Additional Comments: 
 --
 ----------------------------------------------------------------------------------
@@ -130,7 +130,7 @@ L1_Qin : Mux_2x5bits
 				  
 --ALU
 A_L_ALU : ALU 
-	Port map( A_Vj => A_Vj,
+	Port map(   A_Vj => A_Vj,
               A_Vk => A_Vk,
               A_Op => A_Op,
               A0_V => A0_V,

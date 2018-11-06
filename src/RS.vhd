@@ -14,8 +14,8 @@
 --
 -- Dependencies:              NONE
 --
--- Revision:                  0.01
--- Revision                   0.01 - File Created
+-- Revision:                  1.0
+-- Revision                   1.0 - File Created
 -- Additional Comments: 
 --
 ----------------------------------------------------------------------------------
@@ -140,44 +140,44 @@ Tag_Accepted <= A_Tag_Accepted WHEN A_Issue = '1' AND L_Issue = '0' ELSE
                 "00000";         
  
 A_R : A_RS 
-    Port map( CLK 		  => CLK,
-              RST 		  => RST,
-              A_Available => A_Available,
-              ISSUE       => A_Issue,
-              FOP 		  => FOP,
-              Vj          => Vj,
-              Qj          => Qj,
-              Vk          => Vk,
-              Qk          => Qk,
-				  A_Tag_Accepted => A_Tag_Accepted,
-              CDB_V  	  => CDB_V,
-              CDB_Q  	  => CDB_Q,
-              A_Ready 	  => A_Ready,
-              A_Op 		  => A_Op,
-              A_Vj        => A_Vj,
-              A_Vk        => A_Vk,
-              A_Tag  	  => A_Tag,
-              A_Accepted  => A_Accepted);
+    Port map( CLK            => CLK,
+              RST            => RST,
+              A_Available    => A_Available,
+              ISSUE          => A_Issue,
+              FOP            => FOP,
+              Vj             => Vj,
+              Qj             => Qj,
+              Vk             => Vk,
+              Qk             => Qk,
+              A_Tag_Accepted => A_Tag_Accepted,
+              CDB_V          => CDB_V,
+              CDB_Q          => CDB_Q,
+              A_Ready        => A_Ready,
+              A_Op           => A_Op,
+              A_Vj           => A_Vj,
+              A_Vk           => A_Vk,
+              A_Tag          => A_Tag,
+              A_Accepted     => A_Accepted);
 
 L_R : L_RS 
-    Port map( CLK 		  => CLK,
-              RST 		  => RST,
-              L_Available => L_Available,
-              ISSUE       => L_Issue,
-              FOP 		  => FOP,
-              Vj          => Vj,
-              Qj          => Qj,
-              Vk          => Vk,
-              Qk          => Qk,
-				  L_Tag_Accepted => L_Tag_Accepted,
-              CDB_V  	  => CDB_V,
-              CDB_Q  	  => CDB_Q,
-              L_Ready 	  => L_Ready,
-              L_Op 		  => L_Op,
-              L_Vj        => L_Vj,
-              L_Vk        => L_Vk,
-              L_Tag  	  => L_Tag,
-              L_Accepted  => L_Accepted);
+    Port map( CLK            => CLK,
+              RST            => RST,
+              L_Available    => L_Available,
+              ISSUE          => L_Issue,
+              FOP            => FOP,
+              Vj             => Vj,
+              Qj             => Qj,
+              Vk             => Vk,
+              Qk             => Qk,
+              L_Tag_Accepted => L_Tag_Accepted,
+              CDB_V          => CDB_V,
+              CDB_Q          => CDB_Q,
+              L_Ready        => L_Ready,
+              L_Op           => L_Op,
+              L_Vj           => L_Vj,
+              L_Vk           => L_Vk,
+              L_Tag          => L_Tag,
+              L_Accepted     => L_Accepted);
 				  
 end Behavioral;
 

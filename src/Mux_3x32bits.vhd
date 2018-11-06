@@ -12,10 +12,10 @@
 -- Description:               Introduction in Dynamic Instruction Scheduling (Advanced Computer Architecture)
 --                            implementing Tomasulo's Algorithm 	 
 --
--- Dependencies:              IEEE.NUMERIC_STD
+-- Dependencies:              NONE
 --
--- Revision:                  0.01
--- Revision                   0.01 - File Created
+-- Revision:                  1.0
+-- Revision                   1.0 - File Created
 -- Additional Comments: 
 --
 ----------------------------------------------------------------------------------
@@ -36,9 +36,9 @@ signal TMP : STD_LOGIC_VECTOR (31 downto 0);
 begin
 	WITH Sel SELECT
 	TMP <= "00000000000000000000000000000000" WHEN "00",
-	       In1 WHEN "01",
-			 In2 WHEN "10",
-			 In3 WHEN "11",
-			 TMP WHEN OTHERS;   
+           In1 WHEN "01",
+           In2 WHEN "10",
+           In3 WHEN "11",
+           TMP WHEN OTHERS;   
 	Outt<=TMP;
 end Behavioral;

@@ -14,8 +14,8 @@
 --
 -- Dependencies:              NONE
 --
--- Revision:                  0.01
--- Revision                   0.01 - File Created
+-- Revision:                  1.0
+-- Revision                   1.0 - File Created
 -- Additional Comments: 
 --
 ----------------------------------------------------------------------------------
@@ -119,17 +119,18 @@ A3_Accepted <= '1' WHEN A_Accepted="01011" ELSE '0';
 
 A_Tag <= A_TagS;
 
+-- RS ISSUE
 PROCESS(CLK, ISSUE, A1_Available, A2_Available, A3_Available)
 BEGIN
 		A_Available <= A1_Available OR A2_Available OR A3_Available;
 		A_Ready <= A1_Ready OR A2_Ready OR A3_Ready;
 		
-		IF (ISSUE='1' AND A1_Available='1' AND CLK='0' ) THEN															 -- IF A_RS1 is available will accept next instruction
+		IF (ISSUE='1' AND A1_Available='1' AND CLK='0' ) THEN                                             -- IF A_RS1 is available will accept next instruction
 			A1_ISSUE <= '1';
 			A2_ISSUE <= '0';
 			A3_ISSUE <= '0';
 			A_Tag_Accepted <= "01001";
-		ELSIF (ISSUE='1' AND A1_Available='0' AND A2_Available='1' AND CLK='0') THEN							 -- IF A_RS2 is available will accept next instruction
+		ELSIF (ISSUE='1' AND A1_Available='0' AND A2_Available='1' AND CLK='0') THEN                      -- IF A_RS2 is available will accept next instruction
 			A1_ISSUE <= '0';
 			A2_ISSUE <= '1';
 			A3_ISSUE <= '0';
@@ -148,9 +149,8 @@ BEGIN
 END PROCESS;
 
 -- Select Which Ready RS forward to FU (Round Robin Selection)
-PROCESS(CLK, Last, A1_Ready, A2_Ready, A3_Ready, A1_Tag, A2_Tag, A3_Tag)
+PROCESS(A1_Ready, A2_Ready, A3_Ready)
 BEGIN
- IF (rising_edge(CLK)) THEN
 	IF (A1_Ready='1' AND (Last=None OR (Last=A3) OR (Last=A2 AND A3_Ready='0'))) THEN
 		Last<=A1;
 		A_TagS<=A1_Tag;
@@ -164,7 +164,6 @@ BEGIN
 		Last<=Last;
 		A_TagS<="00000";
 	END IF;
-END IF;
 END PROCESS;
 
 A1_R : Reg_RS 

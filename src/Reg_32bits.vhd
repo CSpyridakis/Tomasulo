@@ -14,8 +14,8 @@
 --
 -- Dependencies:              NONE
 --
--- Revision:                  0.01
--- Revision                   0.01 - File Created
+-- Revision:                  1.0
+-- Revision                   1.0 - File Created
 -- Additional Comments: 
 --
 ----------------------------------------------------------------------------------
@@ -33,7 +33,7 @@ end Reg_32bits;
 architecture Behavioral of Reg_32bits is
 
 begin
-   process(CLK,RST)
+   process(CLK, RST)
 	begin
 		if (rising_edge(CLK)) then
 			if (RST='1') then                 --RST

@@ -3,9 +3,9 @@
 -- Engineer:                  Spyridakis Christos 
 --                            Bellonias Panagiotis
 -- 
--- Create Date:               10/25/2018
+-- Create Date:                
 -- Design Name: 	 
--- Module Name:               ISSUE - Behavioral 
+-- Module Name:               Reg_5bits_N - Behavioral 
 -- Project Name:              Tomasulo
 -- Target Devices:            NONE
 -- Tool versions:             Xilinx ISE 14.7 --TODO: VIVADO
@@ -22,26 +22,26 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
-entity ISSUE is
-    Port ( A_Available : in  STD_LOGIC;
-           L_Available : in  STD_LOGIC;
-           Issue_I : in  STD_LOGIC;
-           Fu_type : in  STD_LOGIC_VECTOR (1 downto 0);
-           Tag_WE : out  STD_LOGIC;
-           Accepted : out  STD_LOGIC);
-end ISSUE;
+entity Reg_5bits_N is
+    Port ( CLK  : in  STD_LOGIC;
+           RST  : in  STD_LOGIC;
+           EN   : in  STD_LOGIC;
+           INN  : in  STD_LOGIC_VECTOR (4 downto 0);
+           OUTT : out  STD_LOGIC_VECTOR (4 downto 0));
+end Reg_5bits_N;
 
-architecture Behavioral of ISSUE is
-
-signal ACCE : STD_LOGIC;
+architecture Behavioral of Reg_5bits_N is
 
 begin
-	  
-    ACCE <= '1' WHEN A_Available='1' AND Issue_I='1' AND Fu_type="01" ELSE
-            '1' WHEN L_Available='1' AND Issue_I='1' AND Fu_type="00" ELSE
-            '0';
-				 
-    Tag_WE <= ACCE ;
-    Accepted <= ACCE;
+   process(CLK, RST)
+	begin
+		if (rising_edge(CLK)) then
+			if (RST='1') then                 --RST
+	         	OUTT<="11111";
+			elsif (EN='1') then               --Write Enable
+				OUTT<=INN;
+			end if;
+		end if;
+   end process;
 end Behavioral;
 
