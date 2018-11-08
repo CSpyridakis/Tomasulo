@@ -37,7 +37,7 @@ begin
 	begin
 		if (rising_edge(CLK)) then
 			if (RST='1') then                 --RST
-	         	OUTT<="11111";
+	         	OUTT<="00000";
 			elsif (EN='1') then               --Write Enable
 				OUTT<=INN;
 			end if;

@@ -54,11 +54,11 @@ signal A1_EMPTY, A2_EMPTY, A3_EMPTY, L1_EMPTY, L2_EMPTY : STD_LOGIC;
 BEGIN
 
 	--Arithmetic and logical pipeline levels Empty state Condition
-	A1_EMPTY <= '0' WHEN A1_Q(4)='1' OR A1_Q(3)='1' OR A1_Q(2)='1' OR A1_Q(1)='1' OR A1_Q(0)= '1' ELSE '1';			
-	A2_EMPTY <= '0' WHEN A2_Q(4)='1' OR A2_Q(3)='1' OR A2_Q(2)='1' OR A2_Q(1)='1' OR A2_Q(0)= '1' ELSE '1';			
-	A3_EMPTY <= '0' WHEN A3_Q(4)='1' OR A3_Q(3)='1' OR A3_Q(2)='1' OR A3_Q(1)='1' OR A3_Q(0)= '1' ELSE '1';			
-	L1_EMPTY <= '0' WHEN L1_Q(4)='1' OR L1_Q(3)='1' OR L1_Q(2)='1' OR L1_Q(1)='1' OR L1_Q(0)= '1' ELSE '1';			
-	L2_EMPTY <= '0' WHEN L2_Q(4)='1' OR L2_Q(3)='1' OR L2_Q(2)='1' OR L2_Q(1)='1' OR L2_Q(0)= '1' ELSE '1';
+	A1_EMPTY <= '0' WHEN A1_Q/="00000" ELSE '1';			
+	A2_EMPTY <= '0' WHEN A2_Q/="00000" ELSE '1';			
+	A3_EMPTY <= '0' WHEN A3_Q/="00000" ELSE '1';			
+	L1_EMPTY <= '0' WHEN L1_Q/="00000" ELSE '1';			
+	L2_EMPTY <= '0' WHEN L2_Q/="00000" ELSE '1';
 
    PROCESS(CLK, A1_EMPTY, A2_EMPTY, A3_EMPTY, L1_EMPTY, L2_EMPTY, A_Grant, A_Ready, L_Grant, L_Ready)
 	BEGIN

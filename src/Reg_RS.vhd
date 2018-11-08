@@ -192,6 +192,32 @@ begin
 			J_EN   <='1';
 			K_EN   <='1';
 			Re_EN  <='1';
+		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='0' AND CDB_Q/="00000" AND CDB_Q=K_Q)	THEN				--CDB_Q is equal with K's tag
+			--Resets
+			Av_RST <='0'; 
+			Op_RST <='0';
+			J_RST  <='0';
+			K_RST  <='0';
+			Re_RST <='0';
+			--Enables
+			Av_EN  <='0';
+			Op_EN  <='0';
+			J_EN   <='0';
+			K_EN   <='1';
+			Re_EN  <='0';
+		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='0' AND CDB_Q/="00000" AND CDB_Q=J_Q)	THEN				--CDB_Q is equal with J's tag 
+			--Resets
+			Av_RST <='0'; 
+			Op_RST <='0';
+			J_RST  <='0';
+			K_RST  <='0';
+			Re_RST <='0';
+			--Enables
+			Av_EN  <='0';
+			Op_EN  <='0';
+			J_EN   <='1';
+			K_EN   <='0';
+			Re_EN  <='0';
 		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='1' AND Accepted='1')	THEN								--RS Accepted from FU
 			--Resets
 			Av_RST <='0'; 

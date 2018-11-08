@@ -37,7 +37,8 @@ end Tomasulo;
 architecture Behavioral of Tomasulo is
 
 component ISSUE is
-    Port ( A_Available : in  STD_LOGIC;
+    Port ( CLK : in  STD_LOGIC;
+	        A_Available : in  STD_LOGIC;
            L_Available : in  STD_LOGIC;
            Issue_I : in  STD_LOGIC;
            Fu_type : in  STD_LOGIC_VECTOR (1 downto 0);
@@ -133,14 +134,14 @@ end component;
 
 
 component CDB is
-    Port ( A_REQUEST : in  STD_LOGIC;
+    Port ( RST : in  STD_LOGIC;
+           CLK : in  STD_LOGIC;
+			  A_REQUEST : in  STD_LOGIC;
            A_V : in  STD_LOGIC_VECTOR (31 downto 0);
            A_Q : in  STD_LOGIC_VECTOR (4 downto 0);
            L_REQUEST : in  STD_LOGIC;
            L_V : in  STD_LOGIC_VECTOR (31 downto 0);
            L_Q : in  STD_LOGIC_VECTOR (4 downto 0);
-           RST : in  STD_LOGIC;
-           CLK : in  STD_LOGIC;
            A_GRAND : out STD_LOGIC;
            L_GRAND : out STD_LOGIC;
            CDB_V : out  STD_LOGIC_VECTOR (31 downto 0);
@@ -175,7 +176,8 @@ signal A_Q_TMP, L_Q_TMP : STD_LOGIC_VECTOR (4 downto 0);
 begin
 
 ISSUE_C : ISSUE
-Port map(   A_Available => A_Available_TMP,
+Port map( CLK         => CLK,
+          A_Available => A_Available_TMP,
 		    L_Available => L_Available_TMP,
 		    Issue_I     => Issue_I,
 		    Fu_type     => Fu_type,
@@ -183,7 +185,7 @@ Port map(   A_Available => A_Available_TMP,
 		    Accepted    => Accepted);
 
 RF_C : RF 
-Port map(   CLK           => CLK,
+Port map( CLK           => CLK,
 		    RST           => RST,
 		    Ri            => Ri,
 		    Rj            => Rj,
@@ -198,7 +200,7 @@ Port map(   CLK           => CLK,
 		    Vk            => Vk_TMP);
 
 RS_C : RS 
-Port map(  CLK          => CLK,
+Port map( CLK          => CLK,
 	       RST          => RST,
 	       A_Available  => A_Available_TMP,
 	       L_Available  => L_Available_TMP,
@@ -226,7 +228,7 @@ Port map(  CLK          => CLK,
 	       L_Accepted   => L_Acccepted_TMP);
 
 FU_C : FU 
-Port map(  CLK        => CLK,
+Port map( CLK        => CLK,
 	       RST        => RST,
 	       A_Ready    => A_Ready_TMP,						
 	       A_Tag      => A_Tag_TMP,
@@ -250,7 +252,7 @@ Port map(  CLK        => CLK,
 	       L_V        => L_V_TMP);
 
 CDB_C : CDB 
-Port map(   RST       => RST,
+Port map( RST       => RST,
 		    CLK       => CLK,
 		    A_REQUEST => A_Request_TMP,
 		    A_V       => A_V_TMP,

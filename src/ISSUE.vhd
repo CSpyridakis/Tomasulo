@@ -23,7 +23,8 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
 entity ISSUE is
-    Port ( A_Available : in  STD_LOGIC;
+    Port ( CLK : in  STD_LOGIC;
+	        A_Available : in  STD_LOGIC;
            L_Available : in  STD_LOGIC;
            Issue_I : in  STD_LOGIC;
            Fu_type : in  STD_LOGIC_VECTOR (1 downto 0);
@@ -36,11 +37,25 @@ architecture Behavioral of ISSUE is
 signal ACCE : STD_LOGIC;
 
 begin
-	  
-    ACCE <= '1' WHEN A_Available='1' AND Issue_I='1' AND Fu_type="01" ELSE
-            '1' WHEN L_Available='1' AND Issue_I='1' AND Fu_type="00" ELSE
-            '0';
-				 
+-- TODO : Testing
+--	 
+--	  ACCE <=  '1' WHEN A_Available='1' AND Issue_I='1' AND Fu_type="01" ELSE
+--            '1' WHEN L_Available='1' AND Issue_I='1' AND Fu_type="00" ELSE
+--            '0';
+		
+	 process (CLK)
+	 begin
+		if (falling_edge(CLK)) then
+			if A_Available='1' AND Issue_I='1' AND Fu_type="01" then 
+			     ACCE<='1';
+		   elsif L_Available='1' AND Issue_I='1' AND Fu_type="00" then
+			     ACCE<='1';
+			else
+			     ACCE<='0';
+			end if;
+		end if;
+	 end process;
+				
     Tag_WE <= ACCE ;
     Accepted <= ACCE;
 end Behavioral;
