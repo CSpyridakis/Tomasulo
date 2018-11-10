@@ -1,17 +1,14 @@
-----------------------------------------------------------------------------------
--- Company/University:        Technical University of Crete (TUC) - GR
--- Engineer:                  Spyridakis Christos 
---                            Bellonias Panagiotis
--- 
--- Create Date:               21:57:52 11/07/2018
+--------------------------------------------------------------------------------
+-- Company: 
+-- Engineer:
+--
+-- Create Date:   21:49:42 11/10/2018
 -- Design Name:   
--- Module Name:               Tomasulo/TEST_Tomasulo.vhd
--- Project Name:              Tomasulo
--- Target Devices:            NONE
--- Tool versions:             Xilinx ISE 14.7 --TODO: VIVADO
--- Description:               Introduction in Dynamic Instruction Scheduling (Advanced Computer Architecture)
---                            implementing Tomasulo's Algorithm 	 
---   
+-- Module Name:   /home/chspyman/Desktop/VHDL/tomasulo_11_11/TEST_Tomasulo.vhd
+-- Project Name:  tomasulo_11_11
+-- Target Device:  
+-- Tool versions:  
+-- Description:   
 -- 
 -- VHDL Test Bench Created by ISE for module: Tomasulo
 -- 
@@ -31,6 +28,10 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
  
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--USE ieee.numeric_std.ALL;
+ 
 ENTITY TEST_Tomasulo IS
 END TEST_Tomasulo;
  
@@ -48,6 +49,8 @@ ARCHITECTURE behavior OF TEST_Tomasulo IS
          Ri : IN  std_logic_vector(4 downto 0);
          Rj : IN  std_logic_vector(4 downto 0);
          Rk : IN  std_logic_vector(4 downto 0);
+         Immed : IN  std_logic;
+         V_immed : IN  std_logic_vector(31 downto 0);
          Accepted : OUT  std_logic
         );
     END COMPONENT;
@@ -62,6 +65,8 @@ ARCHITECTURE behavior OF TEST_Tomasulo IS
    signal Ri : std_logic_vector(4 downto 0) := (others => '0');
    signal Rj : std_logic_vector(4 downto 0) := (others => '0');
    signal Rk : std_logic_vector(4 downto 0) := (others => '0');
+   signal Immed : std_logic := '0';
+   signal V_immed : std_logic_vector(31 downto 0) := (others => '0');
 
  	--Outputs
    signal Accepted : std_logic;
@@ -81,6 +86,8 @@ BEGIN
           Ri => Ri,
           Rj => Rj,
           Rk => Rk,
+          Immed => Immed,
+          V_immed => V_immed,
           Accepted => Accepted
         );
 
@@ -100,7 +107,7 @@ BEGIN
       -- hold reset state for 100 ns.
       wait for 100 ns;	
 
-		----------------------------------------------------------------CC:0    RST
+----------------------------------------------------------------CC:1    RST
 		RST     <='1';
 		Issue_I <='0';
 		Fu_type <="00";
@@ -108,96 +115,174 @@ BEGIN
 		Ri      <="00000";
 		Rj      <="00000";
 		Rk      <="00000";
+		Immed   <='0';
+		V_immed <="00000000000000000000000000000000";
+      wait for CLK_period*1;
+
+		----------------------------------------------------------------CC:2   ori $10, $0, 10
+		RST     <='0';
+		Issue_I <='1';
+		Fu_type <="00";
+		FOP     <="01";
+		Ri      <="01010";
+		Rj      <="00000";
+		Rk      <="00000";
+		Immed   <='1';
+		V_immed <="00000000000000000000000000001010";
       wait for CLK_period*1;
 		
-		----------------------------------------------------------------CC:1   add $2, $0, $0
+		----------------------------------------------------------------CC:2   addi $1, $0, 1
+		RST     <='0';
+		Issue_I <='1';
+		Fu_type <="01";
+		FOP     <="00";
+		Ri      <="00001";
+		Rj      <="00000";
+		Rk      <="00000";
+		Immed   <='1';
+		V_immed <="00000000000000000000000000000001";
+      wait for CLK_period*1;
+		
+
+		---------------------------------------------------------------CC:2   subi $11, $0, -5
+		RST     <='0';
+		Issue_I <='1';
+		Fu_type <="01";
+		FOP     <="01";
+		Ri      <="01011";
+		Rj      <="00000";
+		Rk      <="00000";
+		Immed   <='1';
+		V_immed <="11111111111111111111111111111011";
+      wait for CLK_period*1;
+		
+		----------------------------------------------------------------CC:3 Nop x 5 CC
+		RST     <='0';
+		Issue_I <='0';
+		Fu_type <="00";
+		FOP     <="00";
+		Ri      <="00000";
+		Rj      <="00000";
+		Rk      <="00000";
+		Immed   <='0';
+		V_immed <="00000000000000000000000000000000";
+      wait for CLK_period*5;
+		
+		----------------------------------------------------------------CC:8   add $2, $1, $1
 		RST     <='0';
 		Issue_I <='1';
 		Fu_type <="01";
 		FOP     <="00";
 		Ri      <="00010";
-		Rj      <="00000";
-		Rk      <="00000";
+		Rj      <="00001";
+		Rk      <="00001";
+		Immed   <='0';
+		V_immed <="00000000000000000000000000000000";
       wait for CLK_period*1;
 		
-		----------------------------------------------------------------CC:2   or $3,$2,$0
+		----------------------------------------------------------------CC:9   or $3,$2,$1
 		RST     <='0';
 		Issue_I <='1';
 		Fu_type <="00";
 		FOP     <="01";
 		Ri      <="00011";
 		Rj      <="00010";
-		Rk      <="00000";
+		Rk      <="00001";
+		Immed   <='0';
+		V_immed <="00000000000000000000000000000000";
       wait for CLK_period*1;
 		
 		
-		----------------------------------------------------------------CC:3   sub $4,$0,$0
+		----------------------------------------------------------------CC:10  sub $4,$1,$1
 		RST     <='0';
 		Issue_I <='1';
 		Fu_type <="01";
 		FOP     <="01";
 		Ri      <="00100";
-		Rj      <="00000";
-		Rk      <="00000";
+		Rj      <="00001";
+		Rk      <="00001";
+		Immed   <='0';
+		V_immed <="00000000000000000000000000000000";
       wait for CLK_period*1;
 		
 		
-		----------------------------------------------------------------CC:4  not $5,$0,$0
+		----------------------------------------------------------------CC:11  not $5,$1,$1
 		RST     <='0';
 		Issue_I <='1';
 		Fu_type <="00";
 		FOP     <="10";
 		Ri      <="00101";
-		Rj      <="00000";
-		Rk      <="00000";
+		Rj      <="00001";
+		Rk      <="00001";
+		Immed   <='0';
+		V_immed <="00000000000000000000000000000000";
       wait for CLK_period*1;
 	
 		
-		----------------------------------------------------------------CC:5   shift $6,$3,$0
+		----------------------------------------------------------------CC:12   shift $6,$3,$1
 		RST     <='0';
 		Issue_I <='1';
 		Fu_type <="01";
 		FOP     <="10";
 		Ri      <="00110";
 		Rj      <="00011";
-		Rk      <="00000";
+		Rk      <="00001";
+		Immed   <='0';
+		V_immed <="00000000000000000000000000000000";
       wait for CLK_period*1;
 		
 		
-		----------------------------------------------------------------CC:6   and $7,$4,$0
+		----------------------------------------------------------------CC:13   and $7,$4,$1
 		RST     <='0';
 		Issue_I <='1';
 		Fu_type <="00";
 		FOP     <="00";
 		Ri      <="00111";
 		Rj      <="00100";
-		Rk      <="00000";
+		Rk      <="00001";
+		Immed   <='0';
+		V_immed <="00000000000000000000000000000000";
       wait for CLK_period*1;
 		
-		
-		----------------------------------------------------------------CC:7  and $7,$4,$0 x2
+		----------------------------------------------------------------CC:14   and $7,$4,$1
 		RST     <='0';
 		Issue_I <='1';
 		Fu_type <="00";
 		FOP     <="00";
 		Ri      <="00111";
 		Rj      <="00100";
-		Rk      <="00000";
-      wait for CLK_period*2;
+		Rk      <="00001";
+		Immed   <='0';
+		V_immed <="00000000000000000000000000000000";
+      wait for CLK_period*1;
+		
+		----------------------------------------------------------------CC:15  and $7,$4,$1
+		RST     <='0';
+		Issue_I <='1';
+		Fu_type <="00";
+		FOP     <="00";
+		Ri      <="00111";
+		Rj      <="00100";
+		Rk      <="00001";
+		Immed   <='0';
+		V_immed <="00000000000000000000000000000000";
+      wait for CLK_period*1;
 		
 		
-		----------------------------------------------------------------CC:8 sub $8,$2,$0
+		----------------------------------------------------------------CC:16 sub $8,$2,$1
 		RST     <='0';
 		Issue_I <='1';
 		Fu_type <="01";
 		FOP     <="01";
 		Ri      <="01000";
 		Rj      <="00010";
-		Rk      <="00000";
+		Rk      <="00001";
+		Immed   <='0';
+		V_immed <="00000000000000000000000000000000";
       wait for CLK_period*1;
 		
 		
-		----------------------------------------------------------------CC:9 and $9,$3,$5
+		----------------------------------------------------------------CC:17 and $9,$3,$5
 		RST     <='0';
 		Issue_I <='1';
 		Fu_type <="00";
@@ -205,21 +290,25 @@ BEGIN
 		Ri      <="01001";
 		Rj      <="00011";
 		Rk      <="00101";
+		Immed   <='0';
+		V_immed <="00000000000000000000000000000000";
       wait for CLK_period*1;
 		
 		
-		----------------------------------------------------------------CC:10 shift $9,$2,$0
+		----------------------------------------------------------------CC:18 shift $9,$2,$1
 		RST     <='0';
 		Issue_I <='1';
 		Fu_type <="01";
 		FOP     <="10";
 		Ri      <="01001";
 		Rj      <="00010";
-		Rk      <="00000";
+		Rk      <="00001";
+		Immed   <='0';
+		V_immed <="00000000000000000000000000000000";
       wait for CLK_period*1;
 		
 		
-		----------------------------------------------------------------CC:11 Nop
+		----------------------------------------------------------------CC:19 Nop
 		RST     <='0';
 		Issue_I <='0';
 		Fu_type <="00";
@@ -227,77 +316,10 @@ BEGIN
 		Ri      <="00000";
 		Rj      <="00000";
 		Rk      <="00000";
+		Immed   <='0';
+		V_immed <="00000000000000000000000000000000";
       wait for CLK_period*1;
-		
-		
-		----------------------------------------------------------------CC:12
-		RST     <='0';
-		Issue_I <='0';
-		Fu_type <="00";
-		FOP     <="00";
-		Ri      <="00000";
-		Rj      <="00000";
-		Rk      <="00000";
-      wait for CLK_period*1;
-		
-		
-		
-		----------------------------------------------------------------CC:13
-		RST     <='0';
-		Issue_I <='0';
-		Fu_type <="00";
-		FOP     <="00";
-		Ri      <="00000";
-		Rj      <="00000";
-		Rk      <="00000";
-      wait for CLK_period*1;
-		
-		
-		----------------------------------------------------------------CC:14
-		RST     <='0';
-		Issue_I <='0';
-		Fu_type <="00";
-		FOP     <="00";
-		Ri      <="00000";
-		Rj      <="00000";
-		Rk      <="00000";
-      wait for CLK_period*1;
-		
-		
-		----------------------------------------------------------------CC:15
-		RST     <='0';
-		Issue_I <='0';
-		Fu_type <="00";
-		FOP     <="00";
-		Ri      <="00000";
-		Rj      <="00000";
-		Rk      <="00000";
-      wait for CLK_period*1;
-		
-		
-		----------------------------------------------------------------CC:16
-		RST     <='0';
-		Issue_I <='0';
-		Fu_type <="00";
-		FOP     <="00";
-		Ri      <="00000";
-		Rj      <="00000";
-		Rk      <="00000";
-      wait for CLK_period*1;
-		
-		
-		----------------------------------------------------------------CC:17
-		RST     <='0';
-		Issue_I <='0';
-		Fu_type <="00";
-		FOP     <="00";
-		Ri      <="00000";
-		Rj      <="00000";
-		Rk      <="00000";
-      wait for CLK_period*1;
-		
-		
-		
+
       wait;
    end process;
 

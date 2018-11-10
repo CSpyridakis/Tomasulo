@@ -142,10 +142,10 @@ END PROCESS;
 -- Select Which Ready RS forward to FU (Round Robin Selection)
 PROCESS(L1_Ready, L2_Ready)
 BEGIN
-	IF (L1_Ready='1' AND (Last=None OR Last=L2)) THEN
+	IF (L1_Ready='1' AND (Last=None OR Last=L2 OR (Last=L1 AND L2_Ready='0'))) THEN
 		Last<=L1;
 		L_TagS<=L1_Tag;
-	ELSIF(L2_Ready='1' AND (Last=None OR Last=L1)) THEN
+	ELSIF(L2_Ready='1' AND (Last=None OR Last=L1 OR (Last=L1 AND L2_Ready='0'))) THEN
 		Last<=L2;
 		L_TagS<=L2_Tag;
 	ELSE

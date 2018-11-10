@@ -25,7 +25,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity FU is
     Port ( CLK : in  STD_LOGIC;
            RST : in  STD_LOGIC;
-			  
+ 
            --Aritmetic FU
            A_Ready : in  STD_LOGIC;							
            A_Tag : in  STD_LOGIC_VECTOR (4 downto 0);
@@ -37,7 +37,7 @@ entity FU is
            A_Grant : in  STD_LOGIC;							
            A_Q : out  STD_LOGIC_VECTOR (4 downto 0);
            A_V : out  STD_LOGIC_VECTOR (31 downto 0);
-			  
+ 
            --Logical FU
            L_Ready : in  STD_LOGIC;							
            L_Tag : in  STD_LOGIC_VECTOR (4 downto 0);
@@ -66,7 +66,7 @@ component FU_Control is
            A1_EN : out  STD_LOGIC;
            A2_EN : out  STD_LOGIC;
            A3_EN : out  STD_LOGIC;
-			  
+ 
            L_Ready : in  STD_LOGIC;
            L_Tag : in  STD_LOGIC_VECTOR (4 downto 0);
            L1_Q : in  STD_LOGIC_VECTOR (4 downto 0);
@@ -91,7 +91,7 @@ component ALU is
            A_Vk : in  STD_LOGIC_VECTOR (31 downto 0);
            A_Op : in  STD_LOGIC_VECTOR (1 downto 0);
            A0_V : out  STD_LOGIC_VECTOR (31 downto 0);
-			  
+ 
            L_Vj : in  STD_LOGIC_VECTOR (31 downto 0);
            L_Vk : in  STD_LOGIC_VECTOR (31 downto 0);
            L_Op : in  STD_LOGIC_VECTOR (1 downto 0);
@@ -118,100 +118,99 @@ begin
 
 --MUX for A1_Q and L1_Q 	  
 A1_Qin : Mux_2x5bits 
-    Port map( In0  => "00000",
-              In1  => A_Tag,
-              Sel  => A_Ready,
-              Outt => A0_Q);
+Port map( In0  => "00000",
+          In1  => A_Tag,
+          Sel  => A_Ready,
+          Outt => A0_Q);
 L1_Qin : Mux_2x5bits 
-    Port map( In0  => "00000",
-              In1  => L_Tag,
-              Sel  => L_Ready,
-              Outt => L0_Q);
-				  
---ALU
+Port map( In0  => "00000",
+          In1  => L_Tag,
+          Sel  => L_Ready,
+          Outt => L0_Q);
+ 
+ --ALU
 A_L_ALU : ALU 
-	Port map(   A_Vj => A_Vj,
-              A_Vk => A_Vk,
-              A_Op => A_Op,
-              A0_V => A0_V,
-              L_Vj => L_Vj,
-              L_Vk => L_Vk,
-              L_Op => L_Op,
-              L0_V => L0_V);
-
-
+Port map(   A_Vj => A_Vj,
+            A_Vk => A_Vk,
+            A_Op => A_Op,
+            A0_V => A0_V,
+            L_Vj => L_Vj,
+            L_Vk => L_Vk,
+            L_Op => L_Op,
+            L0_V => L0_V);
+ 
 --Arithmetic Pipeline FU stages
 A1 : Reg_V_Q
-    Port map( CLK  => CLK,
-              RST  => RST,
-              EN   => A1_EN,
-              VIN  => A0_V,
-              QIN  => A0_Q,
-              VOUT => A1_V,
-              QOUT => A1_Q);
-			  
-A2 : Reg_V_Q
-    Port map( CLK  => CLK,
-              RST  => RST,
-              EN   => A2_EN,
-              VIN  => A1_V,
-              QIN  => A1_Q,
-              VOUT => A2_V,
-              QOUT => A2_Q);
-			  
-A3 : Reg_V_Q
-    Port map( CLK  => CLK,
-              RST  => RST,
-              EN   => A3_EN,
-              VIN  => A2_V,
-              QIN  => A2_Q,
-              VOUT => A_V,
-              QOUT => A3_Q);
-A_Q<=A3_Q;
+Port map( CLK  => CLK,
+          RST  => RST,
+          EN   => A1_EN,
+          VIN  => A0_V,
+          QIN  => A0_Q,
+          VOUT => A1_V,
+          QOUT => A1_Q);
 
+A2 : Reg_V_Q
+Port map( CLK  => CLK,
+          RST  => RST,
+          EN   => A2_EN,
+          VIN  => A1_V,
+          QIN  => A1_Q,
+          VOUT => A2_V,
+          QOUT => A2_Q);
+   
+A3 : Reg_V_Q
+Port map( CLK  => CLK,
+          RST  => RST,
+          EN   => A3_EN,
+          VIN  => A2_V,
+          QIN  => A2_Q,
+          VOUT => A_V,
+          QOUT => A3_Q);
+A_Q<=A3_Q;
+ 
 --Logical Pipeline FU stages
 L1 : Reg_V_Q
-    Port map( CLK  => CLK,
-              RST  => RST,
-              EN   => L1_EN,
-              VIN  => L0_V,
-              QIN  => L0_Q,
-              VOUT => L1_V,
-              QOUT => L1_Q);
-			  
+Port map( CLK  => CLK,
+          RST  => RST,
+          EN   => L1_EN,
+          VIN  => L0_V,
+          QIN  => L0_Q,
+          VOUT => L1_V,
+          QOUT => L1_Q);
+   
 L2 : Reg_V_Q
-    Port map( CLK  => CLK,
-              RST  => RST,
-              EN   => L2_EN,
-              VIN  => L1_V,
-              QIN  => L1_Q,
-              VOUT => L_V,
-              QOUT => L2_Q);
+Port map( CLK  => CLK,
+          RST  => RST,
+          EN   => L2_EN,
+          VIN  => L1_V,
+          QIN  => L1_Q,
+          VOUT => L_V,
+          QOUT => L2_Q);
 L_Q<=L2_Q;
-
+ 
 --FU control unit			
 Fu_control_Unit : FU_Control
-    Port map( CLK        => CLK,
-              A_Ready    => A_Ready,
-              A_Tag      => A_Tag,
-              A1_Q       => A1_Q,
-              A2_Q       => A2_Q,
-              A3_Q       => A3_Q,
-              A_Accepted => A_Accepted,
-              A_Request  => A_Request,
-              A_Grant    => A_Grant,
-              A1_EN      => A1_EN,
-              A2_EN      => A2_EN,
-              A3_EN      => A3_EN,
-			   
-              L_Ready    => L_Ready,
-              L_Tag      => L_Tag,
-              L1_Q       => L1_Q,
-              L2_Q       => L2_Q,
-              L_Accepted => L_Accepted,
-              L_Request  => L_Request,
-              L_Grant    => L_Grant,
-              L1_EN      => L1_EN,
-              L2_EN      => L2_EN);
+Port map( CLK        => CLK,
+          A_Ready    => A_Ready,
+          A_Tag      => A_Tag,
+          A1_Q       => A1_Q,
+          A2_Q       => A2_Q,
+          A3_Q       => A3_Q,
+          A_Accepted => A_Accepted,
+          A_Request  => A_Request,
+          A_Grant    => A_Grant,
+          A1_EN      => A1_EN,
+          A2_EN      => A2_EN,
+          A3_EN      => A3_EN,
+
+          L_Ready    => L_Ready,
+          L_Tag      => L_Tag,
+          L1_Q       => L1_Q,
+          L2_Q       => L2_Q,
+          L_Accepted => L_Accepted,
+          L_Request  => L_Request,
+          L_Grant    => L_Grant,
+          L1_EN      => L1_EN,
+          L2_EN      => L2_EN);
 end Behavioral;
 

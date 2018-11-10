@@ -39,7 +39,7 @@ entity CDB is
 end CDB;
 
 architecture Behavioral of CDB is
-	signal LAST : STD_LOGIC_VECTOR (1 DOWNTO 0) := "01";
+   signal LAST : STD_LOGIC_VECTOR (1 DOWNTO 0) := "01";
    signal CDB_GRANTED, OUTPUT : STD_LOGIC_VECTOR (1 DOWNTO 0) := "00";
 begin
 
@@ -66,19 +66,19 @@ begin
 	  else       
 			CDB_GRANTED <= "00";
 	  end if;        
-	END IF;
+  END IF;
 end process;
-	
-OUTPUT <= CDB_GRANTED;
+ 
+OUTPUT  <= CDB_GRANTED;
 A_GRAND <= CDB_GRANTED(0);
 L_GRAND <= CDB_GRANTED(1);
 
 CDB_V <= A_V WHEN OUTPUT = "01" ELSE
          L_V WHEN OUTPUT = "10" ELSE
          (OTHERS => '0');
-			
-CDB_Q <=	A_Q WHEN OUTPUT = "01" ELSE
-			L_Q WHEN OUTPUT = "10" ELSE
-			(OTHERS => '0');
+ 
+CDB_Q <= A_Q WHEN OUTPUT = "01" ELSE
+         L_Q WHEN OUTPUT = "10" ELSE
+         (OTHERS => '0');
 end Behavioral;
 

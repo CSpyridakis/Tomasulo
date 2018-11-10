@@ -35,7 +35,7 @@ entity FU_Control is
            A1_EN : out  STD_LOGIC;
            A2_EN : out  STD_LOGIC;
            A3_EN : out  STD_LOGIC;
-			  
+ 
            L_Ready : in  STD_LOGIC;
            L_Tag : in  STD_LOGIC_VECTOR (4 downto 0);
            L1_Q : in  STD_LOGIC_VECTOR (4 downto 0);
@@ -95,16 +95,16 @@ BEGIN
 			
 			-------------------------------------------------------------------------------------------- Enables
 			--A1_EN
-			IF (A_Ready='1' AND (A1_EMPTY='1' OR A2_EMPTY='1' OR A3_EMPTY='1' OR A_Grant='1')) THEN	                   -- New Arithmetic Operation with at least one empty Level OR New Arithmetic Operation with none enpty Level and A is Granted
+			IF (A_Ready='1' AND (A1_EMPTY='1' OR A2_EMPTY='1' OR A3_EMPTY='1' OR A_Grant='1')) THEN	                -- New Arithmetic Operation with at least one empty Level OR New Arithmetic Operation with none enpty Level and A is Granted
 				A1_EN <= '1';
-			ELSIF (A_Ready='0' AND A1_EMPTY='0' AND (A2_EMPTY='1' OR A3_EMPTY='1' OR A_Grant='1')) THEN	               -- No new Operation. Forward valid data [1] -> [0/1] -> [0/1] ONLY if it is possible
+			ELSIF (A_Ready='0' AND A1_EMPTY='0' AND (A2_EMPTY='1' OR A3_EMPTY='1' OR A_Grant='1')) THEN	             -- No new Operation. Forward valid data [1] -> [0/1] -> [0/1] ONLY if it is possible
 				A1_EN <= '1';                                                                                          --                                       A1      A2       A3
 			ELSE
 				A1_EN <= '0';
 			END IF;
 			
-			--A2_EN	                                                                                                        A1     A2     A3
-			IF (A1_EMPTY='0' AND A2_EMPTY='1') THEN                                                                     --  [1] -> [0] -> [X]
+			--A2_EN	                                                                                                      A1     A2     A3
+			IF (A1_EMPTY='0' AND A2_EMPTY='1') THEN                                                                   --  [1] -> [0] -> [X]
 				A2_EN <= '1';
 			ELSIF	(A2_EMPTY='0' AND A3_EMPTY='1') THEN                                                                --  [X] -> [1] -> [0]
 				A2_EN <= '1';
@@ -114,8 +114,8 @@ BEGIN
 				A2_EN <= '0';
 			END IF;
 			
-			--A3_EN                                                                                                         A1     A2     A3
-			IF (A2_EMPTY='0' AND A3_EMPTY='1') THEN                                                                     --  [X] -> [1] -> [0]
+			--A3_EN                                                                                                       A1     A2     A3
+			IF (A2_EMPTY='0' AND A3_EMPTY='1') THEN                                                                   --  [X] -> [1] -> [0]
 				A3_EN <= '1';
 			ELSIF	(A3_EMPTY='0' AND A_Grant='1') THEN                                                                 --  [X] -> [X] -> [1] AND A is Granted
 				A3_EN <= '1';
@@ -126,7 +126,7 @@ BEGIN
 			--L1_EN
 			IF (L_Ready='1' AND (L1_EMPTY='1' OR L2_EMPTY='1' OR L_Grant='1')) THEN                                     -- New Logical Operation with at least one empty Level OR New Logica Operation with none enpty Level and L is Granted
 				L1_EN <= '1';
-			ELSIF (L_Ready='0' AND L1_EMPTY='0' AND (L2_EMPTY='1' OR L_Grant='1')) THEN                                 -- No new Operation. Forward valid data [1] -> [0/1]  ONLY if it is possible
+			ELSIF (L_Ready='0' AND L1_EMPTY='0' AND (L2_EMPTY='1' OR L_Grant='1')) THEN                                -- No new Operation. Forward valid data [1] -> [0/1]  ONLY if it is possible
 				L1_EN <= '1';                                                                                           --                                       L1      L2 
 			ELSE
 				L1_EN <= '0';

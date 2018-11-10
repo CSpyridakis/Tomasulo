@@ -41,20 +41,20 @@ signal TMP_A_V, TMP_L_V : STD_LOGIC_VECTOR (31 downto 0);
 
 begin
 
-	WITH A_Op SELECT
-	TMP_A_V <= A_Vj + A_Vk WHEN "00",
-               A_Vj - A_Vk WHEN "01",
-               A_Vj(30 DOWNTO 0) & '0' WHEN "10",
-               TMP_A_V WHEN OTHERS;
-			  
-	WITH L_Op SELECT
-	TMP_L_V <= L_Vj AND L_Vk WHEN "00",
+  WITH A_Op SELECT
+  TMP_A_V <= A_Vj + A_Vk WHEN "00",
+             A_Vj - A_Vk WHEN "01",
+             A_Vj(30 DOWNTO 0) & '0' WHEN "10",
+             TMP_A_V WHEN OTHERS;
+ 
+  WITH L_Op SELECT
+  TMP_L_V <= L_Vj AND L_Vk WHEN "00",
                L_Vj OR L_Vk WHEN "01",
                NOT L_Vj WHEN "10",
                TMP_L_V WHEN OTHERS;
-	
-	A0_V<=TMP_A_V;
-	L0_V<=TMP_L_V;
-	
+ 
+  A0_V<=TMP_A_V;
+  L0_V<=TMP_L_V;
+ 
 end Behavioral;
 

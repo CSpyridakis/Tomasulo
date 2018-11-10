@@ -34,9 +34,9 @@ architecture Behavioral of Mux_3x2bits is
 signal TMP : STD_LOGIC_VECTOR (1 downto 0);
 
 begin
-	WITH Sel SELECT
-	TMP <= "00" WHEN "00", 
-	       In1 WHEN "01",
+   WITH Sel SELECT
+   TMP <= "00" WHEN "00", 
+           In1 WHEN "01",
            In2 WHEN "10",
            In3 WHEN "11",
            TMP WHEN OTHERS;   

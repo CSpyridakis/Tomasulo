@@ -64,20 +64,20 @@ signal QOUT : signal_32x5 := (others => (others => '0'));
 
 begin
 
--- Forwarding
+-- Forwarding (fall-through implementation)
 process(Tag_WE, Rj, Rk, CDB_Q)
 begin 
-	if (Tag_WE='1' AND CDB_Q/="00000" AND CDB_Q = QOUT(to_integer(UNSIGNED(Rj))) AND CDB_Q = QOUT(to_integer(UNSIGNED(Rk)))) then			-- Forward CDB_V to Rj and Rk when CDB_Q =Rj_Q and CDB_Q=Rk_Q 
+	if (Tag_WE='1' AND CDB_Q/="00000" AND CDB_Q = QOUT(to_integer(UNSIGNED(Rj))) AND CDB_Q = QOUT(to_integer(UNSIGNED(Rk)))) then			-- Forward CDB_V to Rj and Rk when CDB_Q = Rj_Q and CDB_Q = Rk_Q 
 	  Vj<=CDB_V;
 	  Qj<="00000"; 
 	  Vk<=CDB_V;
 	  Qk<="00000";
-	elsif (Tag_WE='1' AND CDB_Q/="00000" AND CDB_Q = QOUT(to_integer(UNSIGNED(Rj)))) then																-- Forward CDB_V to Rj when CDB_Q =Rj_Q 
+	elsif (Tag_WE='1' AND CDB_Q/="00000" AND CDB_Q = QOUT(to_integer(UNSIGNED(Rj)))) then																-- Forward CDB_V to Rj when CDB_Q = Rj_Q 
 	  Vj<=CDB_V;
 	  Qj<="00000";
 	  Vk<=VOUT(to_integer(UNSIGNED(Rk)));
 	  Qk<=QOUT(to_integer(UNSIGNED(Rk)));
-	elsif (CDB_Q/="00000" AND CDB_Q = QOUT(to_integer(UNSIGNED(Rk)))) then																               -- Forward CDB_V to Rk when CDB_Q =Rk_Q 
+	elsif (CDB_Q/="00000" AND CDB_Q = QOUT(to_integer(UNSIGNED(Rk)))) then																               -- Forward CDB_V to Rk when CDB_Q = Rk_Q 
 	  Vj<=VOUT(to_integer(UNSIGNED(Rj)));
 	  Qj<=QOUT(to_integer(UNSIGNED(Rj))); 
 	  Vk<=CDB_V;
@@ -91,17 +91,21 @@ begin
 end process;
 
 -- Registers 0
-Reg0 : RF_Reg
-Port map( CLK          => CLK,
-          RST          => RST,
-          ID           => "00000",
-          Ri           => Ri,
-          Tag_WE       => Tag_WE,
-          Tag_Accepted => Tag_Accepted,
-          CDB_Q        => CDB_Q,
-          CDB_V        => CDB_V,
-          Q            => QOUT(0),
-          V            => VOUT(0));
+--Reg0 : RF_Reg
+--Port map( CLK          => CLK,
+--          RST          => RST,
+--          ID           => "00000",
+--          Ri           => Ri,
+--          Tag_WE       => Tag_WE,
+--          Tag_Accepted => Tag_Accepted,
+--          CDB_Q        => CDB_Q,
+--          CDB_V        => CDB_V,
+--          Q            => open,
+--          V            => open);
+
+--Reg0
+QOUT(0) <= "00000";
+VOUT(0) <= "00000000000000000000000000000000";
 
 -- Registers 1
 Reg1 : RF_Reg

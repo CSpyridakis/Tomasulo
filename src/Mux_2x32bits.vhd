@@ -32,7 +32,7 @@ end Mux_2x32bits;
 architecture Behavioral of Mux_2x32bits is
 
 begin
-	WITH Sel SELECT
-	Outt <= In0 WHEN '0',
+    WITH Sel SELECT
+    Outt <= In0 WHEN '0',
             In1 WHEN OTHERS;   
 end Behavioral;

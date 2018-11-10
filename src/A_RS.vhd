@@ -25,9 +25,9 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity A_RS is
     Port ( CLK : in  STD_LOGIC;
            RST : in  STD_LOGIC;
-			  
+ 
            A_Available : out  STD_LOGIC;
-			  
+ 
            --ISSUE
            ISSUE : in  STD_LOGIC;
            FOP : in  STD_LOGIC_VECTOR (1 downto 0);
@@ -36,11 +36,11 @@ entity A_RS is
            Vk : in  STD_LOGIC_VECTOR (31 downto 0);
            Qk : in  STD_LOGIC_VECTOR (4 downto 0);
            A_Tag_Accepted : out STD_LOGIC_VECTOR (4 downto 0);
-			  
+ 
            --CDB
            CDB_V : in  STD_LOGIC_VECTOR (31 downto 0);
            CDB_Q : in  STD_LOGIC_VECTOR (4 downto 0);
-			  
+ 
            --TO FU
            A_Ready : out  STD_LOGIC;
            A_Op : out  STD_LOGIC_VECTOR (1 downto 0);
@@ -56,10 +56,10 @@ architecture Behavioral of A_RS is
 component Reg_RS is
     Port ( CLK : in  STD_LOGIC;
            RST : in  STD_LOGIC;
-			  
+ 
            ID : in  STD_LOGIC_VECTOR (4 downto 0);
            Available : out  STD_LOGIC;
-			  
+ 
            --ISSUE
            ISSUE : in  STD_LOGIC;
            Op_ISSUE : in  STD_LOGIC_VECTOR (1 downto 0);
@@ -67,11 +67,11 @@ component Reg_RS is
            Qj : in  STD_LOGIC_VECTOR (4 downto 0);
            Vk_ISSUE : in  STD_LOGIC_VECTOR (31 downto 0);
            Qk : in  STD_LOGIC_VECTOR (4 downto 0);
-			  
+ 
            --CDB
            CDB_V : in  STD_LOGIC_VECTOR (31 downto 0);
            CDB_Q : in  STD_LOGIC_VECTOR (4 downto 0);
-           
+ 
            --RS
            Ready : out  STD_LOGIC;
            Op : out  STD_LOGIC_VECTOR (1 downto 0);
@@ -124,7 +124,7 @@ PROCESS(CLK, ISSUE, A1_Available, A2_Available, A3_Available)
 BEGIN
 		A_Available <= A1_Available OR A2_Available OR A3_Available;
 		A_Ready <= A1_Ready OR A2_Ready OR A3_Ready;
-		
+ 
 		IF (ISSUE='1' AND A1_Available='1' AND CLK='0' ) THEN                                             -- IF A_RS1 is available will accept next instruction
 			A1_ISSUE <= '1';
 			A2_ISSUE <= '0';
@@ -147,17 +147,17 @@ BEGIN
 			A_Tag_Accepted <= "00000";
 		END IF;
 END PROCESS;
-
+ 
 -- Select Which Ready RS forward to FU (Round Robin Selection)
 PROCESS(A1_Ready, A2_Ready, A3_Ready)
 BEGIN
-	IF (A1_Ready='1' AND (Last=None OR (Last=A3) OR (Last=A2 AND A3_Ready='0'))) THEN
+	IF (A1_Ready='1' AND (Last=None OR (Last=A3) OR (Last=A2 AND A3_Ready='0') OR (Last=A1 AND A2_Ready='0' AND A3_Ready='0'))) THEN
 		Last<=A1;
 		A_TagS<=A1_Tag;
-	ELSIF(A2_Ready='1' AND (Last=None OR (Last=A1) OR (Last=A3 AND A1_Ready='0'))) THEN
+	ELSIF(A2_Ready='1' AND (Last=None OR (Last=A1) OR (Last=A3 AND A1_Ready='0') OR (Last=A2 AND A3_Ready='0' AND A1_Ready='0'))) THEN
 		Last<=A2;
 		A_TagS<=A2_Tag;
-	ELSIF(A3_Ready='1' AND (Last=None OR (Last=A2) OR (Last=A1 AND A2_Ready='0'))) THEN
+	ELSIF(A3_Ready='1' AND (Last=None OR (Last=A2) OR (Last=A1 AND A2_Ready='0') OR (Last=A3 AND A1_Ready='0' AND A2_Ready='0'))) THEN
 		Last<=A3;
 		A_TagS<=A3_Tag;
 	ELSE
@@ -165,7 +165,7 @@ BEGIN
 		A_TagS<="00000";
 	END IF;
 END PROCESS;
-
+ 
 A1_R : Reg_RS 
     Port map( CLK       => CLK,
               RST       => RST,
@@ -185,7 +185,7 @@ A1_R : Reg_RS
               Vj        => A1_Vj,
               Vk        => A1_Vk,
               Accepted  => A1_Accepted);
-				  
+ 
 A2_R : Reg_RS 
     Port map( CLK       => CLK,
               RST       => RST,
@@ -205,7 +205,7 @@ A2_R : Reg_RS
               Vj        => A2_Vj,
               Vk        => A2_Vk,
               Accepted  => A2_Accepted);
-				  
+ 
 A3_R : Reg_RS 
     Port map( CLK       => CLK,
               RST       => RST,
@@ -225,7 +225,7 @@ A3_R : Reg_RS
               Vj        => A3_Vj,
               Vk        => A3_Vk,
               Accepted  => A3_Accepted);
-
+ 
 --Output Mux
 Op_M : Mux_3x2bits		 
     Port map( In1  => A1_Op,
@@ -233,20 +233,20 @@ Op_M : Mux_3x2bits
               In3  => A3_Op,
               Sel  => A_TagS(1 downto 0),
               Outt => A_Op); 
-				  
+ 
 Vj_M : Mux_3x32bits		  
     Port map( In1  => A1_Vj,
               In2  => A2_Vj,
               In3  => A3_Vj,
               Sel  => A_TagS(1 downto 0),
               Outt => A_Vj);
-				  
+ 
 Vk_M : Mux_3x32bits		  
     Port map( In1  => A1_Vk,
               In2  => A2_Vk,
               In3  => A3_Vk,
               Sel  => A_TagS(1 downto 0),
               Outt => A_Vk);
-				  
+ 
 end Behavioral;
 

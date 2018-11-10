@@ -33,7 +33,7 @@ end Reg_5bits;
 architecture Behavioral of Reg_5bits is
 
 begin
-   process(CLK,RST)
+   process(CLK, RST)
 	begin
 		if (rising_edge(CLK)) then
 			if (RST='1') then                 --RST
