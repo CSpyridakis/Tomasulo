@@ -3,37 +3,24 @@
    <wave_state>
    </wave_state>
    <db_ref_list>
-      <db_ref path="/home/cs/Documents/14.7/ISE_DS/Tomasulo_25/TEST_ISSUE_isim_beh.wdb" id="1" type="auto">
+      <db_ref path="/home/chspyman/Desktop/VHDL/Toma_11_11_oldest/TEST_ISSUE_isim_beh.wdb" id="1" type="auto">
          <top_modules>
             <top_module name="std_logic_1164" />
             <top_module name="test_issue" />
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="18" />
+   <WVObjectSize size="8" />
    <wave_markers>
-      <marker time="110000000" label="" />
-      <marker time="99967000" label="" />
-      <marker time="119967000" label="" />
-      <marker time="130067000" label="" />
-      <marker time="150000000" label="" />
-      <marker time="139990000" label="" />
+      <marker time="130000000" label="" />
+      <marker time="120000000" label="" />
+      <marker time="140000000" label="" />
+      <marker time="150017000" label="" />
+      <marker time="110050000" label="" />
    </wave_markers>
-   <wvobject fp_name="divider18" type="divider">
-      <obj_property name="label">IN</obj_property>
-      <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="BkColor">#c0c0c0</obj_property>
-      <obj_property name="TextColor">230 230 230</obj_property>
-   </wvobject>
    <wvobject fp_name="/test_issue/clk" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
-      <obj_property name="CustomSignalColor">#ffffff</obj_property>
-   </wvobject>
-   <wvobject fp_name="/test_issue/rst" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">rst</obj_property>
-      <obj_property name="ObjectShortName">rst</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
       <obj_property name="CustomSignalColor">#ffffff</obj_property>
    </wvobject>
@@ -58,58 +45,15 @@
    <wvobject fp_name="/test_issue/fu_type" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">fu_type[1:0]</obj_property>
       <obj_property name="ObjectShortName">fu_type[1:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
       <obj_property name="CustomSignalColor">#ffa500</obj_property>
    </wvobject>
-   <wvobject fp_name="/test_issue/fop" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">fop[1:0]</obj_property>
-      <obj_property name="ObjectShortName">fop[1:0]</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
-      <obj_property name="CustomSignalColor">#ffa500</obj_property>
-   </wvobject>
-   <wvobject fp_name="/test_issue/tag_accapted" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">tag_accapted[4:0]</obj_property>
-      <obj_property name="ObjectShortName">tag_accapted[4:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="divider19" type="divider">
+   <wvobject fp_name="divider9" type="divider">
       <obj_property name="label">OUT</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="BkColor">#c0c0c0</obj_property>
+      <obj_property name="BkColor">128 128 255</obj_property>
       <obj_property name="TextColor">230 230 230</obj_property>
-   </wvobject>
-   <wvobject fp_name="/test_issue/clk_o" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">clk_o</obj_property>
-      <obj_property name="ObjectShortName">clk_o</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
-      <obj_property name="CustomSignalColor">#ffffff</obj_property>
-   </wvobject>
-   <wvobject fp_name="/test_issue/rst_o" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">rst_o</obj_property>
-      <obj_property name="ObjectShortName">rst_o</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
-      <obj_property name="CustomSignalColor">#ffffff</obj_property>
-   </wvobject>
-   <wvobject fp_name="/test_issue/issue_o" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">issue_o</obj_property>
-      <obj_property name="ObjectShortName">issue_o</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
-      <obj_property name="CustomSignalColor">#800000</obj_property>
-   </wvobject>
-   <wvobject fp_name="/test_issue/fu_type_o" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">fu_type_o[1:0]</obj_property>
-      <obj_property name="ObjectShortName">fu_type_o[1:0]</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
-      <obj_property name="CustomSignalColor">#ffa500</obj_property>
-   </wvobject>
-   <wvobject fp_name="/test_issue/fop_o" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">fop_o[1:0]</obj_property>
-      <obj_property name="ObjectShortName">fop_o[1:0]</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
-      <obj_property name="CustomSignalColor">#ffa500</obj_property>
-   </wvobject>
-   <wvobject fp_name="/test_issue/tag_accapted_o" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">tag_accapted_o[4:0]</obj_property>
-      <obj_property name="ObjectShortName">tag_accapted_o[4:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/test_issue/tag_we" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">tag_we</obj_property>
