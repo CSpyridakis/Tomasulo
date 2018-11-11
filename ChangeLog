@@ -1,3 +1,10 @@
+Sun Nov 11 16:52:12 EEST - Spyridakis Christos <spyridakischristos@gmail.com>
+	-Milestone-2:
+		* Tomasulo (Top Module implementation)
+		* RS testbench and simulation updated (I-type)
+		* ISSUE testbench and simulation updated
+		* RF testbench and simulation updated
+
 Mon Oct 29 20:37:12 EEST - Spyridakis Christos <spyridakischristos@gmail.com>
 	-Milestone-1b:
 		* ISSUE unit implemented

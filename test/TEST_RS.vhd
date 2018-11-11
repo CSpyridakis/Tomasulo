@@ -3,14 +3,14 @@
 -- Engineer:                  Spyridakis Christos 
 --                            Bellonias Panagiotis
 -- 
--- Create Date:               22:19:27 10/28/2018
+-- Create Date:               11/11/2018
 -- Design Name:   
 -- Module Name:               /Tomasulo/TEST_RS.vhd
 -- Project Name:              Tomasulo
 -- Target Devices:            NONE
 -- Tool versions:             Xilinx ISE 14.7 --TODO: VIVADO
 -- Description:               Introduction in Dynamic Instruction Scheduling (Advanced Computer Architecture)
---                            implementing Tomasulo's Algorithm 	 
+--                            implementing Tomasulo's Algorithm      
 --
 -- VHDL Test Bench Created by ISE for module: RS
 -- 
@@ -27,9 +27,12 @@
 -- to guarantee that the testbench will bind correctly to the post-implementation 
 -- simulation model.
 --------------------------------------------------------------------------------
-
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
+ 
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--USE ieee.numeric_std.ALL;
  
 ENTITY TEST_RS IS
 END TEST_RS;
@@ -52,6 +55,8 @@ ARCHITECTURE behavior OF TEST_RS IS
          Vk : IN  std_logic_vector(31 downto 0);
          Qk : IN  std_logic_vector(4 downto 0);
          Tag_Accepted : OUT  std_logic_vector(4 downto 0);
+         Immed : IN  std_logic;
+         V_immed : IN  std_logic_vector(31 downto 0);
          CDB_V : IN  std_logic_vector(31 downto 0);
          CDB_Q : IN  std_logic_vector(4 downto 0);
          A_Ready : OUT  std_logic;
@@ -80,6 +85,8 @@ ARCHITECTURE behavior OF TEST_RS IS
    signal Qj : std_logic_vector(4 downto 0) := (others => '0');
    signal Vk : std_logic_vector(31 downto 0) := (others => '0');
    signal Qk : std_logic_vector(4 downto 0) := (others => '0');
+   signal Immed : std_logic := '0';
+   signal V_immed : std_logic_vector(31 downto 0) := (others => '0');
    signal CDB_V : std_logic_vector(31 downto 0) := (others => '0');
    signal CDB_Q : std_logic_vector(4 downto 0) := (others => '0');
    signal A_Accepted : std_logic_vector(4 downto 0) := (others => '0');
@@ -119,6 +126,8 @@ BEGIN
           Vk => Vk,
           Qk => Qk,
           Tag_Accepted => Tag_Accepted,
+          Immed => Immed,
+          V_immed => V_immed,
           CDB_V => CDB_V,
           CDB_Q => CDB_Q,
           A_Ready => A_Ready,
@@ -151,8 +160,7 @@ BEGIN
       -- hold reset state for 100 ns.
       wait for 100 ns;	
 
-      
-		------------------------------------------------------------------------CC: 1  RST
+      ------------------------------------------------------------------------CC: 1  RST
       RST        <='1';
 		ISSUE      <='0';
 		FU_type    <="00";
@@ -257,7 +265,7 @@ BEGIN
 		A_Accepted <="00000";
 		L_Accepted <="00000";
 		wait for CLK_period*1;
-		
+
       wait;
    end process;
 
