@@ -1,15 +1,17 @@
---------------------------------------------------------------------------------
--- Company: 
--- Engineer:
---
--- Create Date:   21:49:42 11/10/2018
--- Design Name:   
--- Module Name:   /home/chspyman/Desktop/VHDL/tomasulo_11_11/TEST_Tomasulo.vhd
--- Project Name:  tomasulo_11_11
--- Target Device:  
--- Tool versions:  
--- Description:   
+----------------------------------------------------------------------------------
+-- Company/University:        Technical University of Crete (TUC) - GR
+-- Engineer:                  Spyridakis Christos 
+--                            Bellonias Panagiotis
 -- 
+-- Create Date:               11/10/2018
+-- Design Name:   
+-- Module Name:               /Tomasulo/TEST_Tomasulo.vhd
+-- Project Name:              Tomasulo
+-- Target Devices:            NONE
+-- Tool versions:             Xilinx ISE 14.7 --TODO: VIVADO
+-- Description:               Introduction in Dynamic Instruction Scheduling (Advanced Computer Architecture)
+--                            implementing Tomasulo's Algorithm 	 
+--
 -- VHDL Test Bench Created by ISE for module: Tomasulo
 -- 
 -- Dependencies:
@@ -107,7 +109,7 @@ BEGIN
       -- hold reset state for 100 ns.
       wait for 100 ns;	
 
-----------------------------------------------------------------CC:1    RST
+      ----------------------------------------------------------------CC:1    RST
 		RST     <='1';
 		Issue_I <='0';
 		Fu_type <="00";
@@ -219,7 +221,7 @@ BEGIN
       wait for CLK_period*1;
 	
 		
-		----------------------------------------------------------------CC:12   shift $6,$3,$1
+		----------------------------------------------------------------CC:12   sll $6,$3,$1
 		RST     <='0';
 		Issue_I <='1';
 		Fu_type <="01";
@@ -295,7 +297,7 @@ BEGIN
       wait for CLK_period*1;
 		
 		
-		----------------------------------------------------------------CC:18 shift $9,$2,$1
+		----------------------------------------------------------------CC:18 sll $9,$2,$1
 		RST     <='0';
 		Issue_I <='1';
 		Fu_type <="01";
