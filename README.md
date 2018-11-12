@@ -21,6 +21,13 @@ Implementation of Tomasulo's Algorithm with following specifications:
 	* Common Data Bus
 
 	* Issue Unit
+	     Acceptable operations
+	     - add/addi 
+	     - sub/subi
+	     - sll
+	     - and/andi
+	     - or/ori
+	     - not 
 
 # Import and Run 
 
