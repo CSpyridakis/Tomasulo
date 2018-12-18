@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="/home/chspyman/Desktop/VHDL/Tomasulo3A/TEST_ROB_Reg_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="std_logic_1164" />
+            <top_module name="test_rob_reg" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="17" />
+   <wave_markers>
+      <marker time="100006000" label="" />
+      <marker time="110006000" label="" />
+      <marker time="119906000" label="" />
+      <marker time="130006000" label="" />
+      <marker time="140006000" label="" />
+      <marker time="149906000" label="" />
+      <marker time="159906000" label="" />
+      <marker time="170306000" label="" />
+      <marker time="179906000" label="" />
+      <marker time="189906000" label="" />
+      <marker time="200306000" label="" />
+      <marker time="210106000" label="" />
+      <marker time="220206000" label="" />
+      <marker time="230306000" label="" />
+      <marker time="239806000" label="" />
+      <marker time="249623000" label="" />
+      <marker time="259723000" label="" />
+   </wave_markers>
+   <wvobject fp_name="/test_rob_reg/clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffffff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_rob_reg/rst" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffffff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_rob_reg/my_tag" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">my_tag[4:0]</obj_property>
+      <obj_property name="ObjectShortName">my_tag[4:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#008000</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider20" type="divider">
+      <obj_property name="label">PUSH</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">#00ffff</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="group95" type="group">
+      <obj_property name="label">PUSH</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/test_rob_reg/issue" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">issue</obj_property>
+         <obj_property name="ObjectShortName">issue</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#800000</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_rob_reg/issue_pc" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">issue_pc[31:0]</obj_property>
+         <obj_property name="ObjectShortName">issue_pc[31:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#ffa500</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_rob_reg/issue_i_type" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">issue_i_type[1:0]</obj_property>
+         <obj_property name="ObjectShortName">issue_i_type[1:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_rob_reg/issue_dest" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">issue_dest[4:0]</obj_property>
+         <obj_property name="ObjectShortName">issue_dest[4:0]</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#ffa500</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_rob_reg/uut/empty" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">empty</obj_property>
+         <obj_property name="ObjectShortName">empty</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#800000</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="divider21" type="divider">
+      <obj_property name="label">UPDATE</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">#ffff00</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="group96" type="group">
+      <obj_property name="label">CDB</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/test_rob_reg/cdb_q" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">cdb_q[4:0]</obj_property>
+         <obj_property name="ObjectShortName">cdb_q[4:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#008000</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_rob_reg/cdb_v" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">cdb_v[31:0]</obj_property>
+         <obj_property name="ObjectShortName">cdb_v[31:0]</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#000080</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="divider23" type="divider">
+      <obj_property name="label">POP</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">#808000</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="group97" type="group">
+      <obj_property name="label">POP</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/test_rob_reg/executed" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">executed</obj_property>
+         <obj_property name="ObjectShortName">executed</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#800000</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_rob_reg/pop" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">pop</obj_property>
+         <obj_property name="ObjectShortName">pop</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#800000</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_rob_reg/dest_rf" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">dest_rf[4:0]</obj_property>
+         <obj_property name="ObjectShortName">dest_rf[4:0]</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#ffa500</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_rob_reg/dest_mem" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">dest_mem[4:0]</obj_property>
+         <obj_property name="ObjectShortName">dest_mem[4:0]</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#ffa500</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_rob_reg/value" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">value[31:0]</obj_property>
+         <obj_property name="ObjectShortName">value[31:0]</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#000080</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="divider24" type="divider">
+      <obj_property name="label">EXCEPTION HANDLER</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">#ff0000</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="group98" type="group">
+      <obj_property name="label">EXCEPTION HANDLER</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/test_rob_reg/i_exception" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">i_exception[4:0]</obj_property>
+         <obj_property name="ObjectShortName">i_exception[4:0]</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#ff0000</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_rob_reg/exception" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">exception[4:0]</obj_property>
+         <obj_property name="ObjectShortName">exception[4:0]</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#ff0000</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_rob_reg/pc" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">pc[31:0]</obj_property>
+         <obj_property name="ObjectShortName">pc[31:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#ffa500</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="divider25" type="divider">
+      <obj_property name="label">TAG ACCEPTED</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">128 128 255</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_rob_reg/tag" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">tag[4:0]</obj_property>
+      <obj_property name="ObjectShortName">tag[4:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#008000</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider27" type="divider">
+      <obj_property name="label">DEBUG</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">#800000</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_rob_reg/uut/debug_me" type="other" db_ref_id="1">
+      <obj_property name="ElementShortName">debug_me</obj_property>
+      <obj_property name="ObjectShortName">debug_me</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider29" type="divider">
+      <obj_property name="label">REGS</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">128 128 255</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="group94" type="group">
+      <obj_property name="label">REGS</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="divider30" type="divider">
+         <obj_property name="label">EN, RST AND DATA</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="BkColor">128 128 255</obj_property>
+         <obj_property name="TextColor">230 230 230</obj_property>
+      </wvobject>
+      <wvobject fp_name="group36" type="group">
+         <obj_property name="label">EXEC</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <wvobject fp_name="group88" type="group">
+            <obj_property name="label">IN</obj_property>
+            <obj_property name="DisplayName">label</obj_property>
+            <wvobject fp_name="/test_rob_reg/uut/Exec_R/rst" type="logic" db_ref_id="1">
+               <obj_property name="ElementShortName">rst</obj_property>
+               <obj_property name="ObjectShortName">rst</obj_property>
+               <obj_property name="UseCustomSignalColor">true</obj_property>
+               <obj_property name="CustomSignalColor">#ffffff</obj_property>
+            </wvobject>
+            <wvobject fp_name="/test_rob_reg/uut/Exec_R/en" type="logic" db_ref_id="1">
+               <obj_property name="ElementShortName">en</obj_property>
+               <obj_property name="ObjectShortName">en</obj_property>
+               <obj_property name="UseCustomSignalColor">true</obj_property>
+               <obj_property name="CustomSignalColor">#800000</obj_property>
+            </wvobject>
+            <wvobject fp_name="/test_rob_reg/uut/Exec_R/inn" type="logic" db_ref_id="1">
+               <obj_property name="ElementShortName">inn</obj_property>
+               <obj_property name="ObjectShortName">inn</obj_property>
+               <obj_property name="UseCustomSignalColor">true</obj_property>
+               <obj_property name="CustomSignalColor">#ffa500</obj_property>
+            </wvobject>
+         </wvobject>
+         <wvobject fp_name="/test_rob_reg/uut/Exec_R/outt" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">outt</obj_property>
+            <obj_property name="ObjectShortName">outt</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="CustomSignalColor">#ffa500</obj_property>
+         </wvobject>
+      </wvobject>
+      <wvobject fp_name="divider79" type="divider">
+         <obj_property name="label">I_TYPE</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="BkColor">128 128 255</obj_property>
+         <obj_property name="TextColor">230 230 230</obj_property>
+      </wvobject>
+      <wvobject fp_name="group42" type="group">
+         <obj_property name="label">I_TYPE</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <wvobject fp_name="group89" type="group">
+            <obj_property name="label">IN</obj_property>
+            <obj_property name="DisplayName">label</obj_property>
+            <wvobject fp_name="/test_rob_reg/uut/I_Type_R/rst" type="logic" db_ref_id="1">
+               <obj_property name="ElementShortName">rst</obj_property>
+               <obj_property name="ObjectShortName">rst</obj_property>
+               <obj_property name="UseCustomSignalColor">true</obj_property>
+               <obj_property name="CustomSignalColor">#ffffff</obj_property>
+            </wvobject>
+            <wvobject fp_name="/test_rob_reg/uut/I_Type_R/en" type="logic" db_ref_id="1">
+               <obj_property name="ElementShortName">en</obj_property>
+               <obj_property name="ObjectShortName">en</obj_property>
+               <obj_property name="UseCustomSignalColor">true</obj_property>
+               <obj_property name="CustomSignalColor">#800000</obj_property>
+            </wvobject>
+            <wvobject fp_name="/test_rob_reg/uut/I_Type_R/inn" type="array" db_ref_id="1">
+               <obj_property name="ElementShortName">inn[1:0]</obj_property>
+               <obj_property name="ObjectShortName">inn[1:0]</obj_property>
+               <obj_property name="UseCustomSignalColor">true</obj_property>
+               <obj_property name="CustomSignalColor">#ffa500</obj_property>
+            </wvobject>
+         </wvobject>
+         <wvobject fp_name="/test_rob_reg/uut/I_Type_R/outt" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">outt[1:0]</obj_property>
+            <obj_property name="ObjectShortName">outt[1:0]</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="CustomSignalColor">#ffa500</obj_property>
+         </wvobject>
+      </wvobject>
+      <wvobject fp_name="divider79" type="divider">
+         <obj_property name="label">DEST</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="BkColor">128 128 255</obj_property>
+         <obj_property name="TextColor">230 230 230</obj_property>
+      </wvobject>
+      <wvobject fp_name="group48" type="group">
+         <obj_property name="label">DEST</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <wvobject fp_name="group90" type="group">
+            <obj_property name="label">IN</obj_property>
+            <obj_property name="DisplayName">label</obj_property>
+            <wvobject fp_name="/test_rob_reg/uut/Dest_R/rst" type="logic" db_ref_id="1">
+               <obj_property name="ElementShortName">rst</obj_property>
+               <obj_property name="ObjectShortName">rst</obj_property>
+               <obj_property name="UseCustomSignalColor">true</obj_property>
+               <obj_property name="CustomSignalColor">#ffffff</obj_property>
+            </wvobject>
+            <wvobject fp_name="/test_rob_reg/uut/Dest_R/en" type="logic" db_ref_id="1">
+               <obj_property name="ElementShortName">en</obj_property>
+               <obj_property name="ObjectShortName">en</obj_property>
+               <obj_property name="UseCustomSignalColor">true</obj_property>
+               <obj_property name="CustomSignalColor">#800000</obj_property>
+            </wvobject>
+            <wvobject fp_name="/test_rob_reg/uut/Dest_R/inn" type="array" db_ref_id="1">
+               <obj_property name="ElementShortName">inn[4:0]</obj_property>
+               <obj_property name="ObjectShortName">inn[4:0]</obj_property>
+               <obj_property name="UseCustomSignalColor">true</obj_property>
+               <obj_property name="CustomSignalColor">#ffa500</obj_property>
+               <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+            </wvobject>
+         </wvobject>
+         <wvobject fp_name="/test_rob_reg/uut/Dest_R/outt" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">outt[4:0]</obj_property>
+            <obj_property name="ObjectShortName">outt[4:0]</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="CustomSignalColor">#ffa500</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+      </wvobject>
+      <wvobject fp_name="divider79" type="divider">
+         <obj_property name="label">EXCEPTION</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="BkColor">128 128 255</obj_property>
+         <obj_property name="TextColor">230 230 230</obj_property>
+      </wvobject>
+      <wvobject fp_name="group54" type="group">
+         <obj_property name="label">EXCEPTION</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <wvobject fp_name="group91" type="group">
+            <obj_property name="label">IN</obj_property>
+            <obj_property name="DisplayName">label</obj_property>
+            <wvobject fp_name="/test_rob_reg/uut/Exception_R/rst" type="logic" db_ref_id="1">
+               <obj_property name="ElementShortName">rst</obj_property>
+               <obj_property name="ObjectShortName">rst</obj_property>
+               <obj_property name="UseCustomSignalColor">true</obj_property>
+               <obj_property name="CustomSignalColor">#ffffff</obj_property>
+            </wvobject>
+            <wvobject fp_name="/test_rob_reg/uut/Exception_R/en" type="logic" db_ref_id="1">
+               <obj_property name="ElementShortName">en</obj_property>
+               <obj_property name="ObjectShortName">en</obj_property>
+               <obj_property name="UseCustomSignalColor">true</obj_property>
+               <obj_property name="CustomSignalColor">#800000</obj_property>
+            </wvobject>
+            <wvobject fp_name="/test_rob_reg/uut/Exception_R/inn" type="array" db_ref_id="1">
+               <obj_property name="ElementShortName">inn[4:0]</obj_property>
+               <obj_property name="ObjectShortName">inn[4:0]</obj_property>
+               <obj_property name="UseCustomSignalColor">true</obj_property>
+               <obj_property name="CustomSignalColor">#ff0000</obj_property>
+            </wvobject>
+         </wvobject>
+         <wvobject fp_name="/test_rob_reg/uut/Exception_R/outt" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">outt[4:0]</obj_property>
+            <obj_property name="ObjectShortName">outt[4:0]</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="CustomSignalColor">#ff0000</obj_property>
+         </wvobject>
+      </wvobject>
+      <wvobject fp_name="divider79" type="divider">
+         <obj_property name="label">PC</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="BkColor">128 128 255</obj_property>
+         <obj_property name="TextColor">230 230 230</obj_property>
+      </wvobject>
+      <wvobject fp_name="group60" type="group">
+         <obj_property name="label">PC</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <wvobject fp_name="group92" type="group">
+            <obj_property name="label">IN</obj_property>
+            <obj_property name="DisplayName">label</obj_property>
+            <wvobject fp_name="/test_rob_reg/uut/PC_R/rst" type="logic" db_ref_id="1">
+               <obj_property name="ElementShortName">rst</obj_property>
+               <obj_property name="ObjectShortName">rst</obj_property>
+               <obj_property name="UseCustomSignalColor">true</obj_property>
+               <obj_property name="CustomSignalColor">#ffffff</obj_property>
+            </wvobject>
+            <wvobject fp_name="/test_rob_reg/uut/PC_R/en" type="logic" db_ref_id="1">
+               <obj_property name="ElementShortName">en</obj_property>
+               <obj_property name="ObjectShortName">en</obj_property>
+               <obj_property name="UseCustomSignalColor">true</obj_property>
+               <obj_property name="CustomSignalColor">#800000</obj_property>
+            </wvobject>
+            <wvobject fp_name="/test_rob_reg/uut/PC_R/inn" type="array" db_ref_id="1">
+               <obj_property name="ElementShortName">inn[31:0]</obj_property>
+               <obj_property name="ObjectShortName">inn[31:0]</obj_property>
+               <obj_property name="UseCustomSignalColor">true</obj_property>
+               <obj_property name="CustomSignalColor">#ffa500</obj_property>
+               <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+            </wvobject>
+         </wvobject>
+         <wvobject fp_name="/test_rob_reg/uut/PC_R/outt" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">outt[31:0]</obj_property>
+            <obj_property name="ObjectShortName">outt[31:0]</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="CustomSignalColor">#ffa500</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+      </wvobject>
+      <wvobject fp_name="divider79" type="divider">
+         <obj_property name="label">VALUE</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="BkColor">128 128 255</obj_property>
+         <obj_property name="TextColor">230 230 230</obj_property>
+      </wvobject>
+      <wvobject fp_name="group66" type="group">
+         <obj_property name="label">VALUE</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <wvobject fp_name="group93" type="group">
+            <obj_property name="label">IN</obj_property>
+            <obj_property name="DisplayName">label</obj_property>
+            <wvobject fp_name="/test_rob_reg/uut/Value_R/rst" type="logic" db_ref_id="1">
+               <obj_property name="ElementShortName">rst</obj_property>
+               <obj_property name="ObjectShortName">rst</obj_property>
+               <obj_property name="UseCustomSignalColor">true</obj_property>
+               <obj_property name="CustomSignalColor">#ffffff</obj_property>
+            </wvobject>
+            <wvobject fp_name="/test_rob_reg/uut/Value_R/en" type="logic" db_ref_id="1">
+               <obj_property name="ElementShortName">en</obj_property>
+               <obj_property name="ObjectShortName">en</obj_property>
+               <obj_property name="UseCustomSignalColor">true</obj_property>
+               <obj_property name="CustomSignalColor">#800000</obj_property>
+            </wvobject>
+            <wvobject fp_name="/test_rob_reg/uut/Value_R/inn" type="array" db_ref_id="1">
+               <obj_property name="ElementShortName">inn[31:0]</obj_property>
+               <obj_property name="ObjectShortName">inn[31:0]</obj_property>
+               <obj_property name="UseCustomSignalColor">true</obj_property>
+               <obj_property name="CustomSignalColor">#000080</obj_property>
+               <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+            </wvobject>
+         </wvobject>
+         <wvobject fp_name="/test_rob_reg/uut/Value_R/outt" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">outt[31:0]</obj_property>
+            <obj_property name="ObjectShortName">outt[31:0]</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="CustomSignalColor">#000080</obj_property>
+            <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="divider77" type="divider">
+            <obj_property name="label">EMPTY</obj_property>
+            <obj_property name="DisplayName">label</obj_property>
+            <obj_property name="BkColor">128 128 255</obj_property>
+            <obj_property name="TextColor">230 230 230</obj_property>
+         </wvobject>
+         <wvobject fp_name="divider78" type="divider">
+            <obj_property name="label">EMPTY</obj_property>
+            <obj_property name="DisplayName">label</obj_property>
+            <obj_property name="BkColor">128 128 255</obj_property>
+            <obj_property name="TextColor">230 230 230</obj_property>
+         </wvobject>
+      </wvobject>
+   </wvobject>
+</wave_config>
