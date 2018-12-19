@@ -27,11 +27,12 @@ Port (     CLK : in  STD_LOGIC;
            RST : in  STD_LOGIC;
 				
 			  --TESTING TODO DELETE
-			 ROB_Tag_Accepted : in  STD_LOGIC_VECTOR (4 downto 0);
+--			 ROB_Tag_Accepted : in  STD_LOGIC_VECTOR (4 downto 0);
 				
 				
            -- In case Issue='1' then Issue new Instruction
            Issue_I : in  STD_LOGIC;
+			  PC : in  STD_LOGIC_VECTOR (31 downto 0);
    
            -- Fu_type 
            --    Case = 00 Issue Logical Instruction
@@ -61,7 +62,11 @@ Port (     CLK : in  STD_LOGIC;
            Immed : in  STD_LOGIC;
            -- Value of Immediate, assumed that sign extension or zero extension is already been executed
            V_immed : in  STD_LOGIC_VECTOR (31 downto 0); 
-  
+			
+			  --EXCEPTION
+			  EXC_PC : out  STD_LOGIC_VECTOR (31 downto 0);
+			  EXCEPTION : out  STD_LOGIC_VECTOR (4 downto 0);
+			  
            Accepted : out  STD_LOGIC);
 end Tomasulo;
 
@@ -92,6 +97,33 @@ component RF is
            Vj : out  STD_LOGIC_VECTOR (31 downto 0);
            Vk : out  STD_LOGIC_VECTOR (31 downto 0));
 end component;
+
+--TMP
+component ROB is
+ Port (    CLK : in  STD_LOGIC;
+           RST : in  STD_LOGIC;
+			  
+			  --ISSUE
+			  ISSUE : in STD_LOGIC;
+			  ISSUE_PC : in STD_LOGIC_VECTOR (31 downto 0);
+			  ISSUE_I_type : in STD_LOGIC_VECTOR (1 downto 0);
+			  ISSUE_Dest : in STD_LOGIC_VECTOR (4 downto 0);
+			  ROB_TAG_ACCEPTED :out STD_LOGIC_VECTOR (4 downto 0);
+			  
+			  --FROM CDB (UPDATE QUEUE)
+			  CDB_Q: in STD_LOGIC_VECTOR (4 downto 0);
+			  CDB_V : in STD_LOGIC_VECTOR (31 downto 0);
+			  
+			  --POP
+			  DEST_RF : out STD_LOGIC_VECTOR (4 downto 0);
+			  DEST_MEM : out STD_LOGIC_VECTOR (4 downto 0);
+			  VALUE : out STD_LOGIC_VECTOR (31 downto 0); 
+			  
+			  --EXCEPTION HANDLER
+			  EXCEPTION : out STD_LOGIC_VECTOR (4 downto 0);
+			  PC : out STD_LOGIC_VECTOR (31 downto 0));
+end component;
+
 
 component RS is
     Port ( CLK : in  STD_LOGIC;
@@ -206,6 +238,11 @@ signal A_Request_TMP, A_Grant_TMP, L_Request_TMP, L_Grant_TMP : STD_LOGIC;
 signal A_V_TMP, L_V_TMP: STD_LOGIC_VECTOR (31 downto 0);
 signal A_Q_TMP, L_Q_TMP : STD_LOGIC_VECTOR (4 downto 0);
 
+--ROB
+signal ROB_TAG_ACCEPTED_TMP : STD_LOGIC_VECTOR (4 downto 0);
+signal DEST_MEM_TMP, DEST_RF_TMP : STD_LOGIC_VECTOR (4 downto 0);
+signal ROB_VALUE : STD_LOGIC_VECTOR (31 downto 0);
+
 begin
 
 ISSUE_C : ISSUE
@@ -224,7 +261,7 @@ Port map(   CLK           => CLK,
             Rj            => Rj,
             Rk            => Rk,
             Tag_WE        => Tag_WE_TMP,
-            ROB_Tag_Accepted  => ROB_Tag_Accepted,
+            ROB_Tag_Accepted  => ROB_TAG_ACCEPTED_TMP,
             CDB_Q         => CDB_Q_TMP,
             CDB_V         => CDB_V_TMP,
             Qj            => Qj_TMP,
@@ -232,6 +269,23 @@ Port map(   CLK           => CLK,
             Vj            => Vj_TMP,
             Vk            => Vk_TMP);
 
+--TMP
+ROB_C : ROB
+Port map(    CLK              => CLK,
+		       RST              => RST,
+				 ISSUE            => Issue_I,
+				 ISSUE_PC         => PC,
+				 ISSUE_I_type     => Fu_type,
+				 ISSUE_Dest       => Ri,
+				 ROB_TAG_ACCEPTED => ROB_TAG_ACCEPTED_TMP,
+				 CDB_Q            => CDB_Q_TMP,
+				 CDB_V            => CDB_V_TMP,
+				 DEST_RF          => DEST_RF_TMP,
+				 DEST_MEM         => DEST_MEM_TMP,
+				 VALUE            => ROB_VALUE, 
+				 EXCEPTION        => EXCEPTION,
+				 PC               => EXC_PC);
+			  
 RS_C : RS 
 Port map(  CLK          => CLK,
            RST          => RST,
@@ -244,7 +298,7 @@ Port map(  CLK          => CLK,
            Qj           => Qj_TMP,
            Vk           => Vk_TMP,
            Qk           => Qk_TMP,
-           ROB_Tag_Accepted => ROB_Tag_Accepted,
+           ROB_Tag_Accepted => ROB_TAG_ACCEPTED_TMP,
            Immed        => Immed,
            V_immed      => V_immed,
            CDB_V        => CDB_V_TMP,

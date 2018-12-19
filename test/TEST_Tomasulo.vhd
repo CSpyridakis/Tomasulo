@@ -1,17 +1,15 @@
-----------------------------------------------------------------------------------
--- Company/University:        Technical University of Crete (TUC) - GR
--- Engineer:                  Spyridakis Christos 
---                            Bellonias Panagiotis
--- 
--- Create Date:               11/10/2018
--- Design Name:   
--- Module Name:               /Tomasulo/TEST_Tomasulo.vhd
--- Project Name:              Tomasulo
--- Target Devices:            NONE
--- Tool versions:             Xilinx ISE 14.7 --TODO: VIVADO
--- Description:               Introduction in Dynamic Instruction Scheduling (Advanced Computer Architecture)
---                            implementing Tomasulo's Algorithm 	 
+--------------------------------------------------------------------------------
+-- Company: 
+-- Engineer:
 --
+-- Create Date:   14:51:58 12/18/2018
+-- Design Name:   
+-- Module Name:   /home/chspyman/Desktop/VHDL/Tomasulo3A/TEST_Tomasulo.vhd
+-- Project Name:  Tomasulo3A
+-- Target Device:  
+-- Tool versions:  
+-- Description:   
+-- 
 -- VHDL Test Bench Created by ISE for module: Tomasulo
 -- 
 -- Dependencies:
@@ -46,6 +44,7 @@ ARCHITECTURE behavior OF TEST_Tomasulo IS
          CLK : IN  std_logic;
          RST : IN  std_logic;
          Issue_I : IN  std_logic;
+			PC : in  STD_LOGIC_VECTOR (31 downto 0);
          Fu_type : IN  std_logic_vector(1 downto 0);
          FOP : IN  std_logic_vector(1 downto 0);
          Ri : IN  std_logic_vector(4 downto 0);
@@ -53,6 +52,8 @@ ARCHITECTURE behavior OF TEST_Tomasulo IS
          Rk : IN  std_logic_vector(4 downto 0);
          Immed : IN  std_logic;
          V_immed : IN  std_logic_vector(31 downto 0);
+			EXC_PC : out  STD_LOGIC_VECTOR (31 downto 0);
+			EXCEPTION : out  STD_LOGIC_VECTOR (4 downto 0);
          Accepted : OUT  std_logic
         );
     END COMPONENT;
@@ -69,10 +70,13 @@ ARCHITECTURE behavior OF TEST_Tomasulo IS
    signal Rk : std_logic_vector(4 downto 0) := (others => '0');
    signal Immed : std_logic := '0';
    signal V_immed : std_logic_vector(31 downto 0) := (others => '0');
-
+	signal PC : std_logic_vector(31 downto 0) := (others => '0');
+	 
  	--Outputs
    signal Accepted : std_logic;
-
+	signal EXC_PC : std_logic_vector(31 downto 0) := (others => '0');
+	signal EXCEPTION : std_logic_vector(4 downto 0) := (others => '0');
+	
    -- Clock period definitions
    constant CLK_period : time := 10 ns;
  
@@ -83,6 +87,7 @@ BEGIN
           CLK => CLK,
           RST => RST,
           Issue_I => Issue_I,
+			 PC => PC,
           Fu_type => Fu_type,
           FOP => FOP,
           Ri => Ri,
@@ -90,6 +95,8 @@ BEGIN
           Rk => Rk,
           Immed => Immed,
           V_immed => V_immed,
+			 EXC_PC => EXC_PC,
+			 EXCEPTION => EXCEPTION,
           Accepted => Accepted
         );
 
@@ -109,7 +116,7 @@ BEGIN
       -- hold reset state for 100 ns.
       wait for 100 ns;	
 
-      ----------------------------------------------------------------CC:1    RST
+    ----------------------------------------------------------------CC:1    RST
 		RST     <='1';
 		Issue_I <='0';
 		Fu_type <="00";
@@ -119,6 +126,7 @@ BEGIN
 		Rk      <="00000";
 		Immed   <='0';
 		V_immed <="00000000000000000000000000000000";
+		PC      <="00000000000000000000000000000001";
       wait for CLK_period*1;
 
 		----------------------------------------------------------------CC:2   ori $10, $0, 10
@@ -131,6 +139,7 @@ BEGIN
 		Rk      <="00000";
 		Immed   <='1';
 		V_immed <="00000000000000000000000000001010";
+		PC      <="00000000000000000000000000000010";
       wait for CLK_period*1;
 		
 		----------------------------------------------------------------CC:3   addi $1, $0, 1
@@ -143,6 +152,7 @@ BEGIN
 		Rk      <="00000";
 		Immed   <='1';
 		V_immed <="00000000000000000000000000000001";
+		PC      <="00000000000000000000000000000011";
       wait for CLK_period*1;
 		
 
@@ -156,6 +166,7 @@ BEGIN
 		Rk      <="00000";
 		Immed   <='1';
 		V_immed <="11111111111111111111111111111011";
+		PC      <="00000000000000000000000000000100";
       wait for CLK_period*1;
 		
 		----------------------------------------------------------------CC:5 Nop x 5 CC
@@ -168,6 +179,7 @@ BEGIN
 		Rk      <="00000";
 		Immed   <='0';
 		V_immed <="00000000000000000000000000000000";
+		PC      <="00000000000000000000000000000101";
       wait for CLK_period*5;
 		
 		----------------------------------------------------------------CC:10   add $2, $1, $1
@@ -180,6 +192,7 @@ BEGIN
 		Rk      <="00001";
 		Immed   <='0';
 		V_immed <="00000000000000000000000000000000";
+		PC      <="00000000000000000000000000000110";
       wait for CLK_period*1;
 		
 		----------------------------------------------------------------CC:11   or $3,$2,$1
@@ -192,6 +205,7 @@ BEGIN
 		Rk      <="00001";
 		Immed   <='0';
 		V_immed <="00000000000000000000000000000000";
+		PC      <="00000000000000000000000000000111";
       wait for CLK_period*1;
 		
 		
@@ -205,6 +219,7 @@ BEGIN
 		Rk      <="00001";
 		Immed   <='0';
 		V_immed <="00000000000000000000000000000000";
+		PC      <="00000000000000000000000000001000";
       wait for CLK_period*1;
 		
 		
@@ -218,6 +233,7 @@ BEGIN
 		Rk      <="00001";
 		Immed   <='0';
 		V_immed <="00000000000000000000000000000000";
+		PC      <="00000000000000000000000000001001";
       wait for CLK_period*1;
 	
 		
@@ -231,6 +247,7 @@ BEGIN
 		Rk      <="00001";
 		Immed   <='0';
 		V_immed <="00000000000000000000000000000000";
+		PC      <="00000000000000000000000000001010";
       wait for CLK_period*1;
 		
 		
@@ -244,6 +261,7 @@ BEGIN
 		Rk      <="00001";
 		Immed   <='0';
 		V_immed <="00000000000000000000000000000000";
+		PC      <="00000000000000000000000000001011";
       wait for CLK_period*1;
 		
 		----------------------------------------------------------------CC:16   and $7,$4,$1
@@ -256,6 +274,7 @@ BEGIN
 		Rk      <="00001";
 		Immed   <='0';
 		V_immed <="00000000000000000000000000000000";
+		PC      <="00000000000000000000000000001100";
       wait for CLK_period*1;
 		
 		----------------------------------------------------------------CC:17  and $7,$4,$1
@@ -268,6 +287,7 @@ BEGIN
 		Rk      <="00001";
 		Immed   <='0';
 		V_immed <="00000000000000000000000000000000";
+		PC      <="00000000000000000000000000001101";
       wait for CLK_period*1;
 		
 		
@@ -281,6 +301,7 @@ BEGIN
 		Rk      <="00001";
 		Immed   <='0';
 		V_immed <="00000000000000000000000000000000";
+		PC      <="00000000000000000000000000001110";
       wait for CLK_period*1;
 		
 		
@@ -294,6 +315,7 @@ BEGIN
 		Rk      <="00101";
 		Immed   <='0';
 		V_immed <="00000000000000000000000000000000";
+		PC      <="00000000000000000000000000001111";
       wait for CLK_period*1;
 		
 		
@@ -307,6 +329,7 @@ BEGIN
 		Rk      <="00001";
 		Immed   <='0';
 		V_immed <="00000000000000000000000000000000";
+		PC      <="00000000000000000000000000010000";
       wait for CLK_period*1;
 		
 		
@@ -320,8 +343,8 @@ BEGIN
 		Rk      <="00000";
 		Immed   <='0';
 		V_immed <="00000000000000000000000000000000";
+		PC      <="00000000000000000000000000010001";
       wait for CLK_period*1;
-
       wait;
    end process;
 
