@@ -25,7 +25,11 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity Tomasulo is
 Port (     CLK : in  STD_LOGIC;
            RST : in  STD_LOGIC;
- 
+				
+			  --TESTING TODO DELETE
+			 ROB_Tag_Accepted : in  STD_LOGIC_VECTOR (4 downto 0);
+				
+				
            -- In case Issue='1' then Issue new Instruction
            Issue_I : in  STD_LOGIC;
    
@@ -80,7 +84,7 @@ component RF is
            Rj : in  STD_LOGIC_VECTOR (4 downto 0);
            Rk : in  STD_LOGIC_VECTOR (4 downto 0);
            Tag_WE : in  STD_LOGIC;
-           Tag_Accepted : in  STD_LOGIC_VECTOR (4 downto 0);
+           ROB_Tag_Accepted : in  STD_LOGIC_VECTOR (4 downto 0);
            CDB_Q : in  STD_LOGIC_VECTOR (4 downto 0);
            CDB_V : in  STD_LOGIC_VECTOR (31 downto 0);
            Qj : out  STD_LOGIC_VECTOR (4 downto 0);
@@ -106,7 +110,7 @@ component RS is
            Vk : in  STD_LOGIC_VECTOR (31 downto 0);
            Qk : in  STD_LOGIC_VECTOR (4 downto 0);
    
-           Tag_Accepted : out  STD_LOGIC_VECTOR (4 downto 0);
+           ROB_Tag_Accepted : in  STD_LOGIC_VECTOR (4 downto 0);
            
            Immed : in  STD_LOGIC;
            V_immed : in  STD_LOGIC_VECTOR (31 downto 0); 
@@ -188,7 +192,6 @@ signal CDB_Q_TMP : STD_LOGIC_VECTOR (4 downto 0);
 --RS
 signal Vk_TMP, Vj_TMP : STD_LOGIC_VECTOR (31 downto 0);
 signal Qk_TMP, Qj_TMP : STD_LOGIC_VECTOR (4 downto 0);
-signal Tag_Accepted_TMP : STD_LOGIC_VECTOR (4 downto 0);
 signal A_Available_TMP, L_Available_TMP : STD_LOGIC;
  
 --FU 
@@ -221,7 +224,7 @@ Port map(   CLK           => CLK,
             Rj            => Rj,
             Rk            => Rk,
             Tag_WE        => Tag_WE_TMP,
-            Tag_Accepted  => Tag_Accepted_TMP,
+            ROB_Tag_Accepted  => ROB_Tag_Accepted,
             CDB_Q         => CDB_Q_TMP,
             CDB_V         => CDB_V_TMP,
             Qj            => Qj_TMP,
@@ -241,7 +244,7 @@ Port map(  CLK          => CLK,
            Qj           => Qj_TMP,
            Vk           => Vk_TMP,
            Qk           => Qk_TMP,
-           Tag_Accepted => Tag_Accepted_TMP,
+           ROB_Tag_Accepted => ROB_Tag_Accepted,
            Immed        => Immed,
            V_immed      => V_immed,
            CDB_V        => CDB_V_TMP,

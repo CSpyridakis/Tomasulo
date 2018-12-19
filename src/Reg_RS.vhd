@@ -105,12 +105,27 @@ component Mux_2x5bits is
            Outt : out  STD_LOGIC_VECTOR (4 downto 0));
 end component;
 
+--Storing RS Tag
+component Reg_5bits is
+    Port ( CLK  : in  STD_LOGIC;
+           RST  : in  STD_LOGIC;
+           EN   : in  STD_LOGIC;
+           INN  : in  STD_LOGIC_VECTOR (4 downto 0);
+           OUTT : out  STD_LOGIC_VECTOR (4 downto 0));
+end component;
+
 -- Tmp Signals
 signal  AvailableS, ReadyS, Av_RST, Av_EN, Op_RST, Op_EN, J_RST, J_EN, K_RST, K_EN, Re_RST, Re_EN : STD_LOGIC;							
 signal  J_Vin, K_Vin: STD_LOGIC_VECTOR (31 downto 0);
 signal  J_Qin, J_Q, K_Qin, K_Q: STD_LOGIC_VECTOR (4 downto 0);
 
+--For storing Tag (ROB)
+signal Tag_RST, Tag_EN:STD_LOGIC;
+
+signal  TAG_TMP: STD_LOGIC_VECTOR (4 downto 0);
+
 begin
+
 	---------------------------------------------------------- Reservation Station FSM			  
 	PROCESS(CLK, RST, AvailableS, ReadyS, ISSUE, Qj, Qk, CDB_Q, J_Q, K_Q, Accepted, ID) --TODO: TEST them
 	BEGIN
@@ -121,12 +136,14 @@ begin
 			J_RST  <='1';
 			K_RST  <='1';
 			Re_RST <='1';
+			Tag_RST <='1';
 			--Enables
 			Av_EN  <='0';
 			Op_EN  <='0';
 			J_EN   <='0';
 			K_EN   <='0';
 			Re_EN  <='0';
+			Tag_EN <='0';
 		ELSIF (AvailableS='1' AND ISSUE='1' AND ReadyS='0' AND Qj="00000" AND Qk="00000") THEN 			--Issue with valid Data               
 			--Resets
 			Av_RST <='0'; 
@@ -134,12 +151,14 @@ begin
 			J_RST  <='0';
 			K_RST  <='0';
 			Re_RST <='0';
+			Tag_RST <='0';
 			--Enables
 			Av_EN  <='1';
 			Op_EN  <='1';
 			J_EN   <='1';
 			K_EN   <='1';
 			Re_EN  <='1';
+			Tag_EN <='1';
 		ELSIF (AvailableS='1' AND ISSUE='1' AND ReadyS='0' )	THEN													--Issue with One OR none of them Ready
 			--Resets
 			Av_RST <='0'; 
@@ -147,12 +166,14 @@ begin
 			J_RST  <='0';
 			K_RST  <='0';
 			Re_RST <='0';
+			Tag_RST <='0';
 			--Enables
 			Av_EN  <='1';
 			Op_EN  <='1';
 			J_EN   <='1';
 			K_EN   <='1';
 			Re_EN  <='0';
+			Tag_EN <='1';
 		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='0' AND CDB_Q/="00000" AND CDB_Q=J_Q AND K_Q="00000")	THEN			--CDB_Q is equal with J's Tag And K is valid
 			--Resets
 			Av_RST <='0'; 
@@ -160,12 +181,14 @@ begin
 			J_RST  <='0';
 			K_RST  <='0';
 			Re_RST <='0';
+			Tag_RST <='0';
 			--Enables
 			Av_EN  <='0';
 			Op_EN  <='0';
 			J_EN   <='1';
 			K_EN   <='0';
 			Re_EN  <='1';
+			Tag_EN <='0';
 		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='0' AND J_Q="00000" AND CDB_Q/="00000" AND CDB_Q=K_Q)	THEN			--CDB_Q is equal with K's Tag And J is valid
 			--Resets
 			Av_RST <='0'; 
@@ -173,12 +196,14 @@ begin
 			J_RST  <='0';
 			K_RST  <='0';
 			Re_RST <='0';
+			Tag_RST <='0';
 			--Enables
 			Av_EN  <='0';
 			Op_EN  <='0';
 			J_EN   <='0';
 			K_EN   <='1';
 			Re_EN  <='1';
+			Tag_EN <='0';
 		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='0' AND CDB_Q/="00000" AND CDB_Q=J_Q AND CDB_Q=K_Q)	THEN				--CDB_Q is equal with K's and J's Tag
 			--Resets
 			Av_RST <='0'; 
@@ -186,64 +211,74 @@ begin
 			J_RST  <='0';
 			K_RST  <='0';
 			Re_RST <='0';
+			Tag_RST <='0';
 			--Enables
 			Av_EN  <='0';
 			Op_EN  <='0';
 			J_EN   <='1';
 			K_EN   <='1';
 			Re_EN  <='1';
-		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='0' AND CDB_Q/="00000" AND CDB_Q=K_Q)	THEN				--CDB_Q is equal with K's tag
+			Tag_EN <='0';
+		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='0' AND CDB_Q/="00000" AND CDB_Q=K_Q)	THEN								--CDB_Q is equal with K's tag
 			--Resets
 			Av_RST <='0'; 
 			Op_RST <='0';
 			J_RST  <='0';
 			K_RST  <='0';
 			Re_RST <='0';
+			Tag_RST <='0';
 			--Enables
 			Av_EN  <='0';
 			Op_EN  <='0';
 			J_EN   <='0';
 			K_EN   <='1';
 			Re_EN  <='0';
-		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='0' AND CDB_Q/="00000" AND CDB_Q=J_Q)	THEN				--CDB_Q is equal with J's tag 
+			Tag_EN <='0';
+		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='0' AND CDB_Q/="00000" AND CDB_Q=J_Q)	THEN								--CDB_Q is equal with J's tag 
 			--Resets
 			Av_RST <='0'; 
 			Op_RST <='0';
 			J_RST  <='0';
 			K_RST  <='0';
 			Re_RST <='0';
+			Tag_RST <='0';
 			--Enables
 			Av_EN  <='0';
 			Op_EN  <='0';
 			J_EN   <='1';
 			K_EN   <='0';
 			Re_EN  <='0';
-		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='1' AND Accepted='1')	THEN								--RS Accepted from FU
+			Tag_EN <='0';
+		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='1' AND Accepted='1')	THEN														--RS Accepted from FU
 			--Resets
 			Av_RST <='0'; 
 			Op_RST <='0';
 			J_RST  <='0';
 			K_RST  <='0';
 			Re_RST <='1';
+			Tag_RST <='0';
 			--Enables
 			Av_EN  <='0';
 			Op_EN  <='0';
 			J_EN   <='0';
 			K_EN   <='0';
 			Re_EN  <='0';
-		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='0' AND CDB_Q=ID)	THEN									--Operation Completed
+			Tag_EN <='0';
+		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='0' AND CDB_Q=TAG_TMP)	THEN													--Operation Completed
 			--Resets
 			Av_RST <='1'; 
 			Op_RST <='1';
 			J_RST  <='1';
 			K_RST  <='1';
 			Re_RST <='1';
+			Tag_RST <='1';
 			--Enables
 			Av_EN  <='0';
 			Op_EN  <='0';
 			J_EN   <='0';
 			K_EN   <='0';
 			Re_EN  <='0';
+			Tag_EN <='0';
 		ELSE
 		--Resets
 			Av_RST <='0'; 
@@ -251,16 +286,26 @@ begin
 			J_RST  <='0';
 			K_RST  <='0';
 			Re_RST <='0';
+			Tag_RST <='0';
 			--Enables
 			Av_EN  <='0';
 			Op_EN  <='0';
 			J_EN   <='0';
 			K_EN   <='0';
 			Re_EN  <='0';
+			Tag_EN <='0';
 		END IF;
 	END PROCESS;
 	
-	Tag<=ID;
+	
+	--MY TAG
+	Tag<=TAG_TMP;
+	myTag : Reg_5bits 
+       Port map( CLK  => CLK,
+                 RST  => Tag_RST,
+                 EN   => Tag_EN,
+                 INN  => ID,
+                 OUTT => TAG_TMP);
 	
 	-- Available 
 	-- When a RS is Empty Avail='1' 

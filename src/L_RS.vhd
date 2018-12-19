@@ -14,8 +14,8 @@
 --
 -- Dependencies:              NONE
 --
--- Revision:                  1.0
--- Revision                   1.0 - File Created
+-- Revision:                  2.0 
+-- Revision                   2.0 - ROB
 -- Additional Comments: 
 --
 ----------------------------------------------------------------------------------
@@ -35,7 +35,7 @@ entity L_RS is
            Qj : in  STD_LOGIC_VECTOR (4 downto 0);
            Vk : in  STD_LOGIC_VECTOR (31 downto 0);
            Qk : in  STD_LOGIC_VECTOR (4 downto 0);
-           L_Tag_Accepted : out STD_LOGIC_VECTOR (4 downto 0);
+           ROB_Tag_Accepted : in STD_LOGIC_VECTOR (4 downto 0);
 				
            --CDB
            CDB_V : in  STD_LOGIC_VECTOR (31 downto 0);
@@ -103,20 +103,21 @@ signal L1_Available, L2_Available: STD_LOGIC;
 signal L1_Ready, L2_Ready: STD_LOGIC;
 signal L1_Accepted, L2_Accepted: STD_LOGIC;
 signal L1_ISSUE, L2_ISSUE: STD_LOGIC;
-signal L_TagS, L1_Tag, L2_Tag: STD_LOGIC_VECTOR (4 downto 0);
+signal L_Tag_Out, L_Tag_Sel, L1_Tag, L2_Tag: STD_LOGIC_VECTOR (4 downto 0);
 signal L1_Op, L2_Op : STD_LOGIC_VECTOR (1 downto 0);
 signal L1_Vj, L1_Vk, L2_Vj, L2_Vk: STD_LOGIC_VECTOR (31 downto 0);
 
+--For Round-Robin RS selection to forward to FU
 TYPE LastAcceptedCases IS (NONE, L1, L2);  
 SIGNAL Last : LastAcceptedCases := NONE;
 
 begin
 
 -- Accepted From FU RS Ready bit update
-L1_Accepted <= '1' WHEN L_Accepted="00001" ELSE '0';
-L2_Accepted <= '1' WHEN L_Accepted="00010" ELSE '0';
+L1_Accepted <= '1' WHEN L_Accepted=L1_Tag ELSE '0';
+L2_Accepted <= '1' WHEN L_Accepted=L2_Tag ELSE '0';
 
-L_Tag <= L_TagS;
+L_Tag <= L_Tag_Out;
 
 -- RS ISSUE
 PROCESS(CLK, ISSUE, L1_Available, L2_Available)
@@ -127,15 +128,12 @@ BEGIN
 		IF (ISSUE='1' AND L1_Available='1' AND CLK='0' ) THEN                             -- IF L_RS1 is available will accept next instruction
 			L1_ISSUE <= '1';
 			L2_ISSUE <= '0';
-			L_Tag_Accepted <= "00001";
 		ELSIF (ISSUE='1' AND L1_Available='0' AND L2_Available='1' AND CLK='0') THEN      -- IF L_RS2 is available will accept next instruction
 			L1_ISSUE <= '0';
 			L2_ISSUE <= '1';
-			L_Tag_Accepted <= "00010";
 		ELSE
 			L1_ISSUE <= '0';
 			L2_ISSUE <= '0';
-			L_Tag_Accepted <= "00000";
 		END IF;
 END PROCESS;
 
@@ -144,20 +142,23 @@ PROCESS(L1_Ready, L2_Ready)
 BEGIN
 	IF (L1_Ready='1' AND (Last=None OR Last=L2 OR (Last=L1 AND L2_Ready='0'))) THEN
 		Last<=L1;
-		L_TagS<=L1_Tag;
+		L_Tag_Out<=L1_Tag;
+		L_Tag_Sel<="01001";
 	ELSIF(L2_Ready='1' AND (Last=None OR Last=L1 OR (Last=L1 AND L2_Ready='0'))) THEN
 		Last<=L2;
-		L_TagS<=L2_Tag;
+		L_Tag_Out<=L2_Tag;
+		L_Tag_Sel<="01010";
 	ELSE
 		Last<=Last;
-		L_TagS<="00000";
+		L_Tag_Out<="00000";
+		L_Tag_Sel<="00000";
 	END IF;
 END PROCESS;
 
 L1_R : Reg_RS 
     Port map( CLK       => CLK,
               RST       => RST,
-              ID        => "00001",
+              ID        => ROB_Tag_Accepted,
               Available => L1_Available,
               ISSUE     => L1_ISSUE,
               Op_ISSUE  => FOP,
@@ -177,7 +178,7 @@ L1_R : Reg_RS
 L2_R : Reg_RS 
     Port map( CLK       => CLK,
               RST       => RST,
-              ID        => "00010",
+              ID        => ROB_Tag_Accepted,
               Available => L2_Available,
               ISSUE     => L2_ISSUE,
               Op_ISSUE  => FOP,
@@ -199,21 +200,21 @@ Op_M : Mux_3x2bits
     Port map( In1  => L1_Op,
               In2  => L2_Op,
               In3  => "00",
-              Sel  => L_TagS(1 downto 0),
+              Sel  => L_Tag_Sel(1 downto 0),
               Outt => L_Op);
 				  
 Vj_M : Mux_3x32bits		  
     Port map( In1  => L1_Vj,
               In2  => L2_Vj,
               In3  => "00000000000000000000000000000000",
-              Sel  => L_TagS(1 downto 0),
+              Sel  => L_Tag_Sel(1 downto 0),
               Outt => L_Vj);
 				  
 Vk_M : Mux_3x32bits		  
     Port map( In1  => L1_Vk,
               In2  => L2_Vk,
               In3  => "00000000000000000000000000000000",
-              Sel  => L_TagS(1 downto 0),
+              Sel  => L_Tag_Sel(1 downto 0),
               Outt => L_Vk);
   
 end Behavioral;

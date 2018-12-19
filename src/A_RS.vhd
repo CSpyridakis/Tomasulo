@@ -14,8 +14,8 @@
 --
 -- Dependencies:              NONE
 --
--- Revision:                  1.0
--- Revision                   1.0 - File Created
+-- Revision:                  2.0 
+-- Revision                   2.0 - ROB
 -- Additional Comments: 
 --
 ----------------------------------------------------------------------------------
@@ -35,7 +35,7 @@ entity A_RS is
            Qj : in  STD_LOGIC_VECTOR (4 downto 0);
            Vk : in  STD_LOGIC_VECTOR (31 downto 0);
            Qk : in  STD_LOGIC_VECTOR (4 downto 0);
-           A_Tag_Accepted : out STD_LOGIC_VECTOR (4 downto 0);
+           ROB_Tag_Accepted : in STD_LOGIC_VECTOR (4 downto 0);
  
            --CDB
            CDB_V : in  STD_LOGIC_VECTOR (31 downto 0);
@@ -103,21 +103,22 @@ signal A1_Available, A2_Available, A3_Available: STD_LOGIC;
 signal A1_Ready, A2_Ready, A3_Ready: STD_LOGIC;
 signal A1_Accepted, A2_Accepted, A3_Accepted : STD_LOGIC;
 signal A1_ISSUE, A2_ISSUE, A3_ISSUE : STD_LOGIC;
-signal A_TagS, A1_Tag, A2_Tag, A3_Tag : STD_LOGIC_VECTOR (4 downto 0);
+signal A_Tag_Out, A_Tag_Sel, A1_Tag, A2_Tag, A3_Tag : STD_LOGIC_VECTOR (4 downto 0);
 signal A1_Op, A2_Op, A3_Op : STD_LOGIC_VECTOR (1 downto 0);
 signal A1_Vj, A1_Vk, A2_Vj, A2_Vk, A3_Vj, A3_Vk : STD_LOGIC_VECTOR (31 downto 0);
 
+--For Round-Robin RS selection to forward to FU
 TYPE LastAcceptedCases IS (NONE, A1, A2, A3);  
 SIGNAL Last : LastAcceptedCases := NONE;    
   
 begin
 
 -- Accepted From FU RS Ready bit update
-A1_Accepted <= '1' WHEN A_Accepted="01001" ELSE '0';
-A2_Accepted <= '1' WHEN A_Accepted="01010" ELSE '0';
-A3_Accepted <= '1' WHEN A_Accepted="01011" ELSE '0';
+A1_Accepted <= '1' WHEN A_Accepted=A1_Tag ELSE '0';
+A2_Accepted <= '1' WHEN A_Accepted=A2_Tag ELSE '0';
+A3_Accepted <= '1' WHEN A_Accepted=A3_Tag ELSE '0';
 
-A_Tag <= A_TagS;
+A_Tag <= A_Tag_Out;
 
 -- RS ISSUE
 PROCESS(CLK, ISSUE, A1_Available, A2_Available, A3_Available)
@@ -129,22 +130,18 @@ BEGIN
 			A1_ISSUE <= '1';
 			A2_ISSUE <= '0';
 			A3_ISSUE <= '0';
-			A_Tag_Accepted <= "01001";
 		ELSIF (ISSUE='1' AND A1_Available='0' AND A2_Available='1' AND CLK='0') THEN                      -- IF A_RS2 is available will accept next instruction
 			A1_ISSUE <= '0';
 			A2_ISSUE <= '1';
 			A3_ISSUE <= '0';
-			A_Tag_Accepted <= "01010";
 		ELSIF (ISSUE='1' AND A1_Available='0' AND A2_Available='0' AND A3_Available='1' AND CLK='0') THEN -- IF A_RS3 is available will accept next instruction
 			A1_ISSUE <= '0';
 			A2_ISSUE <= '0';
 			A3_ISSUE <= '1';
-			A_Tag_Accepted <= "01011";
 		ELSE
 			A1_ISSUE <= '0';
 			A2_ISSUE <= '0';
 			A3_ISSUE <= '0';
-			A_Tag_Accepted <= "00000";
 		END IF;
 END PROCESS;
  
@@ -153,23 +150,27 @@ PROCESS(A1_Ready, A2_Ready, A3_Ready)
 BEGIN
 	IF (A1_Ready='1' AND (Last=None OR (Last=A3) OR (Last=A2 AND A3_Ready='0') OR (Last=A1 AND A2_Ready='0' AND A3_Ready='0'))) THEN
 		Last<=A1;
-		A_TagS<=A1_Tag;
+		A_Tag_Sel<="00001";
+		A_Tag_Out<=A1_Tag;
 	ELSIF(A2_Ready='1' AND (Last=None OR (Last=A1) OR (Last=A3 AND A1_Ready='0') OR (Last=A2 AND A3_Ready='0' AND A1_Ready='0'))) THEN
 		Last<=A2;
-		A_TagS<=A2_Tag;
+		A_Tag_Sel<="00010";
+		A_Tag_Out<=A2_Tag;
 	ELSIF(A3_Ready='1' AND (Last=None OR (Last=A2) OR (Last=A1 AND A2_Ready='0') OR (Last=A3 AND A1_Ready='0' AND A2_Ready='0'))) THEN
 		Last<=A3;
-		A_TagS<=A3_Tag;
+		A_Tag_Sel<="00011";
+		A_Tag_Out<=A3_Tag;
 	ELSE
 		Last<=Last;
-		A_TagS<="00000";
+		A_Tag_Sel<="00000";
+		A_Tag_Out<="00000";
 	END IF;
 END PROCESS;
  
 A1_R : Reg_RS 
     Port map( CLK       => CLK,
               RST       => RST,
-              ID        => "01001",
+              ID        => ROB_Tag_Accepted,
               Available => A1_Available,
               ISSUE     => A1_ISSUE,
               Op_ISSUE  => FOP,
@@ -189,7 +190,7 @@ A1_R : Reg_RS
 A2_R : Reg_RS 
     Port map( CLK       => CLK,
               RST       => RST,
-              ID        => "01010",
+              ID        => ROB_Tag_Accepted,
               Available => A2_Available,
               ISSUE     => A2_ISSUE,
               Op_ISSUE  => FOP,
@@ -209,7 +210,7 @@ A2_R : Reg_RS
 A3_R : Reg_RS 
     Port map( CLK       => CLK,
               RST       => RST,
-              ID        => "01011",
+              ID        => ROB_Tag_Accepted,
               Available => A3_Available,
               ISSUE     => A3_ISSUE,
               Op_ISSUE  => FOP,
@@ -231,21 +232,21 @@ Op_M : Mux_3x2bits
     Port map( In1  => A1_Op,
               In2  => A2_Op,
               In3  => A3_Op,
-              Sel  => A_TagS(1 downto 0),
+              Sel  => A_Tag_Sel(1 downto 0),
               Outt => A_Op); 
  
 Vj_M : Mux_3x32bits		  
     Port map( In1  => A1_Vj,
               In2  => A2_Vj,
               In3  => A3_Vj,
-              Sel  => A_TagS(1 downto 0),
+              Sel  => A_Tag_Sel(1 downto 0),
               Outt => A_Vj);
  
 Vk_M : Mux_3x32bits		  
     Port map( In1  => A1_Vk,
               In2  => A2_Vk,
               In3  => A3_Vk,
-              Sel  => A_TagS(1 downto 0),
+              Sel  => A_Tag_Sel(1 downto 0),
               Outt => A_Vk);
  
 end Behavioral;

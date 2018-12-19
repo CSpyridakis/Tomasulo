@@ -29,7 +29,7 @@ entity RF_Reg is
            ID : in  STD_LOGIC_VECTOR (4 downto 0);
            Ri : in  STD_LOGIC_VECTOR (4 downto 0);
            Tag_WE : in  STD_LOGIC;
-           Tag_Accepted : in  STD_LOGIC_VECTOR (4 downto 0);
+           ROB_Tag_Accepted : in  STD_LOGIC_VECTOR (4 downto 0);
            CDB_Q : in  STD_LOGIC_VECTOR (4 downto 0);
            CDB_V : in  STD_LOGIC_VECTOR (31 downto 0);
            Q : out  STD_LOGIC_VECTOR (4 downto 0);
@@ -70,7 +70,7 @@ signal Sel, En : STD_LOGIC;
 begin
 
 -- Register Inputs selection
-Sel <= '0' WHEN Tag_WE='1' AND ID = Ri ELSE              -- ISSUE : V="000.." AND Q = Tag_Accepted
+Sel <= '0' WHEN Tag_WE='1' AND ID = Ri ELSE              -- ISSUE : V="000.." AND Q = ROB_Tag_Accepted
        '1';                                              -- ELSE  : V= CDB_V  AND Q = "00000" 
 
 -- Register Write Enable
@@ -85,7 +85,7 @@ Port map( In0  => "00000000000000000000000000000000",
 		    Outt => V_I);
 
 Q_IN : Mux_2x5bits
-Port map( In0  => Tag_Accepted,
+Port map( In0  => ROB_Tag_Accepted,
 		    In1  => "00000",
 		    Sel  => Sel,
 		    Outt => Q_I);

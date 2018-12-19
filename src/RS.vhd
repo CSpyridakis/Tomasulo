@@ -14,8 +14,8 @@
 --
 -- Dependencies:              NONE
 --
--- Revision:                  1.0
--- Revision                   1.0 - File Created
+-- Revision:                  2.0 
+-- Revision                   2.0 - ROB
 -- Additional Comments: 
 --
 ----------------------------------------------------------------------------------
@@ -39,8 +39,10 @@ entity RS is
            Vk : in  STD_LOGIC_VECTOR (31 downto 0);
            Qk : in  STD_LOGIC_VECTOR (4 downto 0);
 			  
-           Tag_Accepted : out  STD_LOGIC_VECTOR (4 downto 0);
+			  --ROB tag Accepted
+           ROB_Tag_Accepted : in  STD_LOGIC_VECTOR (4 downto 0);
            
+			  --Immediate
 			  Immed : in  STD_LOGIC;
 			  V_immed : in  STD_LOGIC_VECTOR (31 downto 0); 
 			  
@@ -82,7 +84,7 @@ component A_RS is
            Qj : in  STD_LOGIC_VECTOR (4 downto 0);
            Vk : in  STD_LOGIC_VECTOR (31 downto 0);
            Qk : in  STD_LOGIC_VECTOR (4 downto 0);
-           A_Tag_Accepted : out STD_LOGIC_VECTOR (4 downto 0);
+           ROB_Tag_Accepted : in STD_LOGIC_VECTOR (4 downto 0);
 				
            --CDB
            CDB_V : in  STD_LOGIC_VECTOR (31 downto 0);
@@ -110,7 +112,7 @@ component L_RS is
            Qj : in  STD_LOGIC_VECTOR (4 downto 0);
            Vk : in  STD_LOGIC_VECTOR (31 downto 0);
            Qk : in  STD_LOGIC_VECTOR (4 downto 0);
-           L_Tag_Accepted : out STD_LOGIC_VECTOR (4 downto 0);
+           ROB_Tag_Accepted : in STD_LOGIC_VECTOR (4 downto 0);
 				
            --CDB
            CDB_V : in  STD_LOGIC_VECTOR (31 downto 0);
@@ -126,7 +128,6 @@ component L_RS is
 end component ;
 
 signal A_Issue, L_Issue : STD_LOGIC;				
-signal A_Tag_Accepted, L_Tag_Accepted : STD_LOGIC_VECTOR (4 downto 0) := "00000";
 
 -- For immediate
 signal Vk_TMP : STD_LOGIC_VECTOR (31 downto 0);
@@ -134,17 +135,9 @@ signal Qk_TMP : STD_LOGIC_VECTOR (4 downto 0);
 
 begin
 
-
 -- Arithmetic Or Logical ISSUE Selection
 A_Issue <= '1' WHEN ISSUE = '1' AND FU_type="01" ELSE '0';
-
-L_Issue <= '1' WHEN ISSUE = '1' AND FU_type="00" ELSE '0';
-			
-
--- Based on Arithmetic Or Logical Issue Return Tag of RS which accepted (if accepted) instruction 
-Tag_Accepted <= A_Tag_Accepted WHEN A_Issue = '1' AND L_Issue = '0' ELSE
-                L_Tag_Accepted WHEN A_Issue = '0' AND L_Issue = '1' ELSE
-                "00000";         
+L_Issue <= '1' WHEN ISSUE = '1' AND FU_type="00" ELSE '0';        
 
 -- Immed enabled 
 Vk_TMP <= V_immed WHEN Immed='1' ELSE Vk;
@@ -160,7 +153,7 @@ A_R : A_RS
               Qj             => Qj,
               Vk             => Vk_TMP,
               Qk             => Qk_TMP,
-              A_Tag_Accepted => A_Tag_Accepted,
+              ROB_Tag_Accepted => ROB_Tag_Accepted,
               CDB_V          => CDB_V,
               CDB_Q          => CDB_Q,
               A_Ready        => A_Ready,
@@ -180,7 +173,7 @@ L_R : L_RS
               Qj             => Qj,
               Vk             => Vk_TMP,
               Qk             => Qk_TMP,
-              L_Tag_Accepted => L_Tag_Accepted,
+              ROB_Tag_Accepted => ROB_Tag_Accepted,
               CDB_V          => CDB_V,
               CDB_Q          => CDB_Q,
               L_Ready        => L_Ready,
