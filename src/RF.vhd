@@ -31,8 +31,8 @@ entity RF is
            Rk : in  STD_LOGIC_VECTOR (4 downto 0);
            Tag_WE : in  STD_LOGIC;
            ROB_Tag_Accepted : in  STD_LOGIC_VECTOR (4 downto 0);
-           CDB_Q : in  STD_LOGIC_VECTOR (4 downto 0);
-           CDB_V : in  STD_LOGIC_VECTOR (31 downto 0);
+           ROB_Q : in  STD_LOGIC_VECTOR (4 downto 0);
+           ROB_V : in  STD_LOGIC_VECTOR (31 downto 0);
            Qj : out  STD_LOGIC_VECTOR (4 downto 0);
            Qk : out  STD_LOGIC_VECTOR (4 downto 0);
            Vj : out  STD_LOGIC_VECTOR (31 downto 0);
@@ -48,8 +48,8 @@ component RF_Reg is
            Ri : in  STD_LOGIC_VECTOR (4 downto 0);
            Tag_WE : in  STD_LOGIC;
            ROB_Tag_Accepted : in  STD_LOGIC_VECTOR (4 downto 0);
-           CDB_Q : in  STD_LOGIC_VECTOR (4 downto 0);
-           CDB_V : in  STD_LOGIC_VECTOR (31 downto 0);
+           ROB_Q : in  STD_LOGIC_VECTOR (4 downto 0);
+           ROB_V : in  STD_LOGIC_VECTOR (31 downto 0);
            Q : out  STD_LOGIC_VECTOR (4 downto 0);
            V : out  STD_LOGIC_VECTOR (31 downto 0));
 end component;
@@ -65,22 +65,22 @@ signal QOUT : signal_32x5 := (others => (others => '0'));
 begin
 
 -- Forwarding (fall-through implementation)
-process(Tag_WE, Rj, Rk, CDB_Q)
+process(Tag_WE, Rj, Rk, ROB_Q)
 begin 
-	if (Tag_WE='1' AND CDB_Q/="00000" AND CDB_Q = QOUT(to_integer(UNSIGNED(Rj))) AND CDB_Q = QOUT(to_integer(UNSIGNED(Rk)))) then			-- Forward CDB_V to Rj and Rk when CDB_Q = Rj_Q and CDB_Q = Rk_Q 
-	  Vj<=CDB_V;
+	if (Tag_WE='1' AND ROB_Q/="00000" AND ROB_Q = QOUT(to_integer(UNSIGNED(Rj))) AND ROB_Q = QOUT(to_integer(UNSIGNED(Rk)))) then			-- Forward ROB_V to Rj and Rk when ROB_Q = Rj_Q and ROB_Q = Rk_Q 
+	  Vj<=ROB_V;
 	  Qj<="00000"; 
-	  Vk<=CDB_V;
+	  Vk<=ROB_V;
 	  Qk<="00000";
-	elsif (Tag_WE='1' AND CDB_Q/="00000" AND CDB_Q = QOUT(to_integer(UNSIGNED(Rj)))) then																-- Forward CDB_V to Rj when CDB_Q = Rj_Q 
-	  Vj<=CDB_V;
+	elsif (Tag_WE='1' AND ROB_Q/="00000" AND ROB_Q = QOUT(to_integer(UNSIGNED(Rj)))) then																-- Forward ROB_V to Rj when ROB_Q = Rj_Q 
+	  Vj<=ROB_V;
 	  Qj<="00000";
 	  Vk<=VOUT(to_integer(UNSIGNED(Rk)));
 	  Qk<=QOUT(to_integer(UNSIGNED(Rk)));
-	elsif (CDB_Q/="00000" AND CDB_Q = QOUT(to_integer(UNSIGNED(Rk)))) then																               -- Forward CDB_V to Rk when CDB_Q = Rk_Q 
+	elsif (ROB_Q/="00000" AND ROB_Q = QOUT(to_integer(UNSIGNED(Rk)))) then																               -- Forward ROB_V to Rk when ROB_Q = Rk_Q 
 	  Vj<=VOUT(to_integer(UNSIGNED(Rj)));
 	  Qj<=QOUT(to_integer(UNSIGNED(Rj))); 
-	  Vk<=CDB_V;
+	  Vk<=ROB_V;
 	  Qk<="00000";
 	else
 	  Vj<=VOUT(to_integer(UNSIGNED(Rj)));
@@ -98,8 +98,8 @@ end process;
 --          Ri           => Ri,
 --          Tag_WE       => Tag_WE,
 --          ROB_Tag_Accepted => ROB_Tag_Accepted,
---          CDB_Q        => CDB_Q,
---          CDB_V        => CDB_V,
+--          ROB_Q        => ROB_Q,
+--          ROB_V        => ROB_V,
 --          Q            => open,
 --          V            => open);
 
@@ -115,8 +115,8 @@ Port map( CLK          => CLK,
           Ri           => Ri,
           Tag_WE       => Tag_WE,
           ROB_Tag_Accepted => ROB_Tag_Accepted,
-          CDB_Q        => CDB_Q,
-          CDB_V        => CDB_V,
+          ROB_Q        => ROB_Q,
+          ROB_V        => ROB_V,
           Q            => QOUT(1),
           V            => VOUT(1));
 
@@ -128,8 +128,8 @@ Port map( CLK          => CLK,
           Ri           => Ri,
           Tag_WE       => Tag_WE,
           ROB_Tag_Accepted => ROB_Tag_Accepted,
-          CDB_Q        => CDB_Q,
-          CDB_V        => CDB_V,
+          ROB_Q        => ROB_Q,
+          ROB_V        => ROB_V,
           Q            => QOUT(2),
           V            => VOUT(2));
 
@@ -141,8 +141,8 @@ Port map( CLK          => CLK,
           Ri           => Ri,
           Tag_WE       => Tag_WE,
           ROB_Tag_Accepted => ROB_Tag_Accepted,
-          CDB_Q        => CDB_Q,
-          CDB_V        => CDB_V,
+          ROB_Q        => ROB_Q,
+          ROB_V        => ROB_V,
           Q            => QOUT(3),
           V            => VOUT(3));
 
@@ -154,8 +154,8 @@ Port map( CLK          => CLK,
           Ri           => Ri,
           Tag_WE       => Tag_WE,
           ROB_Tag_Accepted => ROB_Tag_Accepted,
-          CDB_Q        => CDB_Q,
-          CDB_V        => CDB_V,
+          ROB_Q        => ROB_Q,
+          ROB_V        => ROB_V,
           Q            => QOUT(4),
           V            => VOUT(4));
 
@@ -167,8 +167,8 @@ Port map( CLK          => CLK,
           Ri           => Ri,
           Tag_WE       => Tag_WE,
           ROB_Tag_Accepted => ROB_Tag_Accepted,
-          CDB_Q        => CDB_Q,
-          CDB_V        => CDB_V,
+          ROB_Q        => ROB_Q,
+          ROB_V        => ROB_V,
           Q            => QOUT(5),
           V            => VOUT(5));
 
@@ -180,8 +180,8 @@ Port map( CLK          => CLK,
           Ri           => Ri,
           Tag_WE       => Tag_WE,
           ROB_Tag_Accepted => ROB_Tag_Accepted,
-          CDB_Q        => CDB_Q,
-          CDB_V        => CDB_V,
+          ROB_Q        => ROB_Q,
+          ROB_V        => ROB_V,
           Q            => QOUT(6),
           V            => VOUT(6));
 
@@ -193,8 +193,8 @@ Port map( CLK          => CLK,
           Ri           => Ri,
           Tag_WE       => Tag_WE,
           ROB_Tag_Accepted => ROB_Tag_Accepted,
-          CDB_Q        => CDB_Q,
-          CDB_V        => CDB_V,
+          ROB_Q        => ROB_Q,
+          ROB_V        => ROB_V,
           Q            => QOUT(7),
           V            => VOUT(7));
 
@@ -206,8 +206,8 @@ Port map( CLK          => CLK,
           Ri           => Ri,
           Tag_WE       => Tag_WE,
           ROB_Tag_Accepted => ROB_Tag_Accepted,
-          CDB_Q        => CDB_Q,
-          CDB_V        => CDB_V,
+          ROB_Q        => ROB_Q,
+          ROB_V        => ROB_V,
           Q            => QOUT(8),
           V            => VOUT(8));
 
@@ -219,8 +219,8 @@ Port map( CLK          => CLK,
           Ri           => Ri,
           Tag_WE       => Tag_WE,
           ROB_Tag_Accepted => ROB_Tag_Accepted,
-          CDB_Q        => CDB_Q,
-          CDB_V        => CDB_V,
+          ROB_Q        => ROB_Q,
+          ROB_V        => ROB_V,
           Q            => QOUT(9),
           V            => VOUT(9));
 
@@ -232,8 +232,8 @@ Port map( CLK          => CLK,
           Ri           => Ri,
           Tag_WE       => Tag_WE,
           ROB_Tag_Accepted => ROB_Tag_Accepted,
-          CDB_Q        => CDB_Q,
-          CDB_V        => CDB_V,
+          ROB_Q        => ROB_Q,
+          ROB_V        => ROB_V,
           Q            => QOUT(10),
           V            => VOUT(10));
 
@@ -245,8 +245,8 @@ Port map( CLK          => CLK,
           Ri           => Ri,
           Tag_WE       => Tag_WE,
           ROB_Tag_Accepted => ROB_Tag_Accepted,
-          CDB_Q        => CDB_Q,
-          CDB_V        => CDB_V,
+          ROB_Q        => ROB_Q,
+          ROB_V        => ROB_V,
           Q            => QOUT(11),
           V            => VOUT(11));
 
@@ -258,8 +258,8 @@ Port map( CLK          => CLK,
           Ri           => Ri,
           Tag_WE       => Tag_WE,
           ROB_Tag_Accepted => ROB_Tag_Accepted,
-          CDB_Q        => CDB_Q,
-          CDB_V        => CDB_V,
+          ROB_Q        => ROB_Q,
+          ROB_V        => ROB_V,
           Q            => QOUT(12),
           V            => VOUT(12));
 
@@ -271,8 +271,8 @@ Port map( CLK          => CLK,
           Ri           => Ri,
           Tag_WE       => Tag_WE,
           ROB_Tag_Accepted => ROB_Tag_Accepted,
-          CDB_Q        => CDB_Q,
-          CDB_V        => CDB_V,
+          ROB_Q        => ROB_Q,
+          ROB_V        => ROB_V,
           Q            => QOUT(13),
           V            => VOUT(13));
 
@@ -284,8 +284,8 @@ Port map( CLK          => CLK,
           Ri           => Ri,
           Tag_WE       => Tag_WE,
           ROB_Tag_Accepted => ROB_Tag_Accepted,
-          CDB_Q        => CDB_Q,
-          CDB_V        => CDB_V,
+          ROB_Q        => ROB_Q,
+          ROB_V        => ROB_V,
           Q            => QOUT(14),
           V            => VOUT(14));
 
@@ -297,8 +297,8 @@ Port map( CLK          => CLK,
           Ri           => Ri,
           Tag_WE       => Tag_WE,
           ROB_Tag_Accepted => ROB_Tag_Accepted,
-          CDB_Q        => CDB_Q,
-          CDB_V        => CDB_V,
+          ROB_Q        => ROB_Q,
+          ROB_V        => ROB_V,
           Q            => QOUT(15),
           V            => VOUT(15));
 
@@ -310,8 +310,8 @@ Port map( CLK          => CLK,
           Ri           => Ri,
           Tag_WE       => Tag_WE,
           ROB_Tag_Accepted => ROB_Tag_Accepted,
-          CDB_Q        => CDB_Q,
-          CDB_V        => CDB_V,
+          ROB_Q        => ROB_Q,
+          ROB_V        => ROB_V,
           Q            => QOUT(16),
           V            => VOUT(16));
 
@@ -323,8 +323,8 @@ Port map( CLK          => CLK,
           Ri           => Ri,
           Tag_WE       => Tag_WE,
           ROB_Tag_Accepted => ROB_Tag_Accepted,
-          CDB_Q        => CDB_Q,
-          CDB_V        => CDB_V,
+          ROB_Q        => ROB_Q,
+          ROB_V        => ROB_V,
           Q            => QOUT(17),
           V            => VOUT(17));
 
@@ -336,8 +336,8 @@ Port map( CLK          => CLK,
           Ri           => Ri,
           Tag_WE       => Tag_WE,
           ROB_Tag_Accepted => ROB_Tag_Accepted,
-          CDB_Q        => CDB_Q,
-          CDB_V        => CDB_V,
+          ROB_Q        => ROB_Q,
+          ROB_V        => ROB_V,
           Q            => QOUT(18),
           V            => VOUT(18));
 
@@ -349,8 +349,8 @@ Port map( CLK          => CLK,
           Ri           => Ri,
           Tag_WE       => Tag_WE,
           ROB_Tag_Accepted => ROB_Tag_Accepted,
-          CDB_Q        => CDB_Q,
-          CDB_V        => CDB_V,
+          ROB_Q        => ROB_Q,
+          ROB_V        => ROB_V,
           Q            => QOUT(19),
           V            => VOUT(19));
 
@@ -362,8 +362,8 @@ Port map( CLK          => CLK,
           Ri           => Ri,
           Tag_WE       => Tag_WE,
           ROB_Tag_Accepted => ROB_Tag_Accepted,
-          CDB_Q        => CDB_Q,
-          CDB_V        => CDB_V,
+          ROB_Q        => ROB_Q,
+          ROB_V        => ROB_V,
           Q            => QOUT(20),
           V            => VOUT(20));
 
@@ -375,8 +375,8 @@ Port map( CLK          => CLK,
           Ri           => Ri,
           Tag_WE       => Tag_WE,
           ROB_Tag_Accepted => ROB_Tag_Accepted,
-          CDB_Q        => CDB_Q,
-          CDB_V        => CDB_V,
+          ROB_Q        => ROB_Q,
+          ROB_V        => ROB_V,
           Q            => QOUT(21),
           V            => VOUT(21));
 
@@ -388,8 +388,8 @@ Port map( CLK          => CLK,
           Ri           => Ri,
           Tag_WE       => Tag_WE,
           ROB_Tag_Accepted => ROB_Tag_Accepted,
-          CDB_Q        => CDB_Q,
-          CDB_V        => CDB_V,
+          ROB_Q        => ROB_Q,
+          ROB_V        => ROB_V,
           Q            => QOUT(22),
           V            => VOUT(22));
 
@@ -401,8 +401,8 @@ Port map( CLK          => CLK,
           Ri           => Ri,
           Tag_WE       => Tag_WE,
           ROB_Tag_Accepted => ROB_Tag_Accepted,
-          CDB_Q        => CDB_Q,
-          CDB_V        => CDB_V,
+          ROB_Q        => ROB_Q,
+          ROB_V        => ROB_V,
           Q            => QOUT(23),
           V            => VOUT(23));
 
@@ -414,8 +414,8 @@ Port map( CLK          => CLK,
           Ri           => Ri,
           Tag_WE       => Tag_WE,
           ROB_Tag_Accepted => ROB_Tag_Accepted,
-          CDB_Q        => CDB_Q,
-          CDB_V        => CDB_V,
+          ROB_Q        => ROB_Q,
+          ROB_V        => ROB_V,
           Q            => QOUT(24),
           V            => VOUT(24));
 
@@ -427,8 +427,8 @@ Port map( CLK          => CLK,
           Ri           => Ri,
           Tag_WE       => Tag_WE,
           ROB_Tag_Accepted => ROB_Tag_Accepted,
-          CDB_Q        => CDB_Q,
-          CDB_V        => CDB_V,
+          ROB_Q        => ROB_Q,
+          ROB_V        => ROB_V,
           Q            => QOUT(25),
           V            => VOUT(25));
 
@@ -440,8 +440,8 @@ Port map( CLK          => CLK,
           Ri           => Ri,
           Tag_WE       => Tag_WE,
           ROB_Tag_Accepted => ROB_Tag_Accepted,
-          CDB_Q        => CDB_Q,
-          CDB_V        => CDB_V,
+          ROB_Q        => ROB_Q,
+          ROB_V        => ROB_V,
           Q            => QOUT(26),
           V            => VOUT(26));
 
@@ -453,8 +453,8 @@ Port map( CLK          => CLK,
           Ri           => Ri,
           Tag_WE       => Tag_WE,
           ROB_Tag_Accepted => ROB_Tag_Accepted,
-          CDB_Q        => CDB_Q,
-          CDB_V        => CDB_V,
+          ROB_Q        => ROB_Q,
+          ROB_V        => ROB_V,
           Q            => QOUT(27),
           V            => VOUT(27));
 
@@ -466,8 +466,8 @@ Port map( CLK          => CLK,
           Ri           => Ri,
           Tag_WE       => Tag_WE,
           ROB_Tag_Accepted => ROB_Tag_Accepted,
-          CDB_Q        => CDB_Q,
-          CDB_V        => CDB_V,
+          ROB_Q        => ROB_Q,
+          ROB_V        => ROB_V,
           Q            => QOUT(28),
           V            => VOUT(28));
 
@@ -479,8 +479,8 @@ Port map( CLK          => CLK,
           Ri           => Ri,
           Tag_WE       => Tag_WE,
           ROB_Tag_Accepted => ROB_Tag_Accepted,
-          CDB_Q        => CDB_Q,
-          CDB_V        => CDB_V,
+          ROB_Q        => ROB_Q,
+          ROB_V        => ROB_V,
           Q            => QOUT(29),
           V            => VOUT(29));
 
@@ -492,8 +492,8 @@ Port map( CLK          => CLK,
           Ri           => Ri,
           Tag_WE       => Tag_WE,
           ROB_Tag_Accepted => ROB_Tag_Accepted,
-          CDB_Q        => CDB_Q,
-          CDB_V        => CDB_V,
+          ROB_Q        => ROB_Q,
+          ROB_V        => ROB_V,
           Q            => QOUT(30),
           V            => VOUT(30));
 
@@ -505,8 +505,8 @@ Port map( CLK          => CLK,
           Ri           => Ri,
           Tag_WE       => Tag_WE,
           ROB_Tag_Accepted => ROB_Tag_Accepted,
-          CDB_Q        => CDB_Q,
-          CDB_V        => CDB_V,
+          ROB_Q        => ROB_Q,
+          ROB_V        => ROB_V,
           Q            => QOUT(31),
           V            => VOUT(31));
 			  

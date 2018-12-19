@@ -14,8 +14,8 @@
 --
 -- Dependencies:              NONE
 --
--- Revision:                  1.0
--- Revision                   1.0 
+-- Revision:                  2.0
+-- Revision                   2.0 ROB 
 -- Additional Comments: 
 --
 ----------------------------------------------------------------------------------
@@ -24,11 +24,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity Tomasulo is
 Port (     CLK : in  STD_LOGIC;
-           RST : in  STD_LOGIC;
-				
-			  --TESTING TODO DELETE
---			 ROB_Tag_Accepted : in  STD_LOGIC_VECTOR (4 downto 0);
-				
+           RST : in  STD_LOGIC;				
 				
            -- In case Issue='1' then Issue new Instruction
            Issue_I : in  STD_LOGIC;
@@ -90,15 +86,14 @@ component RF is
            Rk : in  STD_LOGIC_VECTOR (4 downto 0);
            Tag_WE : in  STD_LOGIC;
            ROB_Tag_Accepted : in  STD_LOGIC_VECTOR (4 downto 0);
-           CDB_Q : in  STD_LOGIC_VECTOR (4 downto 0);
-           CDB_V : in  STD_LOGIC_VECTOR (31 downto 0);
+           ROB_Q : in  STD_LOGIC_VECTOR (4 downto 0);
+           ROB_V : in  STD_LOGIC_VECTOR (31 downto 0);
            Qj : out  STD_LOGIC_VECTOR (4 downto 0);
            Qk : out  STD_LOGIC_VECTOR (4 downto 0);
            Vj : out  STD_LOGIC_VECTOR (31 downto 0);
            Vk : out  STD_LOGIC_VECTOR (31 downto 0));
 end component;
 
---TMP
 component ROB is
  Port (    CLK : in  STD_LOGIC;
            RST : in  STD_LOGIC;
@@ -108,7 +103,17 @@ component ROB is
 			  ISSUE_PC : in STD_LOGIC_VECTOR (31 downto 0);
 			  ISSUE_I_type : in STD_LOGIC_VECTOR (1 downto 0);
 			  ISSUE_Dest : in STD_LOGIC_VECTOR (4 downto 0);
-			  ROB_TAG_ACCEPTED :out STD_LOGIC_VECTOR (4 downto 0);
+			  ROB_TAG_ACCEPTED : out STD_LOGIC_VECTOR (4 downto 0);
+			  
+			  ISSUE_RF_Rj : in STD_LOGIC_VECTOR (4 downto 0);
+			  ISSUE_RF_Rj_Exists : out STD_LOGIC;
+			  ISSUE_RF_Rj_Value : out STD_LOGIC_VECTOR (31 downto 0);
+			  ISSUE_RF_Rj_Tag : out STD_LOGIC_VECTOR (4 downto 0);
+			  
+			  ISSUE_RF_Rk : in STD_LOGIC_VECTOR (4 downto 0);
+			  ISSUE_RF_Rk_Exists : out STD_LOGIC;
+			  ISSUE_RF_Rk_Value : out STD_LOGIC_VECTOR (31 downto 0);
+			  ISSUE_RF_Rk_Tag : out STD_LOGIC_VECTOR (4 downto 0);
 			  
 			  --FROM CDB (UPDATE QUEUE)
 			  CDB_Q: in STD_LOGIC_VECTOR (4 downto 0);
@@ -221,11 +226,15 @@ signal Tag_WE_TMP : STD_LOGIC;
 signal CDB_V_TMP: STD_LOGIC_VECTOR (31 downto 0);
 signal CDB_Q_TMP : STD_LOGIC_VECTOR (4 downto 0);
 
---RS
+--RF
 signal Vk_TMP, Vj_TMP : STD_LOGIC_VECTOR (31 downto 0);
 signal Qk_TMP, Qj_TMP : STD_LOGIC_VECTOR (4 downto 0);
+
+--RS
+signal RS_Vk_TMP, RS_Vj_TMP : STD_LOGIC_VECTOR (31 downto 0);
+signal RS_Qk_TMP, RS_Qj_TMP : STD_LOGIC_VECTOR (4 downto 0);
 signal A_Available_TMP, L_Available_TMP : STD_LOGIC;
- 
+
 --FU 
 signal A_Ready_TMP, L_Ready_TMP : STD_LOGIC;
 signal A_Op_TMP, L_Op_TMP: STD_LOGIC_VECTOR (1 downto 0);
@@ -242,9 +251,14 @@ signal A_Q_TMP, L_Q_TMP : STD_LOGIC_VECTOR (4 downto 0);
 signal ROB_TAG_ACCEPTED_TMP : STD_LOGIC_VECTOR (4 downto 0);
 signal DEST_MEM_TMP, DEST_RF_TMP : STD_LOGIC_VECTOR (4 downto 0);
 signal ROB_VALUE : STD_LOGIC_VECTOR (31 downto 0);
+signal InstructionAccepted : STD_LOGIC;
+signal ROB_Rj_V, ROB_Rk_V : STD_LOGIC_VECTOR (31 downto 0);
+signal ROB_Rj_Q, ROB_Rk_Q : STD_LOGIC_VECTOR (4 downto 0);
+signal ROB_Rj_Exist, ROB_Rk_Exist : STD_LOGIC;
 
 begin
 
+Accepted<=InstructionAccepted;
 ISSUE_C : ISSUE
 Port map(   CLK         => CLK,
             A_Available => A_Available_TMP,
@@ -252,69 +266,81 @@ Port map(   CLK         => CLK,
             Issue_I     => Issue_I,
             Fu_type     => Fu_type,
             Tag_WE      => Tag_WE_TMP,
-            Accepted    => Accepted);
+            Accepted    => InstructionAccepted);
 
 RF_C : RF 
-Port map(   CLK           => CLK,
-            RST           => RST,
-            Ri            => Ri,
-            Rj            => Rj,
-            Rk            => Rk,
-            Tag_WE        => Tag_WE_TMP,
+Port map(   CLK               => CLK,
+            RST               => RST,
+            Ri                => Ri,
+            Rj                => Rj,
+            Rk                => Rk,
+            Tag_WE            => Tag_WE_TMP,
             ROB_Tag_Accepted  => ROB_TAG_ACCEPTED_TMP,
-            CDB_Q         => CDB_Q_TMP,
-            CDB_V         => CDB_V_TMP,
-            Qj            => Qj_TMP,
-            Qk            => Qk_TMP,
-            Vj            => Vj_TMP,
-            Vk            => Vk_TMP);
+            ROB_Q             => CDB_Q_TMP,
+            ROB_V             => CDB_V_TMP,
+            Qj                => Qj_TMP,
+            Qk                => Qk_TMP,
+            Vj                => Vj_TMP,
+            Vk                => Vk_TMP);
 
---TMP
 ROB_C : ROB
-Port map(    CLK              => CLK,
-		       RST              => RST,
-				 ISSUE            => Issue_I,
-				 ISSUE_PC         => PC,
-				 ISSUE_I_type     => Fu_type,
-				 ISSUE_Dest       => Ri,
-				 ROB_TAG_ACCEPTED => ROB_TAG_ACCEPTED_TMP,
-				 CDB_Q            => CDB_Q_TMP,
-				 CDB_V            => CDB_V_TMP,
-				 DEST_RF          => DEST_RF_TMP,
-				 DEST_MEM         => DEST_MEM_TMP,
-				 VALUE            => ROB_VALUE, 
-				 EXCEPTION        => EXCEPTION,
-				 PC               => EXC_PC);
-			  
+Port map(    CLK                => CLK,
+		       RST                => RST,
+				 ISSUE              => InstructionAccepted,
+				 ISSUE_PC           => PC,
+				 ISSUE_I_type       => Fu_type,
+				 ISSUE_Dest         => Ri,
+				 ISSUE_RF_Rj        => Rj,
+			    ISSUE_RF_Rj_Exists => ROB_Rj_Exist,
+			    ISSUE_RF_Rj_Value  => ROB_Rj_V,
+				 ISSUE_RF_Rj_Tag    => ROB_Rj_Q,
+			    ISSUE_RF_Rk        => Rk,
+			    ISSUE_RF_Rk_Exists => ROB_Rk_Exist,
+			    ISSUE_RF_Rk_Value  => ROB_Rk_V,
+				 ISSUE_RF_Rk_Tag    => ROB_Rk_Q,
+				 ROB_TAG_ACCEPTED   => ROB_TAG_ACCEPTED_TMP,
+				 CDB_Q              => CDB_Q_TMP,
+				 CDB_V              => CDB_V_TMP,
+				 DEST_RF            => DEST_RF_TMP,
+				 DEST_MEM           => DEST_MEM_TMP,
+				 VALUE              => ROB_VALUE, 
+				 EXCEPTION          => EXCEPTION,
+				 PC                 => EXC_PC);
+
+RS_Vj_TMP <= Vj_TMP WHEN ROB_Rj_Exist='0' ELSE ROB_Rj_V; 
+RS_Qj_TMP <= Qj_TMP WHEN ROB_Rj_Exist='0' ELSE ROB_Rj_Q;
+RS_Vk_TMP <= Vk_TMP WHEN ROB_Rk_Exist='0' ELSE ROB_Rk_V;  
+RS_Qk_TMP <= Qk_TMP WHEN ROB_Rk_Exist='0' ELSE ROB_Rk_Q;
+
 RS_C : RS 
-Port map(  CLK          => CLK,
-           RST          => RST,
-           A_Available  => A_Available_TMP,
-           L_Available  => L_Available_TMP,
-           ISSUE        => Issue_I,
-           FU_type      => Fu_type,
-           FOP          => FOP,
-           Vj           => Vj_TMP,
-           Qj           => Qj_TMP,
-           Vk           => Vk_TMP,
-           Qk           => Qk_TMP,
+Port map(  CLK              => CLK,
+           RST              => RST,
+           A_Available      => A_Available_TMP,
+           L_Available      => L_Available_TMP,
+           ISSUE            => Issue_I,
+           FU_type          => Fu_type,
+           FOP              => FOP,
+           Vj               => RS_Vj_TMP,
+           Qj               => RS_Qj_TMP,
+           Vk               => RS_Vk_TMP,
+           Qk               => RS_Qk_TMP,
            ROB_Tag_Accepted => ROB_TAG_ACCEPTED_TMP,
-           Immed        => Immed,
-           V_immed      => V_immed,
-           CDB_V        => CDB_V_TMP,
-           CDB_Q        => CDB_Q_TMP,
-           A_Ready      => A_Ready_TMP,
-           A_Op         => A_Op_TMP,
-           A_Vj         => A_Vj_TMP,
-           A_Vk         => A_Vk_TMP,
-           A_Tag        => A_Tag_TMP,
-           A_Accepted   => A_Acccepted_TMP,
-           L_Ready      => L_Ready_TMP,
-           L_Op         => L_Op_TMP,
-           L_Vj         => L_Vj_TMP,
-           L_Vk         => L_Vk_TMP,
-           L_Tag        => L_Tag_TMP,
-           L_Accepted   => L_Acccepted_TMP);
+           Immed            => Immed,
+           V_immed          => V_immed,
+           CDB_V            => CDB_V_TMP,
+           CDB_Q            => CDB_Q_TMP,
+           A_Ready          => A_Ready_TMP,
+           A_Op             => A_Op_TMP,
+           A_Vj             => A_Vj_TMP,
+           A_Vk             => A_Vk_TMP,
+           A_Tag            => A_Tag_TMP,
+           A_Accepted       => A_Acccepted_TMP,
+           L_Ready          => L_Ready_TMP,
+           L_Op             => L_Op_TMP,
+           L_Vj             => L_Vj_TMP,
+           L_Vk             => L_Vk_TMP,
+           L_Tag            => L_Tag_TMP,
+           L_Accepted       => L_Acccepted_TMP);
     
 FU_C : FU 
 Port map(  CLK        => CLK,

@@ -3,7 +3,7 @@
    <wave_state>
    </wave_state>
    <db_ref_list>
-      <db_ref path="/home/chspyman/Desktop/VHDL/Toma_11_11_oldest/TEST_Tomasulo_isim_beh.wdb" id="1" type="auto">
+      <db_ref path="/home/chspyman/Desktop/VHDL/Tomasulo3A/TEST_Tomasulo_isim_beh.wdb" id="1" type="auto">
          <top_modules>
             <top_module name="numeric_std" />
             <top_module name="std_logic_1164" />
@@ -13,7 +13,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="14" />
+   <WVObjectSize size="16" />
    <wave_markers>
       <marker time="99800000" label="" />
       <marker time="110400000" label="" />
@@ -233,32 +233,11 @@
             <obj_property name="UseCustomSignalColor">true</obj_property>
             <obj_property name="CustomSignalColor">#ffa500</obj_property>
          </wvobject>
-         <wvobject fp_name="/test_tomasulo/uut/RF_C/tag_accepted" type="array" db_ref_id="1">
-            <obj_property name="ElementShortName">tag_accepted[4:0]</obj_property>
-            <obj_property name="ObjectShortName">tag_accepted[4:0]</obj_property>
-            <obj_property name="Radix">HEXRADIX</obj_property>
-            <obj_property name="UseCustomSignalColor">true</obj_property>
-            <obj_property name="CustomSignalColor">#008000</obj_property>
-         </wvobject>
          <wvobject fp_name="divider47" type="divider">
             <obj_property name="label">CDB</obj_property>
             <obj_property name="DisplayName">label</obj_property>
             <obj_property name="BkColor">128 128 255</obj_property>
             <obj_property name="TextColor">230 230 230</obj_property>
-         </wvobject>
-         <wvobject fp_name="/test_tomasulo/uut/RF_C/cdb_q" type="array" db_ref_id="1">
-            <obj_property name="ElementShortName">cdb_q[4:0]</obj_property>
-            <obj_property name="ObjectShortName">cdb_q[4:0]</obj_property>
-            <obj_property name="Radix">HEXRADIX</obj_property>
-            <obj_property name="UseCustomSignalColor">true</obj_property>
-            <obj_property name="CustomSignalColor">#008000</obj_property>
-         </wvobject>
-         <wvobject fp_name="/test_tomasulo/uut/RF_C/cdb_v" type="array" db_ref_id="1">
-            <obj_property name="ElementShortName">cdb_v[31:0]</obj_property>
-            <obj_property name="ObjectShortName">cdb_v[31:0]</obj_property>
-            <obj_property name="UseCustomSignalColor">true</obj_property>
-            <obj_property name="CustomSignalColor">#0000ff</obj_property>
-            <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
          </wvobject>
          <wvobject fp_name="divider46" type="divider">
             <obj_property name="label">OUT</obj_property>
@@ -1740,6 +1719,176 @@
          <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
          <obj_property name="UseCustomSignalColor">true</obj_property>
          <obj_property name="CustomSignalColor">#ffa500</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="divider354" type="divider">
+      <obj_property name="label">ROB</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">128 128 255</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="group353" type="group">
+      <obj_property name="label">ROB</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/clk" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">clk</obj_property>
+         <obj_property name="ObjectShortName">clk</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/rst" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">rst</obj_property>
+         <obj_property name="ObjectShortName">rst</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/issue" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">issue</obj_property>
+         <obj_property name="ObjectShortName">issue</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/issue_pc" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">issue_pc[31:0]</obj_property>
+         <obj_property name="ObjectShortName">issue_pc[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/issue_i_type" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">issue_i_type[1:0]</obj_property>
+         <obj_property name="ObjectShortName">issue_i_type[1:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/issue_dest" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">issue_dest[4:0]</obj_property>
+         <obj_property name="ObjectShortName">issue_dest[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/rob_tag_accepted" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">rob_tag_accepted[4:0]</obj_property>
+         <obj_property name="ObjectShortName">rob_tag_accepted[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/issue_rf_rj" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">issue_rf_rj[4:0]</obj_property>
+         <obj_property name="ObjectShortName">issue_rf_rj[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/issue_rf_rj_exists" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">issue_rf_rj_exists</obj_property>
+         <obj_property name="ObjectShortName">issue_rf_rj_exists</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/issue_rf_rj_value" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">issue_rf_rj_value[31:0]</obj_property>
+         <obj_property name="ObjectShortName">issue_rf_rj_value[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/issue_rf_rj_tag" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">issue_rf_rj_tag[4:0]</obj_property>
+         <obj_property name="ObjectShortName">issue_rf_rj_tag[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/issue_rf_rk" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">issue_rf_rk[4:0]</obj_property>
+         <obj_property name="ObjectShortName">issue_rf_rk[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/issue_rf_rk_exists" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">issue_rf_rk_exists</obj_property>
+         <obj_property name="ObjectShortName">issue_rf_rk_exists</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/issue_rf_rk_value" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">issue_rf_rk_value[31:0]</obj_property>
+         <obj_property name="ObjectShortName">issue_rf_rk_value[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/issue_rf_rk_tag" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">issue_rf_rk_tag[4:0]</obj_property>
+         <obj_property name="ObjectShortName">issue_rf_rk_tag[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/cdb_q" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">cdb_q[4:0]</obj_property>
+         <obj_property name="ObjectShortName">cdb_q[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/cdb_v" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">cdb_v[31:0]</obj_property>
+         <obj_property name="ObjectShortName">cdb_v[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/dest_rf" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">dest_rf[4:0]</obj_property>
+         <obj_property name="ObjectShortName">dest_rf[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/dest_mem" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">dest_mem[4:0]</obj_property>
+         <obj_property name="ObjectShortName">dest_mem[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/value" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">value[31:0]</obj_property>
+         <obj_property name="ObjectShortName">value[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/exception" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">exception[4:0]</obj_property>
+         <obj_property name="ObjectShortName">exception[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/pc" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">pc[31:0]</obj_property>
+         <obj_property name="ObjectShortName">pc[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/s_pc" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">s_pc[29:0]</obj_property>
+         <obj_property name="ObjectShortName">s_pc[29:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/s_i_type" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">s_i_type[29:0]</obj_property>
+         <obj_property name="ObjectShortName">s_i_type[29:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/s_dest" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">s_dest[29:0]</obj_property>
+         <obj_property name="ObjectShortName">s_dest[29:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/s_issue" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">s_issue[29:0]</obj_property>
+         <obj_property name="ObjectShortName">s_issue[29:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/s_exception_in" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">s_exception_in[29:0]</obj_property>
+         <obj_property name="ObjectShortName">s_exception_in[29:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/s_exception" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">s_exception[29:0]</obj_property>
+         <obj_property name="ObjectShortName">s_exception[29:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/s_executed" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">s_executed[29:0]</obj_property>
+         <obj_property name="ObjectShortName">s_executed[29:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/s_dest_rf" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">s_dest_rf[29:0]</obj_property>
+         <obj_property name="ObjectShortName">s_dest_rf[29:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/s_dest_mem" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">s_dest_mem[29:0]</obj_property>
+         <obj_property name="ObjectShortName">s_dest_mem[29:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/s_value" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">s_value[29:0]</obj_property>
+         <obj_property name="ObjectShortName">s_value[29:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/s_pop" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">s_pop[29:0]</obj_property>
+         <obj_property name="ObjectShortName">s_pop[29:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/s_tag" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">s_tag[29:0]</obj_property>
+         <obj_property name="ObjectShortName">s_tag[29:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/s_empty" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">s_empty[29:0]</obj_property>
+         <obj_property name="ObjectShortName">s_empty[29:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/s_rst" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">s_rst[29:0]</obj_property>
+         <obj_property name="ObjectShortName">s_rst[29:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/issue_pointer" type="other" db_ref_id="1">
+         <obj_property name="ElementShortName">issue_pointer</obj_property>
+         <obj_property name="ObjectShortName">issue_pointer</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/commit_pointer" type="other" db_ref_id="1">
+         <obj_property name="ElementShortName">commit_pointer</obj_property>
+         <obj_property name="ObjectShortName">commit_pointer</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/commit_last" type="other" db_ref_id="1">
+         <obj_property name="ElementShortName">commit_last</obj_property>
+         <obj_property name="ObjectShortName">commit_last</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_tomasulo/uut/ROB_C/issue_last" type="other" db_ref_id="1">
+         <obj_property name="ElementShortName">issue_last</obj_property>
+         <obj_property name="ObjectShortName">issue_last</obj_property>
       </wvobject>
    </wvobject>
 </wave_config>

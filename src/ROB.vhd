@@ -32,7 +32,17 @@ entity ROB is
 			  ISSUE_PC : in STD_LOGIC_VECTOR (31 downto 0);
 			  ISSUE_I_type : in STD_LOGIC_VECTOR (1 downto 0);
 			  ISSUE_Dest : in STD_LOGIC_VECTOR (4 downto 0);
-			  ROB_TAG_ACCEPTED :out STD_LOGIC_VECTOR (4 downto 0);
+			  ROB_TAG_ACCEPTED : out STD_LOGIC_VECTOR (4 downto 0);
+			  
+			  ISSUE_RF_Rj : in STD_LOGIC_VECTOR (4 downto 0);
+			  ISSUE_RF_Rj_Exists : out STD_LOGIC;
+			  ISSUE_RF_Rj_Value : out STD_LOGIC_VECTOR (31 downto 0);
+			  ISSUE_RF_Rj_Tag : out STD_LOGIC_VECTOR (4 downto 0);
+			  
+			  ISSUE_RF_Rk : in STD_LOGIC_VECTOR (4 downto 0);
+			  ISSUE_RF_Rk_Exists : out STD_LOGIC;
+			  ISSUE_RF_Rk_Value : out STD_LOGIC_VECTOR (31 downto 0);
+			  ISSUE_RF_Rk_Tag : out STD_LOGIC_VECTOR (4 downto 0);
 			  
 			  --FROM CDB (UPDATE QUEUE)
 			  CDB_Q: in STD_LOGIC_VECTOR (4 downto 0);
@@ -113,24 +123,19 @@ signal S_EMPTY : signal_30x1 := "000000000000000000000000000000";
 signal S_RST : signal_30x1 := "000000000000000000000000000000";		--CONTROL SIGNAL
 
 
-signal ISSUE_POINTER, COMMIT_POINTER : integer range 0 to 29 :=0; 
---variable F, S : integer;
+signal ISSUE_POINTER, COMMIT_POINTER : integer range 0 to 29; 
 
 
 --DEBUG SIGNAL
-TYPE STATES_SIGNALS IS (INIT_S, RST_S, PUSH_S_LOW, PUSH_S_HIGH, UPDATE_S, POP_S, EXCEPTION_S, NONE_S);  
-SIGNAL LAST : STATES_SIGNALS := INIT_S;
+TYPE STATES_SIGNALS IS (INIT_S, RST_S, PUSH_S_LOW, PUSH_S_HIGH, UPDATE_S, POP_S_LOW, POP_S_HIGH, EXCEPTION_S, NONE_S);  
+SIGNAL COMMIT_LAST, ISSUE_LAST : STATES_SIGNALS := INIT_S;
 
 begin		  
 
 ROB_TAG_ACCEPTED <= S_TAG(ISSUE_POINTER+1) WHEN ISSUE_POINTER+1<30 ELSE S_TAG(0);
 			  
-DEST_RF   <= S_DEST_RF(COMMIT_POINTER) WHEN S_POP(COMMIT_POINTER)='1' ELSE "00000";
-DEST_MEM  <= S_DEST_MEM(COMMIT_POINTER) WHEN S_POP(COMMIT_POINTER)='1' ELSE "00000";
-VALUE     <= S_VALUE(COMMIT_POINTER) WHEN S_POP(COMMIT_POINTER)='1' ELSE "00000000000000000000000000000000";
-
-EXCEPTION <= S_EXCEPTION(COMMIT_POINTER);
-PC        <= S_PC(COMMIT_POINTER);
+ISSUE_RF_Rj_Exists<='0';
+ISSUE_RF_Rk_Exists<='0';
 
 PROCESS(CLK, RST, ISSUE)
 variable n, k : integer;
@@ -141,10 +146,11 @@ BEGIN
 				  S_RST(i) <= '1';  
 			 END LOOP;
 			
-			LAST<=RST_S;
+			ISSUE_LAST<=RST_S;
+			COMMIT_LAST<=RST_S;
 			
-			ISSUE_POINTER<=0;
-			COMMIT_POINTER<=0;
+			ISSUE_POINTER<=28;
+			COMMIT_POINTER<=29;
 		ELSE
 			--RST OFF
 			 FOR i IN 0 TO 29 LOOP
@@ -156,34 +162,70 @@ BEGIN
 			
 			--PUSH
 			IF (ISSUE='1' AND CLK='0') THEN 
-				S_ISSUE(n)<='0';
-				n:=n+1;
-				IF(n>29) THEN n:=0; END IF;
-				S_ISSUE(n)<='1';
-				LAST<=PUSH_S_LOW;
+			
+				IF (ISSUE_LAST=RST_S) THEN
+					S_ISSUE(n)<='0';
+					n:=n+1;
+					--OUT OF BOUNDS FIX
+					IF(n>29) THEN n:=0; END IF;
+					
+					S_ISSUE(n)<='1';
+				ELSIF (ISSUE_LAST=PUSH_S_LOW) THEN
+					S_ISSUE(n)<='1';
+				ELSIF (ISSUE_LAST=PUSH_S_HIGH) THEN
+					S_ISSUE(n)<='0';
+					n:=n+1;
+					--OUT OF BOUNDS FIX
+					IF(n>29) THEN n:=0; END IF;
+					
+					S_ISSUE(n)<='1';
+				END IF;
+				
+				ISSUE_LAST<=PUSH_S_HIGH;
 			ELSIF (ISSUE='0' AND CLK='0') THEN
-				S_ISSUE(COMMIT_POINTER)<='0';
+				S_ISSUE(n)<='0';
+				
+				ISSUE_LAST<=PUSH_S_LOW;
 			END IF;
 		
-			--OUT OF BOUNDS FIX
-			IF(k>29) THEN k :=0 ; END IF;
 			
+			--COMMIT
+			IF(S_EXECUTED(k)='1' AND CLK='0') THEN 
+				S_POP(k) <= '1';
+				
+				DEST_RF  <= S_DEST_RF(k);
+				DEST_MEM <= S_DEST_MEM(k);
+				VALUE    <= S_VALUE(k);
+				
+				IF (COMMIT_LAST=POP_S_HIGH AND k>0)THEN 
+					S_POP(k-1) <= '0' ;
+				ELSIF (COMMIT_LAST=POP_S_HIGH AND k=0)THEN 
+					S_POP(29) <= '0' ;
+				END IF; 
+				
+				k:=k+1;
+				--OUT OF BOUNDS FIX
+				IF(k>29) THEN k:=0; END IF;
+				
+				COMMIT_LAST<=POP_S_HIGH;
+			ELSIF (S_EXECUTED(k)='0' AND CLK='0') THEN 
+				DEST_RF  <= "00000";
+				DEST_MEM <= "00000";
+				VALUE    <= "00000000000000000000000000000000";
+				
+				IF (k>0)THEN 
+					S_POP(k-1) <= '0' ;
+				ELSIF (k=0)THEN 
+					S_POP(29) <= '0' ;
+				END IF; 
+				
+				COMMIT_LAST<=POP_S_LOW;
+			END IF;
 			
---			--COMMIT
---			IF(S_POP(k)='1') THEN 
---				DEST_RF  <= S_DEST_RF(k);
---				DEST_MEM <= S_DEST_MEM(k);
---				VALUE    <= S_VALUE(k);
---			ELSE 
---				DEST_RF  <= "00000";
---				DEST_MEM <= "00000";
---				VALUE    <= "00000000000000000000000000000000";
---			END IF;
---			
---			--EXCEPTION
---			EXCEPTION <= S_EXCEPTION(k);
---			PC        <= S_PC(k);
---			
+			--EXCEPTION
+			EXCEPTION <= S_EXCEPTION(k);
+			PC        <= S_PC(k);
+			
 			
 			ISSUE_POINTER <= n;
 			COMMIT_POINTER <= k;
