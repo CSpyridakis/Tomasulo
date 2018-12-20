@@ -132,6 +132,11 @@ signal ISSUE_POINTER, COMMIT_POINTER : integer range 0 to 29;
 TYPE STATES_SIGNALS IS (INIT_S, RST_S, PU_LOW, PUSH_S, UPDATE_S, PO_LOW, POP_S, EXCEPTION_S, NONE_S);  
 SIGNAL COMMIT_LAST, ISSUE_LAST : STATES_SIGNALS := INIT_S;
 
+--DEBUG SIGNAL
+TYPE STATES_SIGNALS2 IS (INIT_S, RST_S, NOT_EXI, ZERO_ONE, EXISTS, NONE_S);  
+SIGNAL RJ_EX, RK_EX: STATES_SIGNALS2 := INIT_S;
+
+
 begin		  
 
 ROB_TAG_ACCEPTED <= S_TAG(ISSUE_POINTER+1) WHEN ISSUE_POINTER+1<30 ELSE S_TAG(0); 
@@ -208,6 +213,7 @@ BEGIN
 			END IF;
 			
 			--ROB EXISTS
+			--RJ
 			IF(ISSUE_RF_Rj/="00000" AND ISSUE_RF_Rj/="11111") THEN
 				tmp:=to_integer(UNSIGNED(ISSUE_RF_Rj));
 				tmp:=tmp-1;
@@ -216,15 +222,23 @@ BEGIN
 						ISSUE_RF_Rj_Exists <= '1';
 						ISSUE_RF_Rj_Value  <= S_VALUE(tmp);
 						ISSUE_RF_Rj_Tag    <= "00000";
+						RJ_EX<=EXISTS;
+				ELSIF (ISSUE='1' AND CDB_Q=ISSUE_RF_Rj) THEN 
+						ISSUE_RF_Rj_Exists <= '1';
+						ISSUE_RF_Rj_Value  <= CDB_V;
+						ISSUE_RF_Rj_Tag    <= "00000";
+						RJ_EX              <= EXISTS;
 				ELSE
 						ISSUE_RF_Rj_Exists <= '0';
 						ISSUE_RF_Rj_Value  <= "11111111111111111111111111111111";
 						ISSUE_RF_Rj_Tag    <= S_TAG(tmp);
+						RJ_EX<=NOT_EXI;
 				END IF;
 			ELSE
+				RJ_EX<=ZERO_ONE;
 				ISSUE_RF_Rj_Exists <= '0';
 			END IF;
-			
+			--RK
 			IF(ISSUE_RF_Rk/="00000" AND ISSUE_RF_Rk/="11111") THEN
 				tmp:=to_integer(UNSIGNED(ISSUE_RF_Rk));
 				tmp:=tmp-1;
@@ -233,13 +247,21 @@ BEGIN
 						ISSUE_RF_Rk_Exists <= '1';
 						ISSUE_RF_Rk_Value  <= S_VALUE(tmp);
 						ISSUE_RF_Rk_Tag    <= "00000";
+						RK_EX              <= EXISTS;
+				ELSIF (ISSUE='1' AND CDB_Q=ISSUE_RF_Rk) THEN 
+						ISSUE_RF_Rk_Exists <= '1';
+						ISSUE_RF_Rk_Value  <= CDB_V;
+						ISSUE_RF_Rk_Tag    <= "00000";
+						RK_EX              <= EXISTS;
 				ELSE
 						ISSUE_RF_Rk_Exists <= '0';
 						ISSUE_RF_Rk_Value  <= "11111111111111111111111111111111";
 						ISSUE_RF_Rk_Tag    <= S_TAG(tmp);
+						RK_EX<=NOT_EXI;
 				END IF;
 			ELSE
 				ISSUE_RF_Rk_Exists <= '0';
+				RK_EX<=ZERO_ONE;
 			END IF;
 			
 			

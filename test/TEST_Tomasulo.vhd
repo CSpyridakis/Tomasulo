@@ -52,6 +52,7 @@ ARCHITECTURE behavior OF TEST_Tomasulo IS
          Rk : IN  std_logic_vector(4 downto 0);
          Immed : IN  std_logic;
          V_immed : IN  std_logic_vector(31 downto 0);
+			EXCEPTION_INPUT : in STD_LOGIC_VECTOR (4 downto 0);
 			EXC_PC : out  STD_LOGIC_VECTOR (31 downto 0);
 			EXCEPTION : out  STD_LOGIC_VECTOR (4 downto 0);
          Accepted : OUT  std_logic
@@ -71,6 +72,7 @@ ARCHITECTURE behavior OF TEST_Tomasulo IS
    signal Immed : std_logic := '0';
    signal V_immed : std_logic_vector(31 downto 0) := (others => '0');
 	signal PC : std_logic_vector(31 downto 0) := (others => '0');
+	signal EXCEPTION_INPUT : STD_LOGIC_VECTOR (4 downto 0) := (others => '0');
 	 
  	--Outputs
    signal Accepted : std_logic;
@@ -95,6 +97,7 @@ BEGIN
           Rk => Rk,
           Immed => Immed,
           V_immed => V_immed,
+			 EXCEPTION_INPUT=>EXCEPTION_INPUT,
 			 EXC_PC => EXC_PC,
 			 EXCEPTION => EXCEPTION,
           Accepted => Accepted
