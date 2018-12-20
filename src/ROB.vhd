@@ -12,7 +12,7 @@
 -- Description:               Introduction in Dynamic Instruction Scheduling (Advanced Computer Architecture)
 --                            implementing Tomasulo's Algorithm 	 
 --
--- Dependencies:              NONE
+-- Dependencies:              NUMERIC_STD.ALL
 --
 -- Revision:                  2.0 
 -- Revision                   2.0 - ROB
@@ -22,6 +22,7 @@
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 entity ROB is
  Port (    CLK : in  STD_LOGIC;
@@ -54,6 +55,7 @@ entity ROB is
 			  VALUE : out STD_LOGIC_VECTOR (31 downto 0); 
 			  
 			  --EXCEPTION HANDLER
+			  EXCEPTION_IN : in STD_LOGIC_VECTOR (4 downto 0);
 			  EXCEPTION : out STD_LOGIC_VECTOR (4 downto 0);
 			  PC : out STD_LOGIC_VECTOR (31 downto 0));
 end ROB;
@@ -127,18 +129,16 @@ signal ISSUE_POINTER, COMMIT_POINTER : integer range 0 to 29;
 
 
 --DEBUG SIGNAL
-TYPE STATES_SIGNALS IS (INIT_S, RST_S, PUSH_S_LOW, PUSH_S_HIGH, UPDATE_S, POP_S_LOW, POP_S_HIGH, EXCEPTION_S, NONE_S);  
+TYPE STATES_SIGNALS IS (INIT_S, RST_S, PU_LOW, PUSH_S, UPDATE_S, PO_LOW, POP_S, EXCEPTION_S, NONE_S);  
 SIGNAL COMMIT_LAST, ISSUE_LAST : STATES_SIGNALS := INIT_S;
 
 begin		  
 
-ROB_TAG_ACCEPTED <= S_TAG(ISSUE_POINTER+1) WHEN ISSUE_POINTER+1<30 ELSE S_TAG(0);
-			  
-ISSUE_RF_Rj_Exists<='0';
-ISSUE_RF_Rk_Exists<='0';
+ROB_TAG_ACCEPTED <= S_TAG(ISSUE_POINTER+1) WHEN ISSUE_POINTER+1<30 ELSE S_TAG(0); 
+
 
 PROCESS(CLK, RST, ISSUE)
-variable n, k : integer;
+variable n, k, tmp : integer;
 BEGIN
 		--RST
 		IF (RST='1') THEN 
@@ -162,30 +162,15 @@ BEGIN
 			
 			--PUSH
 			IF (ISSUE='1' AND CLK='0') THEN 
-			
-				IF (ISSUE_LAST=RST_S) THEN
-					S_ISSUE(n)<='0';
-					n:=n+1;
-					--OUT OF BOUNDS FIX
-					IF(n>29) THEN n:=0; END IF;
-					
-					S_ISSUE(n)<='1';
-				ELSIF (ISSUE_LAST=PUSH_S_LOW) THEN
-					S_ISSUE(n)<='1';
-				ELSIF (ISSUE_LAST=PUSH_S_HIGH) THEN
-					S_ISSUE(n)<='0';
-					n:=n+1;
-					--OUT OF BOUNDS FIX
-					IF(n>29) THEN n:=0; END IF;
-					
-					S_ISSUE(n)<='1';
-				END IF;
-				
-				ISSUE_LAST<=PUSH_S_HIGH;
+				S_ISSUE(n)<='0';				
+				n:=n+1;
+				--OUT OF BOUNDS FIX
+				IF(n>29) THEN n:=0; END IF;
+				S_ISSUE(n)<='1';
+				ISSUE_LAST<=PUSH_S;
 			ELSIF (ISSUE='0' AND CLK='0') THEN
 				S_ISSUE(n)<='0';
-				
-				ISSUE_LAST<=PUSH_S_LOW;
+				ISSUE_LAST<=PU_LOW;
 			END IF;
 		
 			
@@ -197,9 +182,9 @@ BEGIN
 				DEST_MEM <= S_DEST_MEM(k);
 				VALUE    <= S_VALUE(k);
 				
-				IF (COMMIT_LAST=POP_S_HIGH AND k>0)THEN 
+				IF (COMMIT_LAST=POP_S AND k>0)THEN 
 					S_POP(k-1) <= '0' ;
-				ELSIF (COMMIT_LAST=POP_S_HIGH AND k=0)THEN 
+				ELSIF (COMMIT_LAST=POP_S AND k=0)THEN 
 					S_POP(29) <= '0' ;
 				END IF; 
 				
@@ -207,7 +192,7 @@ BEGIN
 				--OUT OF BOUNDS FIX
 				IF(k>29) THEN k:=0; END IF;
 				
-				COMMIT_LAST<=POP_S_HIGH;
+				COMMIT_LAST<=POP_S;
 			ELSIF (S_EXECUTED(k)='0' AND CLK='0') THEN 
 				DEST_RF  <= "00000";
 				DEST_MEM <= "00000";
@@ -219,15 +204,51 @@ BEGIN
 					S_POP(29) <= '0' ;
 				END IF; 
 				
-				COMMIT_LAST<=POP_S_LOW;
+				COMMIT_LAST<=PO_LOW;
 			END IF;
 			
+			--ROB EXISTS
+			IF(ISSUE_RF_Rj/="00000" AND ISSUE_RF_Rj/="11111") THEN
+				tmp:=to_integer(UNSIGNED(ISSUE_RF_Rj));
+				tmp:=tmp-1;
+				IF(tmp<0) THEN tmp:=29; END IF;
+				IF(ISSUE='1' AND S_EXECUTED(tmp)='1') THEN
+						ISSUE_RF_Rj_Exists <= '1';
+						ISSUE_RF_Rj_Value  <= S_VALUE(tmp);
+						ISSUE_RF_Rj_Tag    <= "00000";
+				ELSE
+						ISSUE_RF_Rj_Exists <= '0';
+						ISSUE_RF_Rj_Value  <= "11111111111111111111111111111111";
+						ISSUE_RF_Rj_Tag    <= S_TAG(tmp);
+				END IF;
+			ELSE
+				ISSUE_RF_Rj_Exists <= '0';
+			END IF;
+			
+			IF(ISSUE_RF_Rk/="00000" AND ISSUE_RF_Rk/="11111") THEN
+				tmp:=to_integer(UNSIGNED(ISSUE_RF_Rk));
+				tmp:=tmp-1;
+				IF(tmp<0) THEN tmp:=29; END IF;
+				IF(ISSUE='1' AND S_EXECUTED(tmp)='1') THEN
+						ISSUE_RF_Rk_Exists <= '1';
+						ISSUE_RF_Rk_Value  <= S_VALUE(tmp);
+						ISSUE_RF_Rk_Tag    <= "00000";
+				ELSE
+						ISSUE_RF_Rk_Exists <= '0';
+						ISSUE_RF_Rk_Value  <= "11111111111111111111111111111111";
+						ISSUE_RF_Rk_Tag    <= S_TAG(tmp);
+				END IF;
+			ELSE
+				ISSUE_RF_Rk_Exists <= '0';
+			END IF;
+			
+			
 			--EXCEPTION
-			EXCEPTION <= S_EXCEPTION(k);
 			PC        <= S_PC(k);
+			EXCEPTION <= S_EXCEPTION(k);
 			
 			
-			ISSUE_POINTER <= n;
+			ISSUE_POINTER  <= n;
 			COMMIT_POINTER <= k;
 		END IF;
 END PROCESS;

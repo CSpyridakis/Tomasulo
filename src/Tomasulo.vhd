@@ -60,6 +60,7 @@ Port (     CLK : in  STD_LOGIC;
            V_immed : in  STD_LOGIC_VECTOR (31 downto 0); 
 			
 			  --EXCEPTION
+			  EXCEPTION_INPUT : in STD_LOGIC_VECTOR (4 downto 0);
 			  EXC_PC : out  STD_LOGIC_VECTOR (31 downto 0);
 			  EXCEPTION : out  STD_LOGIC_VECTOR (4 downto 0);
 			  
@@ -88,6 +89,7 @@ component RF is
            ROB_Tag_Accepted : in  STD_LOGIC_VECTOR (4 downto 0);
            ROB_Q : in  STD_LOGIC_VECTOR (4 downto 0);
            ROB_V : in  STD_LOGIC_VECTOR (31 downto 0);
+			  ROB_DEST : in  STD_LOGIC_VECTOR (4 downto 0);
            Qj : out  STD_LOGIC_VECTOR (4 downto 0);
            Qk : out  STD_LOGIC_VECTOR (4 downto 0);
            Vj : out  STD_LOGIC_VECTOR (31 downto 0);
@@ -125,6 +127,7 @@ component ROB is
 			  VALUE : out STD_LOGIC_VECTOR (31 downto 0); 
 			  
 			  --EXCEPTION HANDLER
+			  EXCEPTION_IN : in STD_LOGIC_VECTOR (4 downto 0);
 			  EXCEPTION : out STD_LOGIC_VECTOR (4 downto 0);
 			  PC : out STD_LOGIC_VECTOR (31 downto 0));
 end component;
@@ -278,6 +281,7 @@ Port map(   CLK               => CLK,
             ROB_Tag_Accepted  => ROB_TAG_ACCEPTED_TMP,
             ROB_Q             => CDB_Q_TMP,
             ROB_V             => CDB_V_TMP,
+				ROB_DEST          => DEST_RF_TMP,
             Qj                => Qj_TMP,
             Qk                => Qk_TMP,
             Vj                => Vj_TMP,
@@ -304,6 +308,7 @@ Port map(    CLK                => CLK,
 				 DEST_RF            => DEST_RF_TMP,
 				 DEST_MEM           => DEST_MEM_TMP,
 				 VALUE              => ROB_VALUE, 
+				 EXCEPTION_IN       => EXCEPTION_INPUT,
 				 EXCEPTION          => EXCEPTION,
 				 PC                 => EXC_PC);
 
