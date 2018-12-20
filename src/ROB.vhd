@@ -137,7 +137,10 @@ SIGNAL COMMIT_LAST, ISSUE_LAST : STATES_SIGNALS := INIT_S;
 TYPE STATES_SIGNALS2 IS (INIT_S, RST_S, NOT_EXI, ZERO_ONE, EXISTS, NONE_S);  
 SIGNAL RJ_EX, RK_EX: STATES_SIGNALS2 := INIT_S;
 
+TYPE STATES_SIGNALS3 IS (RST_S, DONE_S);  
+SIGNAL FLAG: STATES_SIGNALS3 := RST_S;
 begin		  
+
 
 PROCESS(CLK, RST, ISSUE)
 variable n, k, tmp : integer;
@@ -164,7 +167,7 @@ BEGIN
 			n:=ISSUE_POINTER;
 			
 			--PUSH
-			IF(falling_edge(CLK) AND ISSUE='1') THEN
+			IF(CLK='0' AND ISSUE='1') THEN
 				
 				S_ISSUE(n)<='0';				
 				n:=n+1;
@@ -175,20 +178,19 @@ BEGIN
 				ISSUE_LAST<=PUSH_S;
 				
 				ROB_TAG_ACCEPTED <= S_Tag(n);
-			ELSIF (falling_edge(CLK) AND ISSUE='0') THEN 
+			ELSIF (CLK='0' AND ISSUE='0') THEN 
 				S_ISSUE(n)<='0';
 				ISSUE_LAST<=PU_LOW;
 			END IF;
 			
 			--COMMIT
-			IF(S_EXECUTED(k)='1' AND falling_edge(CLK)) THEN 
+			IF(S_EXECUTED(k)='1' AND CLK='0') THEN 
 				S_POP(k) <= '1';
 				
-				tmp:=k-1;
-				IF(tmp<0) THEN tmp:=29; END IF;
-				DEST_RF  <= S_DEST_RF(tmp);
-				DEST_MEM <= S_DEST_MEM(tmp);
-				VALUE    <= S_VALUE(tmp);
+				DEST_RF  <= S_DEST_RF(k);
+				DEST_MEM <= S_DEST_MEM(k);
+				VALUE    <= S_VALUE(k);
+				WB_TAG   <= S_TAG(k);
 				
 				IF (COMMIT_LAST=POP_S AND k>0)THEN 
 					S_POP(k-1) <= '0' ;
@@ -201,10 +203,11 @@ BEGIN
 				IF(k>29) THEN k:=0; END IF;
 				
 				COMMIT_LAST<=POP_S;
-			ELSIF (S_EXECUTED(k)='0' AND falling_edge(CLK)) THEN 
+			ELSIF (S_EXECUTED(k)='0' AND CLK='0') THEN 
 				DEST_RF  <= "00000";
 				DEST_MEM <= "00000";
 				VALUE    <= "00000000000000000000000000000000";
+				WB_TAG   <= "00000";
 				
 				IF (k>0)THEN 
 					S_POP(k-1) <= '0' ;
@@ -215,7 +218,7 @@ BEGIN
 				COMMIT_LAST<=PO_LOW;
 			END IF;
 			
-			--ROB EXISTS
+			--ROB EXISTS OR CDB
 			--RJ
 			IF(ISSUE_RF_Rj/="00000" AND ISSUE_RF_Rj/="11111") THEN
 				tmp:=to_integer(UNSIGNED(ISSUE_RF_Rj));
@@ -266,13 +269,12 @@ BEGIN
 				ISSUE_RF_Rk_Exists <= '0';
 				RK_EX<=ZERO_ONE;
 			END IF;
-			
-			
+	
+	
 			--EXCEPTION
 			PC                <= S_PC(k);
 			S_EXCEPTION_IN(k) <= EXCEPTION_IN;
 			EXCEPTION         <= EXCEPTION_IN;
-			
 			IF(EXCEPTION_IN/="00000") THEN
 				IF (k<n) THEN
 					 FOR i IN k TO n-1 LOOP
@@ -292,6 +294,7 @@ BEGIN
 				COMMIT_LAST<=EXCEPTION_S;
 			END IF;
 			
+	
 			ISSUE_POINTER  <= n;
 			COMMIT_POINTER <= k;
 		END IF;
