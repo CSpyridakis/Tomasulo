@@ -90,6 +90,8 @@ component RF is
            ROB_Q : in  STD_LOGIC_VECTOR (4 downto 0);
            ROB_V : in  STD_LOGIC_VECTOR (31 downto 0);
 			  ROB_DEST : in  STD_LOGIC_VECTOR (4 downto 0);
+			  Tag_Rj : out  STD_LOGIC_VECTOR (4 downto 0);
+			  Tag_Rk : out  STD_LOGIC_VECTOR (4 downto 0);
            Qj : out  STD_LOGIC_VECTOR (4 downto 0);
            Qk : out  STD_LOGIC_VECTOR (4 downto 0);
            Vj : out  STD_LOGIC_VECTOR (31 downto 0);
@@ -125,6 +127,7 @@ component ROB is
 			  DEST_RF : out STD_LOGIC_VECTOR (4 downto 0);
 			  DEST_MEM : out STD_LOGIC_VECTOR (4 downto 0);
 			  VALUE : out STD_LOGIC_VECTOR (31 downto 0); 
+			  WB_TAG: out STD_LOGIC_VECTOR (4 downto 0);	
 			  
 			  --EXCEPTION HANDLER
 			  EXCEPTION_IN : in STD_LOGIC_VECTOR (4 downto 0);
@@ -251,13 +254,14 @@ signal A_V_TMP, L_V_TMP: STD_LOGIC_VECTOR (31 downto 0);
 signal A_Q_TMP, L_Q_TMP : STD_LOGIC_VECTOR (4 downto 0);
 
 --ROB
-signal ROB_TAG_ACCEPTED_TMP : STD_LOGIC_VECTOR (4 downto 0);
+signal ROB_TAG_ACCEPTED_TMP, WB_TAG_TMP : STD_LOGIC_VECTOR (4 downto 0);
 signal DEST_MEM_TMP, DEST_RF_TMP : STD_LOGIC_VECTOR (4 downto 0);
 signal ROB_VALUE : STD_LOGIC_VECTOR (31 downto 0);
 signal InstructionAccepted : STD_LOGIC;
 signal ROB_Rj_V, ROB_Rk_V : STD_LOGIC_VECTOR (31 downto 0);
 signal ROB_Rj_Q, ROB_Rk_Q : STD_LOGIC_VECTOR (4 downto 0);
 signal ROB_Rj_Exist, ROB_Rk_Exist : STD_LOGIC;
+signal Tag_Rj_TMP, Tag_Rk_TMP : STD_LOGIC_VECTOR (4 downto 0);
 
 begin
 
@@ -279,9 +283,11 @@ Port map(   CLK               => CLK,
             Rk                => Rk,
             Tag_WE            => Tag_WE_TMP,
             ROB_Tag_Accepted  => ROB_TAG_ACCEPTED_TMP,
-            ROB_Q             => CDB_Q_TMP,
-            ROB_V             => CDB_V_TMP,
+            ROB_Q             => WB_TAG_TMP,
+            ROB_V             => ROB_VALUE,
 				ROB_DEST          => DEST_RF_TMP,
+				Tag_Rj            => Tag_Rj_TMP,
+			   Tag_Rk            => Tag_Rk_TMP,
             Qj                => Qj_TMP,
             Qk                => Qk_TMP,
             Vj                => Vj_TMP,
@@ -294,11 +300,11 @@ Port map(    CLK                => CLK,
 				 ISSUE_PC           => PC,
 				 ISSUE_I_type       => Fu_type,
 				 ISSUE_Dest         => Ri,
-				 ISSUE_RF_Rj        => Rj,
+				 ISSUE_RF_Rj        => Tag_Rj_TMP,
 			    ISSUE_RF_Rj_Exists => ROB_Rj_Exist,
 			    ISSUE_RF_Rj_Value  => ROB_Rj_V,
 				 ISSUE_RF_Rj_Tag    => ROB_Rj_Q,
-			    ISSUE_RF_Rk        => Rk,
+			    ISSUE_RF_Rk        => Tag_Rk_TMP,
 			    ISSUE_RF_Rk_Exists => ROB_Rk_Exist,
 			    ISSUE_RF_Rk_Value  => ROB_Rk_V,
 				 ISSUE_RF_Rk_Tag    => ROB_Rk_Q,
@@ -307,7 +313,8 @@ Port map(    CLK                => CLK,
 				 CDB_V              => CDB_V_TMP,
 				 DEST_RF            => DEST_RF_TMP,
 				 DEST_MEM           => DEST_MEM_TMP,
-				 VALUE              => ROB_VALUE, 
+				 VALUE              => ROB_VALUE,
+             WB_TAG             => WB_TAG_TMP,				 
 				 EXCEPTION_IN       => EXCEPTION_INPUT,
 				 EXCEPTION          => EXCEPTION,
 				 PC                 => EXC_PC);

@@ -34,6 +34,8 @@ entity RF is
            ROB_Q : in  STD_LOGIC_VECTOR (4 downto 0);
            ROB_V : in  STD_LOGIC_VECTOR (31 downto 0);
 			  ROB_DEST : in  STD_LOGIC_VECTOR (4 downto 0);
+			  Tag_Rj : out  STD_LOGIC_VECTOR (4 downto 0);
+			  Tag_Rk : out  STD_LOGIC_VECTOR (4 downto 0);
            Qj : out  STD_LOGIC_VECTOR (4 downto 0);
            Qk : out  STD_LOGIC_VECTOR (4 downto 0);
            Vj : out  STD_LOGIC_VECTOR (31 downto 0);
@@ -70,27 +72,31 @@ begin
 process(Tag_WE, Rj, Rk, ROB_Q)
 begin 
 	--TODO DELETE THEM 
-	if (Tag_WE='1' AND ROB_Q/="00000" AND ROB_Q = QOUT(to_integer(UNSIGNED(Rj))) AND ROB_Q = QOUT(to_integer(UNSIGNED(Rk)))) then			-- Forward ROB_V to Rj and Rk when ROB_Q = Rj_Q and ROB_Q = Rk_Q 
-	  Vj<=ROB_V;
-	  Qj<="00000"; 
-	  Vk<=ROB_V;
-	  Qk<="00000";
-	elsif (Tag_WE='1' AND ROB_Q/="00000" AND ROB_Q = QOUT(to_integer(UNSIGNED(Rj)))) then																-- Forward ROB_V to Rj when ROB_Q = Rj_Q 
-	  Vj<=ROB_V;
-	  Qj<="00000";
+--	if (Tag_WE='1' AND ROB_Q/="00000" AND ROB_Q = QOUT(to_integer(UNSIGNED(Rj))) AND ROB_Q = QOUT(to_integer(UNSIGNED(Rk)))) then			-- Forward ROB_V to Rj and Rk when ROB_Q = Rj_Q and ROB_Q = Rk_Q 
+--	  Vj<=ROB_V;
+--	  Qj<="00000"; 
+--	  Vk<=ROB_V;
+--	  Qk<="00000";
+--	elsif (Tag_WE='1' AND ROB_Q/="00000" AND ROB_Q = QOUT(to_integer(UNSIGNED(Rj)))) then																-- Forward ROB_V to Rj when ROB_Q = Rj_Q 
+--	  Vj<=ROB_V;
+--	  Qj<="00000";
+--	  Vk<=VOUT(to_integer(UNSIGNED(Rk)));
+--	  Qk<=QOUT(to_integer(UNSIGNED(Rk)));
+--	elsif (ROB_Q/="00000" AND ROB_Q = QOUT(to_integer(UNSIGNED(Rk)))) then																               -- Forward ROB_V to Rk when ROB_Q = Rk_Q 
+--	  Vj<=VOUT(to_integer(UNSIGNED(Rj)));
+--	  Qj<=QOUT(to_integer(UNSIGNED(Rj))); 
+--	  Vk<=ROB_V;
+--	  Qk<="00000";
+--	else
+	  Vj<=VOUT(to_integer(UNSIGNED(Rj)));
+	  Qj<=QOUT(to_integer(UNSIGNED(Rj))); 
 	  Vk<=VOUT(to_integer(UNSIGNED(Rk)));
 	  Qk<=QOUT(to_integer(UNSIGNED(Rk)));
-	elsif (ROB_Q/="00000" AND ROB_Q = QOUT(to_integer(UNSIGNED(Rk)))) then																               -- Forward ROB_V to Rk when ROB_Q = Rk_Q 
-	  Vj<=VOUT(to_integer(UNSIGNED(Rj)));
-	  Qj<=QOUT(to_integer(UNSIGNED(Rj))); 
-	  Vk<=ROB_V;
-	  Qk<="00000";
-	else
-	  Vj<=VOUT(to_integer(UNSIGNED(Rj)));
-	  Qj<=QOUT(to_integer(UNSIGNED(Rj))); 
-	  Vk<=VOUT(to_integer(UNSIGNED(Rk)));
-	  Qk<=QOUT(to_integer(UNSIGNED(Rk))); 
-	end if;   
+	  
+	  Tag_Rj <= QOUT(to_integer(UNSIGNED(Rj)));
+	  Tag_Rk <= QOUT(to_integer(UNSIGNED(Rk)));
+     
+--	end if;   
 end process;
 
 -- Registers 0

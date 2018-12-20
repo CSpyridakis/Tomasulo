@@ -52,7 +52,8 @@ entity ROB is
 			  --POP
 			  DEST_RF : out STD_LOGIC_VECTOR (4 downto 0);
 			  DEST_MEM : out STD_LOGIC_VECTOR (4 downto 0);
-			  VALUE : out STD_LOGIC_VECTOR (31 downto 0); 
+			  VALUE : out STD_LOGIC_VECTOR (31 downto 0);
+           WB_TAG: out STD_LOGIC_VECTOR (4 downto 0);			  
 			  
 			  --EXCEPTION HANDLER
 			  EXCEPTION_IN : in STD_LOGIC_VECTOR (4 downto 0);

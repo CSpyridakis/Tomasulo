@@ -76,7 +76,7 @@ Sel <= '0' WHEN Tag_WE='1' AND ID = Ri ELSE              -- ISSUE : V="000.." AN
 
 -- Register Write Enable
 En <= '1' WHEN Tag_WE='1' AND ID = Ri ELSE               -- ISSUE
-      '1' WHEN ROB_Q/= "00000" AND ROB_Q = Q_O ELSE      -- CDB  
+      '1' WHEN ROB_DEST=ID AND ROB_Q = Q_O ELSE          -- ROB  
       '0';		
 
 V_IN : Mux_2x32bits
