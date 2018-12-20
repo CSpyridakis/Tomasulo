@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="/home/cs/Desktop/Vhdl/Tomasulo3c/TEST_ROB_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="numeric_std" />
+            <top_module name="std_logic_1164" />
+            <top_module name="test_rob" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="34" />
+   <wave_markers>
+      <marker time="99800000" label="" />
+      <marker time="110400000" label="" />
+      <marker time="120600000" label="" />
+      <marker time="130200000" label="" />
+      <marker time="140000000" label="" />
+      <marker time="150000000" label="" />
+      <marker time="160200000" label="" />
+      <marker time="170400000" label="" />
+   </wave_markers>
+   <wvobject fp_name="/test_rob/clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffffff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_rob/rst" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffffff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_rob/issue" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">issue</obj_property>
+      <obj_property name="ObjectShortName">issue</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_rob/issue_i_type" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">issue_i_type[1:0]</obj_property>
+      <obj_property name="ObjectShortName">issue_i_type[1:0]</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffa500</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_rob/issue_pc" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">issue_pc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">issue_pc[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffa500</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_rob/rob_tag_accepted" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">rob_tag_accepted[4:0]</obj_property>
+      <obj_property name="ObjectShortName">rob_tag_accepted[4:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_rob/issue_dest" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">issue_dest[4:0]</obj_property>
+      <obj_property name="ObjectShortName">issue_dest[4:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider30" type="divider">
+      <obj_property name="label">CDB</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">128 128 255</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_rob/cdb_q" type="array" db_ref_id="1">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">cdb_q[4:0]</obj_property>
+      <obj_property name="ObjectShortName">cdb_q[4:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      <obj_property name="label">cdb_q[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_rob/cdb_v" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">cdb_v[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cdb_v[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#0000ff</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider31" type="divider">
+      <obj_property name="label">ISSUE RF_Q</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">128 128 255</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_rob/issue_rf_rj" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">issue_rf_rj[4:0]</obj_property>
+      <obj_property name="ObjectShortName">issue_rf_rj[4:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_rob/issue_rf_rj_exists" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">issue_rf_rj_exists</obj_property>
+      <obj_property name="ObjectShortName">issue_rf_rj_exists</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#800000</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_rob/issue_rf_rj_value" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">issue_rf_rj_value[31:0]</obj_property>
+      <obj_property name="ObjectShortName">issue_rf_rj_value[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#0000ff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_rob/issue_rf_rj_tag" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">issue_rf_rj_tag[4:0]</obj_property>
+      <obj_property name="ObjectShortName">issue_rf_rj_tag[4:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_rob/issue_rf_rk" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">issue_rf_rk[4:0]</obj_property>
+      <obj_property name="ObjectShortName">issue_rf_rk[4:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_rob/issue_rf_rk_exists" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">issue_rf_rk_exists</obj_property>
+      <obj_property name="ObjectShortName">issue_rf_rk_exists</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#800000</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_rob/issue_rf_rk_value" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">issue_rf_rk_value[31:0]</obj_property>
+      <obj_property name="ObjectShortName">issue_rf_rk_value[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#0000ff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_rob/issue_rf_rk_tag" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">issue_rf_rk_tag[4:0]</obj_property>
+      <obj_property name="ObjectShortName">issue_rf_rk_tag[4:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider33" type="divider">
+      <obj_property name="label">To RF/MEM</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">128 128 255</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_rob/dest_rf" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">dest_rf[4:0]</obj_property>
+      <obj_property name="ObjectShortName">dest_rf[4:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_rob/dest_mem" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">dest_mem[4:0]</obj_property>
+      <obj_property name="ObjectShortName">dest_mem[4:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_rob/value" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">value[31:0]</obj_property>
+      <obj_property name="ObjectShortName">value[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#0000ff</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider32" type="divider">
+      <obj_property name="label">Exceptions</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">128 128 255</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_rob/exception_in" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">exception_in[4:0]</obj_property>
+      <obj_property name="ObjectShortName">exception_in[4:0]</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ff0000</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_rob/exception" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">exception[4:0]</obj_property>
+      <obj_property name="ObjectShortName">exception[4:0]</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ff0000</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_rob/pc" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">pc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">pc[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider29" type="divider">
+      <obj_property name="label">Pointers</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">128 128 255</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_rob/uut/commit_pointer" type="other" db_ref_id="1">
+      <obj_property name="ElementShortName">commit_pointer</obj_property>
+      <obj_property name="ObjectShortName">commit_pointer</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_rob/uut/issue_pointer" type="other" db_ref_id="1">
+      <obj_property name="ElementShortName">issue_pointer</obj_property>
+      <obj_property name="ObjectShortName">issue_pointer</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_rob/uut/commit_last" type="other" db_ref_id="1">
+      <obj_property name="ElementShortName">commit_last</obj_property>
+      <obj_property name="ObjectShortName">commit_last</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_rob/uut/issue_last" type="other" db_ref_id="1">
+      <obj_property name="ElementShortName">issue_last</obj_property>
+      <obj_property name="ObjectShortName">issue_last</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider40" type="divider">
+      <obj_property name="label">Signals</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">128 128 255</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="group38" type="group">
+      <obj_property name="label">Signals</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="group177" type="group">
+         <obj_property name="label">Empty</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <wvobject fp_name="/test_rob/uut/s_empty[29]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[29]</obj_property>
+            <obj_property name="ObjectShortName">s_empty[29]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/test_rob/uut/s_empty[4]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[4]</obj_property>
+            <obj_property name="ObjectShortName">s_empty[4]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/test_rob/uut/s_empty[3]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[3]</obj_property>
+            <obj_property name="ObjectShortName">s_empty[3]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/test_rob/uut/s_empty[2]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[2]</obj_property>
+            <obj_property name="ObjectShortName">s_empty[2]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/test_rob/uut/s_empty[1]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[1]</obj_property>
+            <obj_property name="ObjectShortName">s_empty[1]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/test_rob/uut/s_empty[0]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[0]</obj_property>
+            <obj_property name="ObjectShortName">s_empty[0]</obj_property>
+         </wvobject>
+      </wvobject>
+      <wvobject fp_name="/test_rob/uut/s_pop[29]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[29]</obj_property>
+         <obj_property name="ObjectShortName">s_pop[29]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_rob/uut/s_pop[0]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[0]</obj_property>
+         <obj_property name="ObjectShortName">s_pop[0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_rob/uut/s_executed" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">s_executed[29:0]</obj_property>
+         <obj_property name="ObjectShortName">s_executed[29:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="group178" type="group">
+         <obj_property name="label">Issue</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <wvobject fp_name="/test_rob/uut/s_issue[29]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[29]</obj_property>
+            <obj_property name="ObjectShortName">s_issue[29]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/test_rob/uut/s_issue[4]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[4]</obj_property>
+            <obj_property name="ObjectShortName">s_issue[4]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/test_rob/uut/s_issue[3]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[3]</obj_property>
+            <obj_property name="ObjectShortName">s_issue[3]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/test_rob/uut/s_issue[2]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[2]</obj_property>
+            <obj_property name="ObjectShortName">s_issue[2]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/test_rob/uut/s_issue[1]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[1]</obj_property>
+            <obj_property name="ObjectShortName">s_issue[1]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/test_rob/uut/s_issue[0]" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">[0]</obj_property>
+            <obj_property name="ObjectShortName">s_issue[0]</obj_property>
+         </wvobject>
+      </wvobject>
+   </wvobject>
+</wave_config>
