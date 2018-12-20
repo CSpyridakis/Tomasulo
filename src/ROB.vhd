@@ -129,22 +129,19 @@ signal ISSUE_POINTER, COMMIT_POINTER : integer range 0 to 29;
 
 
 --DEBUG SIGNAL
-TYPE STATES_SIGNALS IS (INIT_S, RST_S, PU_LOW, PUSH_S, UPDATE_S, PO_LOW, POP_S, EXCEPTION_S, NONE_S);  
+TYPE STATES_SIGNALS IS (INIT_S, RST_S, PU_LOW, PU_LOW_LAST_HIGH, PUSH_S, UPDATE_S, PO_LOW, POP_S, EXCEPTION_S, NONE_S);  
 SIGNAL COMMIT_LAST, ISSUE_LAST : STATES_SIGNALS := INIT_S;
 
 --DEBUG SIGNAL
 TYPE STATES_SIGNALS2 IS (INIT_S, RST_S, NOT_EXI, ZERO_ONE, EXISTS, NONE_S);  
 SIGNAL RJ_EX, RK_EX: STATES_SIGNALS2 := INIT_S;
 
-
 begin		  
-
-ROB_TAG_ACCEPTED <= S_TAG(ISSUE_POINTER+1) WHEN ISSUE_POINTER+1<30 ELSE S_TAG(0); 
-
 
 PROCESS(CLK, RST, ISSUE)
 variable n, k, tmp : integer;
 BEGIN
+		
 		--RST
 		IF (RST='1') THEN 
 			 FOR i IN 0 TO 29 LOOP
@@ -162,30 +159,35 @@ BEGIN
 				  S_RST(i) <= '0';  
 			 END LOOP;
 			
-			n:=ISSUE_POINTER;
 			k:=COMMIT_POINTER;
+			n:=ISSUE_POINTER;
 			
 			--PUSH
-			IF (ISSUE='1' AND CLK='0') THEN 
+			IF(falling_edge(CLK) AND ISSUE='1') THEN
+				
 				S_ISSUE(n)<='0';				
 				n:=n+1;
 				--OUT OF BOUNDS FIX
 				IF(n>29) THEN n:=0; END IF;
 				S_ISSUE(n)<='1';
+				
 				ISSUE_LAST<=PUSH_S;
-			ELSIF (ISSUE='0' AND CLK='0') THEN
+				
+				ROB_TAG_ACCEPTED <= S_Tag(n);
+			ELSIF (falling_edge(CLK) AND ISSUE='0') THEN 
 				S_ISSUE(n)<='0';
 				ISSUE_LAST<=PU_LOW;
 			END IF;
-		
 			
 			--COMMIT
-			IF(S_EXECUTED(k)='1' AND CLK='0') THEN 
+			IF(S_EXECUTED(k)='1' AND falling_edge(CLK)) THEN 
 				S_POP(k) <= '1';
 				
-				DEST_RF  <= S_DEST_RF(k);
-				DEST_MEM <= S_DEST_MEM(k);
-				VALUE    <= S_VALUE(k);
+				tmp:=k-1;
+				IF(tmp<0) THEN tmp:=29; END IF;
+				DEST_RF  <= S_DEST_RF(tmp);
+				DEST_MEM <= S_DEST_MEM(tmp);
+				VALUE    <= S_VALUE(tmp);
 				
 				IF (COMMIT_LAST=POP_S AND k>0)THEN 
 					S_POP(k-1) <= '0' ;
@@ -198,7 +200,7 @@ BEGIN
 				IF(k>29) THEN k:=0; END IF;
 				
 				COMMIT_LAST<=POP_S;
-			ELSIF (S_EXECUTED(k)='0' AND CLK='0') THEN 
+			ELSIF (S_EXECUTED(k)='0' AND falling_edge(CLK)) THEN 
 				DEST_RF  <= "00000";
 				DEST_MEM <= "00000";
 				VALUE    <= "00000000000000000000000000000000";
@@ -266,9 +268,28 @@ BEGIN
 			
 			
 			--EXCEPTION
-			PC        <= S_PC(k);
-			EXCEPTION <= S_EXCEPTION(k);
+			PC                <= S_PC(k);
+			S_EXCEPTION_IN(k) <= EXCEPTION_IN;
+			EXCEPTION         <= EXCEPTION_IN;
 			
+			IF(EXCEPTION_IN/="00000") THEN
+				IF (k<n) THEN
+					 FOR i IN k TO n-1 LOOP
+						  S_RST(i) <= '1';  
+					 END LOOP;
+					 k:=n;
+				ELSIF (k>n) THEN
+					 FOR i IN k TO 29 LOOP
+						  S_RST(i) <= '1';  
+					 END LOOP;
+					 
+					 FOR i IN 0 TO n-1 LOOP
+						  S_RST(i) <= '1';  
+					 END LOOP;
+					 k:=n;
+				END IF;
+				COMMIT_LAST<=EXCEPTION_S;
+			END IF;
 			
 			ISSUE_POINTER  <= n;
 			COMMIT_POINTER <= k;
