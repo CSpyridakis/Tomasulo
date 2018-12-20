@@ -29,6 +29,9 @@ Implementation of Tomasulo's Algorithm with following specifications:
 	     - or/ori
 	     - not 
 
+	* Reorder Buffer
+		-30x Available Slots
+
 # Import and Run 
 
 	* In order to run simulation create a new project
