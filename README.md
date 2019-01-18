@@ -1,7 +1,7 @@
 # Tomasulo
 Introduction in Dynamic Instruction Scheduling (Advanced Computer Architecture) implementing Tomasulo's Algorithm
 
-Implementation of Tomasulo's Algorithm with following specifications:
+Proof of concept implementation of Tomasulo's Algorithm with following specifications:
 
 	* 5x Reservation Stations where:
 	
@@ -11,7 +11,7 @@ Implementation of Tomasulo's Algorithm with following specifications:
 	* 2x Functional Units (one for each operation type)
 	
 		-Arithmetic FU is a 3 level pipeline unit
-		-Logic FU is a 2 level pipeline unit
+		-Logical FU is a 2 level pipeline unit
 
 	* 1x Register File
 	
