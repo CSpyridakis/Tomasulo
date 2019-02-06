@@ -14,8 +14,8 @@
 --
 -- Dependencies:              NONE
 --
--- Revision:                  1.0
--- Revision                   1.0 - File Created
+-- Revision:                  2.1
+-- Revision                   2.1 - ROB
 -- Additional Comments: 
 --
 ----------------------------------------------------------------------------------
@@ -39,6 +39,7 @@ begin
          In1 WHEN "01",
          In2 WHEN "10",
          In3 WHEN "11",
-         TMP WHEN OTHERS;   
-	Outt<=TMP;
+         TMP WHEN OTHERS; 
+           
+  Outt <= TMP;
 end Behavioral;

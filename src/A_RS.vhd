@@ -14,8 +14,8 @@
 --
 -- Dependencies:              NONE
 --
--- Revision:                  2.0 
--- Revision                   2.0 - ROB
+-- Revision:                  2.1
+-- Revision                   2.1 - ROB
 -- Additional Comments: 
 --
 ----------------------------------------------------------------------------------
@@ -125,16 +125,21 @@ PROCESS(CLK, ISSUE, A1_Available, A2_Available, A3_Available)
 BEGIN
 		A_Available <= A1_Available OR A2_Available OR A3_Available;
 		A_Ready <= A1_Ready OR A2_Ready OR A3_Ready;
- 
-		IF (ISSUE='1' AND A1_Available='1' AND CLK='0' ) THEN                                             -- IF A_RS1 is available will accept next instruction
+        
+        -- IF A_RS1 is available will accept next instruction
+		IF (ISSUE='1' AND A1_Available='1' AND CLK='0' ) THEN                                             
 			A1_ISSUE <= '1';
 			A2_ISSUE <= '0';
-			A3_ISSUE <= '0';
-		ELSIF (ISSUE='1' AND A1_Available='0' AND A2_Available='1' AND CLK='0') THEN                      -- IF A_RS2 is available will accept next instruction
+            A3_ISSUE <= '0';
+            
+        -- IF A_RS2 is available will accept next instruction
+		ELSIF (ISSUE='1' AND A1_Available='0' AND A2_Available='1' AND CLK='0') THEN                      
 			A1_ISSUE <= '0';
 			A2_ISSUE <= '1';
-			A3_ISSUE <= '0';
-		ELSIF (ISSUE='1' AND A1_Available='0' AND A2_Available='0' AND A3_Available='1' AND CLK='0') THEN -- IF A_RS3 is available will accept next instruction
+            A3_ISSUE <= '0';
+
+        -- IF A_RS3 is available will accept next instruction
+		ELSIF (ISSUE='1' AND A1_Available='0' AND A2_Available='0' AND A3_Available='1' AND CLK='0') THEN 
 			A1_ISSUE <= '0';
 			A2_ISSUE <= '0';
 			A3_ISSUE <= '1';

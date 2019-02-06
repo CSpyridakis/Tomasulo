@@ -14,8 +14,8 @@
 --
 -- Dependencies:              NONE
 --
--- Revision:                  2.0 
--- Revision                   2.0 - ROB
+-- Revision:                  2.1 
+-- Revision                   2.1 - ROB
 -- Additional Comments: 
 --
 ----------------------------------------------------------------------------------
@@ -39,12 +39,12 @@ entity RS is
            Vk : in  STD_LOGIC_VECTOR (31 downto 0);
            Qk : in  STD_LOGIC_VECTOR (4 downto 0);
 			  
-			  --ROB tag Accepted
+           --ROB tag Accepted
            ROB_Tag_Accepted : in  STD_LOGIC_VECTOR (4 downto 0);
            
-			  --Immediate
-			  Immed : in  STD_LOGIC;
-			  V_immed : in  STD_LOGIC_VECTOR (31 downto 0); 
+           --Immediate
+           Immed : in  STD_LOGIC;
+           V_immed : in  STD_LOGIC_VECTOR (31 downto 0); 
 			  
            --CDB
            CDB_V : in  STD_LOGIC_VECTOR (31 downto 0);

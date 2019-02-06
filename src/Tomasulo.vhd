@@ -14,8 +14,8 @@
 --
 -- Dependencies:              NONE
 --
--- Revision:                  2.0
--- Revision                   2.0 ROB 
+-- Revision:                  2.1
+-- Revision                   2.1 - ROB 
 -- Additional Comments: 
 --
 ----------------------------------------------------------------------------------
@@ -28,7 +28,7 @@ Port (     CLK : in  STD_LOGIC;
 				
            -- In case Issue='1' then Issue new Instruction
            Issue_I : in  STD_LOGIC;
-			  PC : in  STD_LOGIC_VECTOR (31 downto 0);
+           PC : in  STD_LOGIC_VECTOR (31 downto 0);
    
            -- Fu_type 
            --    Case = 00 Issue Logical Instruction
@@ -58,11 +58,11 @@ Port (     CLK : in  STD_LOGIC;
            Immed : in  STD_LOGIC;
            -- Value of Immediate, assumed that sign extension or zero extension is already been executed
            V_immed : in  STD_LOGIC_VECTOR (31 downto 0); 
-			
-			  --EXCEPTION
-			  EXCEPTION_INPUT : in STD_LOGIC_VECTOR (4 downto 0);
-			  EXC_PC : out  STD_LOGIC_VECTOR (31 downto 0);
-			  EXCEPTION : out  STD_LOGIC_VECTOR (4 downto 0);
+            
+           --EXCEPTION
+           EXCEPTION_INPUT : in STD_LOGIC_VECTOR (4 downto 0);
+           EXC_PC : out  STD_LOGIC_VECTOR (31 downto 0);
+           EXCEPTION : out  STD_LOGIC_VECTOR (4 downto 0);
 			  
            Accepted : out  STD_LOGIC);
 end Tomasulo;
@@ -89,9 +89,9 @@ component RF is
            ROB_Tag_Accepted : in  STD_LOGIC_VECTOR (4 downto 0);
            ROB_Q : in  STD_LOGIC_VECTOR (4 downto 0);
            ROB_V : in  STD_LOGIC_VECTOR (31 downto 0);
-			  ROB_DEST : in  STD_LOGIC_VECTOR (4 downto 0);
-			  Tag_Rj : out  STD_LOGIC_VECTOR (4 downto 0);
-			  Tag_Rk : out  STD_LOGIC_VECTOR (4 downto 0);
+           ROB_DEST : in  STD_LOGIC_VECTOR (4 downto 0);
+           Tag_Rj : out  STD_LOGIC_VECTOR (4 downto 0);
+           Tag_Rk : out  STD_LOGIC_VECTOR (4 downto 0);
            Qj : out  STD_LOGIC_VECTOR (4 downto 0);
            Qk : out  STD_LOGIC_VECTOR (4 downto 0);
            Vj : out  STD_LOGIC_VECTOR (31 downto 0);
@@ -99,40 +99,40 @@ component RF is
 end component;
 
 component ROB is
- Port (    CLK : in  STD_LOGIC;
+     Port (CLK : in  STD_LOGIC;
            RST : in  STD_LOGIC;
 			  
-			  --ISSUE
-			  ISSUE : in STD_LOGIC;
-			  ISSUE_PC : in STD_LOGIC_VECTOR (31 downto 0);
-			  ISSUE_I_type : in STD_LOGIC_VECTOR (1 downto 0);
-			  ISSUE_Dest : in STD_LOGIC_VECTOR (4 downto 0);
-			  ROB_TAG_ACCEPTED : out STD_LOGIC_VECTOR (4 downto 0);
+           --ISSUE
+           ISSUE : in STD_LOGIC;
+           ISSUE_PC : in STD_LOGIC_VECTOR (31 downto 0);
+           ISSUE_I_type : in STD_LOGIC_VECTOR (1 downto 0);
+           ISSUE_Dest : in STD_LOGIC_VECTOR (4 downto 0);
+           ROB_TAG_ACCEPTED : out STD_LOGIC_VECTOR (4 downto 0);
 			  
-			  ISSUE_RF_Rj : in STD_LOGIC_VECTOR (4 downto 0);
-			  ISSUE_RF_Rj_Exists : out STD_LOGIC;
-			  ISSUE_RF_Rj_Value : out STD_LOGIC_VECTOR (31 downto 0);
-			  ISSUE_RF_Rj_Tag : out STD_LOGIC_VECTOR (4 downto 0);
+           ISSUE_RF_Rj : in STD_LOGIC_VECTOR (4 downto 0);
+           ISSUE_RF_Rj_Exists : out STD_LOGIC;
+           ISSUE_RF_Rj_Value : out STD_LOGIC_VECTOR (31 downto 0);
+           ISSUE_RF_Rj_Tag : out STD_LOGIC_VECTOR (4 downto 0);
 			  
-			  ISSUE_RF_Rk : in STD_LOGIC_VECTOR (4 downto 0);
-			  ISSUE_RF_Rk_Exists : out STD_LOGIC;
-			  ISSUE_RF_Rk_Value : out STD_LOGIC_VECTOR (31 downto 0);
-			  ISSUE_RF_Rk_Tag : out STD_LOGIC_VECTOR (4 downto 0);
+           ISSUE_RF_Rk : in STD_LOGIC_VECTOR (4 downto 0);
+           ISSUE_RF_Rk_Exists : out STD_LOGIC;
+           ISSUE_RF_Rk_Value : out STD_LOGIC_VECTOR (31 downto 0);
+           ISSUE_RF_Rk_Tag : out STD_LOGIC_VECTOR (4 downto 0);
 			  
-			  --FROM CDB (UPDATE QUEUE)
-			  CDB_Q: in STD_LOGIC_VECTOR (4 downto 0);
-			  CDB_V : in STD_LOGIC_VECTOR (31 downto 0);
+           --FROM CDB (UPDATE QUEUE)
+           CDB_Q: in STD_LOGIC_VECTOR (4 downto 0);
+           CDB_V : in STD_LOGIC_VECTOR (31 downto 0);
 			  
-			  --POP
-			  DEST_RF : out STD_LOGIC_VECTOR (4 downto 0);
-			  DEST_MEM : out STD_LOGIC_VECTOR (4 downto 0);
-			  VALUE : out STD_LOGIC_VECTOR (31 downto 0); 
-			  WB_TAG: out STD_LOGIC_VECTOR (4 downto 0);	
+           --POP
+           DEST_RF : out STD_LOGIC_VECTOR (4 downto 0);
+           DEST_MEM : out STD_LOGIC_VECTOR (4 downto 0);
+           VALUE : out STD_LOGIC_VECTOR (31 downto 0); 
+           WB_TAG: out STD_LOGIC_VECTOR (4 downto 0);	
 			  
-			  --EXCEPTION HANDLER
-			  EXCEPTION_IN : in STD_LOGIC_VECTOR (4 downto 0);
-			  EXCEPTION : out STD_LOGIC_VECTOR (4 downto 0);
-			  PC : out STD_LOGIC_VECTOR (31 downto 0));
+           --EXCEPTION HANDLER
+           EXCEPTION_IN : in STD_LOGIC_VECTOR (4 downto 0);
+           EXCEPTION : out STD_LOGIC_VECTOR (4 downto 0);
+           PC : out STD_LOGIC_VECTOR (31 downto 0));
 end component;
 
 
@@ -285,39 +285,39 @@ Port map(   CLK               => CLK,
             ROB_Tag_Accepted  => ROB_TAG_ACCEPTED_TMP,
             ROB_Q             => WB_TAG_TMP,
             ROB_V             => ROB_VALUE,
-				ROB_DEST          => DEST_RF_TMP,
-				Tag_Rj            => Tag_Rj_TMP,
-			   Tag_Rk            => Tag_Rk_TMP,
+            ROB_DEST          => DEST_RF_TMP,
+            Tag_Rj            => Tag_Rj_TMP,
+            Tag_Rk            => Tag_Rk_TMP,
             Qj                => Qj_TMP,
             Qk                => Qk_TMP,
             Vj                => Vj_TMP,
             Vk                => Vk_TMP);
 
 ROB_C : ROB
-Port map(    CLK                => CLK,
-		       RST                => RST,
-				 ISSUE              => InstructionAccepted,
-				 ISSUE_PC           => PC,
-				 ISSUE_I_type       => Fu_type,
-				 ISSUE_Dest         => Ri,
-				 ISSUE_RF_Rj        => Tag_Rj_TMP,
-			    ISSUE_RF_Rj_Exists => ROB_Rj_Exist,
-			    ISSUE_RF_Rj_Value  => ROB_Rj_V,
-				 ISSUE_RF_Rj_Tag    => ROB_Rj_Q,
-			    ISSUE_RF_Rk        => Tag_Rk_TMP,
-			    ISSUE_RF_Rk_Exists => ROB_Rk_Exist,
-			    ISSUE_RF_Rk_Value  => ROB_Rk_V,
-				 ISSUE_RF_Rk_Tag    => ROB_Rk_Q,
-				 ROB_TAG_ACCEPTED   => ROB_TAG_ACCEPTED_TMP,
-				 CDB_Q              => CDB_Q_TMP,
-				 CDB_V              => CDB_V_TMP,
-				 DEST_RF            => DEST_RF_TMP,
-				 DEST_MEM           => DEST_MEM_TMP,
-				 VALUE              => ROB_VALUE,
-             WB_TAG             => WB_TAG_TMP,				 
-				 EXCEPTION_IN       => EXCEPTION_INPUT,
-				 EXCEPTION          => EXCEPTION,
-				 PC                 => EXC_PC);
+Port map(   CLK                => CLK,
+            RST                => RST,
+            ISSUE              => InstructionAccepted,
+            ISSUE_PC           => PC,
+            ISSUE_I_type       => Fu_type,
+            ISSUE_Dest         => Ri,
+            ISSUE_RF_Rj        => Tag_Rj_TMP,
+            ISSUE_RF_Rj_Exists => ROB_Rj_Exist,
+            ISSUE_RF_Rj_Value  => ROB_Rj_V,
+            ISSUE_RF_Rj_Tag    => ROB_Rj_Q,
+            ISSUE_RF_Rk        => Tag_Rk_TMP,
+            ISSUE_RF_Rk_Exists => ROB_Rk_Exist,
+            ISSUE_RF_Rk_Value  => ROB_Rk_V,
+            ISSUE_RF_Rk_Tag    => ROB_Rk_Q,
+            ROB_TAG_ACCEPTED   => ROB_TAG_ACCEPTED_TMP,
+            CDB_Q              => CDB_Q_TMP,
+            CDB_V              => CDB_V_TMP,
+            DEST_RF            => DEST_RF_TMP,
+            DEST_MEM           => DEST_MEM_TMP,
+            VALUE              => ROB_VALUE,
+            WB_TAG             => WB_TAG_TMP,				 
+            EXCEPTION_IN       => EXCEPTION_INPUT,
+            EXCEPTION          => EXCEPTION,
+            PC                 => EXC_PC);
 
 RS_Vj_TMP <= Vj_TMP WHEN ROB_Rj_Exist='0' ELSE ROB_Rj_V; 
 RS_Qj_TMP <= Qj_TMP WHEN ROB_Rj_Exist='0' ELSE ROB_Rj_Q;

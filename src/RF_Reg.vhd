@@ -14,8 +14,8 @@
 --
 -- Dependencies:              NONE
 --
--- Revision                   1.0 - File Created
--- Revision:                  1.0
+-- Revision:                  2.1
+-- Revision                   2.1 - ROB
 -- Additional Comments: 
 --
 ----------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ entity RF_Reg is
            ROB_Tag_Accepted : in  STD_LOGIC_VECTOR (4 downto 0);
            ROB_Q : in  STD_LOGIC_VECTOR (4 downto 0);
            ROB_V : in  STD_LOGIC_VECTOR (31 downto 0);
-			  ROB_DEST : in  STD_LOGIC_VECTOR (4 downto 0);
+           ROB_DEST : in  STD_LOGIC_VECTOR (4 downto 0);
            Q : out  STD_LOGIC_VECTOR (4 downto 0);
            V : out  STD_LOGIC_VECTOR (31 downto 0));
 end RF_Reg;

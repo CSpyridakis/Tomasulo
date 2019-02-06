@@ -5,7 +5,7 @@
 -- 
 -- Create Date:               11/11/2018
 -- Design Name:   
--- Module Name:               /Tomasulo/TEST_RS.vhd
+-- Module Name:               Tomasulo/TEST_RS.vhd
 -- Project Name:              Tomasulo
 -- Target Devices:            NONE
 -- Tool versions:             Xilinx ISE 14.7 --TODO: VIVADO
@@ -29,10 +29,6 @@
 --------------------------------------------------------------------------------
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
- 
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---USE ieee.numeric_std.ALL;
  
 ENTITY TEST_RS IS
 END TEST_RS;

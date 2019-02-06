@@ -14,8 +14,8 @@
 --
 -- Dependencies:              NONE
 --
--- Revision:                  1.0
--- Revision                   1.0 - File Created
+-- Revision:                  2.1
+-- Revision                   2.1 - ROB
 -- Additional Comments: 
 --
 ----------------------------------------------------------------------------------
@@ -62,8 +62,10 @@ BEGIN
 
    PROCESS(CLK, A1_EMPTY, A2_EMPTY, A3_EMPTY, L1_EMPTY, L2_EMPTY, A_Grant, A_Ready, L_Grant, L_Ready)
 	BEGIN
-		IF (falling_edge(CLK)) THEN																						-- TODO 
-			-------------------------------------------------------------------------------------------- X_Accept
+		IF (falling_edge(CLK)) THEN
+			------------------------------------------------------------------------------
+			-----                            X_Accept
+			------------------------------------------------------------------------------
 			--Arithmetic 
 			IF (A_Ready='1' AND (A_Grant='1' OR (A1_EMPTY='1' OR A2_EMPTY='1' OR A3_EMPTY='1'))) THEN	
 				A_Accepted <= A_Tag;
@@ -78,7 +80,9 @@ BEGIN
 				L_Accepted <= "00000";
 			END IF;
 			
-			-------------------------------------------------------------------------------------------- X_Request
+			-------------------------------- 
+			--          X_Request
+			--------------------------------
 			--Arithmetic 
 			IF (A2_EMPTY='0' OR A3_EMPTY='0') THEN		
 				A_Request <= '1' ;
@@ -93,12 +97,14 @@ BEGIN
 				L_Request <= '0' ;
 			END IF;
 			
-			-------------------------------------------------------------------------------------------- Enables
+			----------------------------------------------------------------------------------------- 
+			---                                    Enables
+			----------------------------------------------------------------------------------------- 
 			--A1_EN
 			IF (A_Ready='1' AND (A1_EMPTY='1' OR A2_EMPTY='1' OR A3_EMPTY='1' OR A_Grant='1')) THEN	                -- New Arithmetic Operation with at least one empty Level OR New Arithmetic Operation with none enpty Level and A is Granted
 				A1_EN <= '1';
-			ELSIF (A_Ready='0' AND A1_EMPTY='0' AND (A2_EMPTY='1' OR A3_EMPTY='1' OR A_Grant='1')) THEN	             -- No new Operation. Forward valid data [1] -> [0/1] -> [0/1] ONLY if it is possible
-				A1_EN <= '1';                                                                                          --                                       A1      A2       A3
+			ELSIF (A_Ready='0' AND A1_EMPTY='0' AND (A2_EMPTY='1' OR A3_EMPTY='1' OR A_Grant='1')) THEN	            -- No new Operation. Forward valid data [1] -> [0/1] -> [0/1] ONLY if it is possible
+				A1_EN <= '1';                                                                                       --                                       A1      A2       A3
 			ELSE
 				A1_EN <= '0';
 			END IF;
@@ -106,9 +112,9 @@ BEGIN
 			--A2_EN	                                                                                                      A1     A2     A3
 			IF (A1_EMPTY='0' AND A2_EMPTY='1') THEN                                                                   --  [1] -> [0] -> [X]
 				A2_EN <= '1';
-			ELSIF	(A2_EMPTY='0' AND A3_EMPTY='1') THEN                                                                --  [X] -> [1] -> [0]
+			ELSIF	(A2_EMPTY='0' AND A3_EMPTY='1') THEN                                                              --  [X] -> [1] -> [0]
 				A2_EN <= '1';
-			ELSIF	(A2_EMPTY='0' AND A3_EMPTY='0' AND A_Grant='1') THEN                                                --  [X] -> [1] -> [1]  AND A is Granted
+			ELSIF	(A2_EMPTY='0' AND A3_EMPTY='0' AND A_Grant='1') THEN                                              --  [X] -> [1] -> [1]  AND A is Granted
 				A2_EN <= '1'; 
 			ELSE 
 				A2_EN <= '0';
@@ -117,25 +123,25 @@ BEGIN
 			--A3_EN                                                                                                       A1     A2     A3
 			IF (A2_EMPTY='0' AND A3_EMPTY='1') THEN                                                                   --  [X] -> [1] -> [0]
 				A3_EN <= '1';
-			ELSIF	(A3_EMPTY='0' AND A_Grant='1') THEN                                                                 --  [X] -> [X] -> [1] AND A is Granted
+			ELSIF	(A3_EMPTY='0' AND A_Grant='1') THEN                                                               --  [X] -> [X] -> [1] AND A is Granted
 				A3_EN <= '1';
 			ELSE 
 				A3_EN <= '0';
 			END IF;
 			
 			--L1_EN
-			IF (L_Ready='1' AND (L1_EMPTY='1' OR L2_EMPTY='1' OR L_Grant='1')) THEN                                     -- New Logical Operation with at least one empty Level OR New Logica Operation with none enpty Level and L is Granted
+			IF (L_Ready='1' AND (L1_EMPTY='1' OR L2_EMPTY='1' OR L_Grant='1')) THEN                                   -- New Logical Operation with at least one empty Level OR New Logica Operation with none enpty Level and L is Granted
 				L1_EN <= '1';
-			ELSIF (L_Ready='0' AND L1_EMPTY='0' AND (L2_EMPTY='1' OR L_Grant='1')) THEN                                -- No new Operation. Forward valid data [1] -> [0/1]  ONLY if it is possible
-				L1_EN <= '1';                                                                                           --                                       L1      L2 
+			ELSIF (L_Ready='0' AND L1_EMPTY='0' AND (L2_EMPTY='1' OR L_Grant='1')) THEN                               -- No new Operation. Forward valid data [1] -> [0/1]  ONLY if it is possible
+				L1_EN <= '1';                                                                                         --                                       L1      L2 
 			ELSE
 				L1_EN <= '0';
 			END IF;
 			
-			--L2_EN                                                                                                        L1     L2
-			IF (L1_EMPTY='0' AND L2_EMPTY='1') THEN                                                                     -- [1] -> [0]
+			--L2_EN                                                                                                      L1     L2
+			IF (L1_EMPTY='0' AND L2_EMPTY='1') THEN                                                                   -- [1] -> [0]
 				L2_EN <= '1';
-			ELSIF (L2_EMPTY='0' AND L_Grant='1') THEN                                                                   -- [X] -> [1] AND L is Granted
+			ELSIF (L2_EMPTY='0' AND L_Grant='1') THEN                                                                 -- [X] -> [1] AND L is Granted
 				L2_EN <= '1';
 			ELSE
 				L2_EN <= '0';

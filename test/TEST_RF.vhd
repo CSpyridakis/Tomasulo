@@ -5,7 +5,7 @@
 --
 -- Create Date:               00:51:17 10/29/2018
 -- Design Name:   
--- Module Name:               /Tomasulo/TEST_RF.vhd
+-- Module Name:               Tomasulo/TEST_RF.vhd
 -- Project Name:              Tomasulo
 -- Target Devices:            NONE
 -- Tool versions:             Xilinx ISE 14.7 --TODO: VIVADO

@@ -14,8 +14,8 @@
 --
 -- Dependencies:              NONE
 --
--- Revision:                  1.0
--- Revision                   1.0 - File Created
+-- Revision:                  2.1
+-- Revision                   2.1 - ROB
 -- Additional Comments: 
 --
 ----------------------------------------------------------------------------------
@@ -126,10 +126,11 @@ signal  TAG_TMP: STD_LOGIC_VECTOR (4 downto 0);
 
 begin
 
-	---------------------------------------------------------- Reservation Station FSM			  
-	PROCESS(CLK, RST, AvailableS, ReadyS, ISSUE, Qj, Qk, CDB_Q, J_Q, K_Q, Accepted, ID) --TODO: TEST them
+	--Reservation Station FSM			  
+	PROCESS(CLK, RST, AvailableS, ReadyS, ISSUE, Qj, Qk, CDB_Q, J_Q, K_Q, Accepted, ID)
 	BEGIN
-		IF (RST='1') THEN                 																			    --RST
+		--RST
+		IF (RST='1') THEN                 																			    
 			--Resets
 			Av_RST <='1'; 
 			Op_RST <='1';
@@ -144,7 +145,9 @@ begin
 			K_EN   <='0';
 			Re_EN  <='0';
 			Tag_EN <='0';
-		ELSIF (AvailableS='1' AND ISSUE='1' AND ReadyS='0' AND Qj="00000" AND Qk="00000") THEN 			--Issue with valid Data               
+
+		--Issue with valid Data 
+		ELSIF (AvailableS='1' AND ISSUE='1' AND ReadyS='0' AND Qj="00000" AND Qk="00000") THEN 			              
 			--Resets
 			Av_RST <='0'; 
 			Op_RST <='0';
@@ -159,7 +162,9 @@ begin
 			K_EN   <='1';
 			Re_EN  <='1';
 			Tag_EN <='1';
-		ELSIF (AvailableS='1' AND ISSUE='1' AND ReadyS='0' )	THEN													--Issue with One OR none of them Ready
+
+		--Issue with One OR none of them Ready
+		ELSIF (AvailableS='1' AND ISSUE='1' AND ReadyS='0' )	THEN													
 			--Resets
 			Av_RST <='0'; 
 			Op_RST <='0';
@@ -174,7 +179,9 @@ begin
 			K_EN   <='1';
 			Re_EN  <='0';
 			Tag_EN <='1';
-		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='0' AND CDB_Q/="00000" AND CDB_Q=J_Q AND K_Q="00000")	THEN			--CDB_Q is equal with J's Tag And K is valid
+		
+		--CDB_Q is equal with J's Tag And K is valid
+		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='0' AND CDB_Q/="00000" AND CDB_Q=J_Q AND K_Q="00000")	THEN			
 			--Resets
 			Av_RST <='0'; 
 			Op_RST <='0';
@@ -189,7 +196,9 @@ begin
 			K_EN   <='0';
 			Re_EN  <='1';
 			Tag_EN <='0';
-		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='0' AND J_Q="00000" AND CDB_Q/="00000" AND CDB_Q=K_Q)	THEN			--CDB_Q is equal with K's Tag And J is valid
+
+		--CDB_Q is equal with K's Tag And J is valid
+		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='0' AND J_Q="00000" AND CDB_Q/="00000" AND CDB_Q=K_Q)	THEN			
 			--Resets
 			Av_RST <='0'; 
 			Op_RST <='0';
@@ -204,7 +213,9 @@ begin
 			K_EN   <='1';
 			Re_EN  <='1';
 			Tag_EN <='0';
-		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='0' AND CDB_Q/="00000" AND CDB_Q=J_Q AND CDB_Q=K_Q)	THEN				--CDB_Q is equal with K's and J's Tag
+		
+		--CDB_Q is equal with K's and J's Tag
+		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='0' AND CDB_Q/="00000" AND CDB_Q=J_Q AND CDB_Q=K_Q)	THEN				
 			--Resets
 			Av_RST <='0'; 
 			Op_RST <='0';
@@ -219,7 +230,9 @@ begin
 			K_EN   <='1';
 			Re_EN  <='1';
 			Tag_EN <='0';
-		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='0' AND CDB_Q/="00000" AND CDB_Q=K_Q)	THEN								--CDB_Q is equal with K's tag
+
+		--CDB_Q is equal with K's tag
+		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='0' AND CDB_Q/="00000" AND CDB_Q=K_Q)	THEN								
 			--Resets
 			Av_RST <='0'; 
 			Op_RST <='0';
@@ -234,7 +247,9 @@ begin
 			K_EN   <='1';
 			Re_EN  <='0';
 			Tag_EN <='0';
-		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='0' AND CDB_Q/="00000" AND CDB_Q=J_Q)	THEN								--CDB_Q is equal with J's tag 
+
+		--CDB_Q is equal with J's tag 
+		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='0' AND CDB_Q/="00000" AND CDB_Q=J_Q)	THEN								
 			--Resets
 			Av_RST <='0'; 
 			Op_RST <='0';
@@ -249,7 +264,9 @@ begin
 			K_EN   <='0';
 			Re_EN  <='0';
 			Tag_EN <='0';
-		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='1' AND Accepted='1')	THEN														--RS Accepted from FU
+
+		--RS Accepted from FU
+		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='1' AND Accepted='1')	THEN														
 			--Resets
 			Av_RST <='0'; 
 			Op_RST <='0';
@@ -264,7 +281,9 @@ begin
 			K_EN   <='0';
 			Re_EN  <='0';
 			Tag_EN <='0';
-		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='0' AND CDB_Q=TAG_TMP)	THEN													--Operation Completed
+
+		--Operation Completed
+		ELSIF (AvailableS='0' AND ISSUE='0' AND ReadyS='0' AND CDB_Q=TAG_TMP)	THEN													
 			--Resets
 			Av_RST <='1'; 
 			Op_RST <='1';
@@ -301,98 +320,95 @@ begin
 	--MY TAG
 	Tag<=TAG_TMP;
 	myTag : Reg_5bits 
-       Port map( CLK  => CLK,
-                 RST  => Tag_RST,
-                 EN   => Tag_EN,
-                 INN  => ID,
-                 OUTT => TAG_TMP);
+	Port map( CLK  => CLK,
+				RST  => Tag_RST,
+				EN   => Tag_EN,
+				INN  => ID,
+				OUTT => TAG_TMP);
 	
 	-- Available 
 	-- When a RS is Empty Avail='1' 
 	AvailableR : Reg_1bit_N 
-		 Port map( CLK  => CLK,
-                   RST  => Av_RST,
-                   EN   => Av_EN,
-                   INN  => '0',											
-                   OUTT => AvailableS);
+	Port map( CLK  => CLK,
+			RST  => Av_RST,
+			EN   => Av_EN,
+			INN  => '0',											
+			OUTT => AvailableS);
 	Available <= AvailableS;
 
 	-- Ready Registers
 	-- When RS has valid data and is not in FU's execution queue Ready='1'
 	ReadyR : Reg_1bit 
-		 Port map( CLK  => CLK,
-                   RST  => Re_RST,
-                   EN   => Re_EN,
-                   INN  => '1',
-                   OUTT => ReadyS);	
+	Port map( CLK  => CLK,
+			RST  => Re_RST,
+			EN   => Re_EN,
+			INN  => '1',
+			OUTT => ReadyS);	
 	Ready<=ReadyS;
 	
 	OpC : Reg_2bits 
-		 Port map( CLK  => CLK,
-                   RST  => Op_RST,
-                   EN   => Op_EN,
-                   INN  => Op_ISSUE,
-                   OUTT => Op);			  
+	Port map( CLK  => CLK,
+			RST  => Op_RST,
+			EN   => Op_EN,
+			INN  => Op_ISSUE,
+			OUTT => Op);			  
 			  
-			  
-			  
+			    
 	-- Data and Tag for J
 	-- If RS is available (Avail='1'), it can only take Data and Tag From RF when a new instruction's ISSUE take place 
 	-- If RS is NOT available, RS acceptes CDB Data only when RS ID is equal with CDB_Q and it's Tag changes to "00000"
 	-- Vj_In and Qj_In are two MUXs for selecting properly RS Data and Tag values based on RS Availability
 	Vj_In : Mux_2x32bits 
-		 Port map( In0  => CDB_V,
-                   In1  => Vj_ISSUE,
-                   Sel  => AvailableS,
-                   Outt => J_Vin);
+	Port map( In0  => CDB_V,
+			In1  => Vj_ISSUE,
+			Sel  => AvailableS,
+			Outt => J_Vin);
 
 	Qj_In : Mux_2x5bits 
-		 Port map( In0  => "00000",
-                   In1  => Qj,
-                   Sel  => AvailableS,
-                   Outt => J_Qin);	
+	Port map( In0  => "00000",
+			In1  => Qj,
+			Sel  => AvailableS,
+			Outt => J_Qin);	
 	
 	-- Data and Tag Register
 	-- Input Values are based on RS Availability, in order to store (when it needs) the values, you have to enable Register's Write (K_EN)
 	-- When a RS has been executed, just reset it (K_RST)
 	J : Reg_V_Q
-		 Port map( CLK  => CLK,
-                   RST  => J_RST,
-                   EN   => J_EN,
-                   VIN  => J_Vin,
-                   QIN  => J_Qin,
-                   VOUT => Vj,
-                   QOUT => J_Q);
+	Port map( CLK  => CLK,
+			RST  => J_RST,
+			EN   => J_EN,
+			VIN  => J_Vin,
+			QIN  => J_Qin,
+			VOUT => Vj,
+			QOUT => J_Q);
 					 
-
-
-					 
+			
 	-- Data and Tag for K
 	-- If RS is available (Avail='1'), it can only take Data and Tag From RF when a new instruction's ISSUE take place 
 	-- If RS is NOT available, RS acceptes CDB Data only when RS ID is equal with CDB_Q and it's Tag changes to "00000"
 	-- Vk_In and Qk_In are two MUXs for selecting properly RS Data and Tag values based on RS Availability	
 	Vk_In : Mux_2x32bits 
-		 Port map( In0  => CDB_V,
-                   In1  => Vk_ISSUE,
-                   Sel  => AvailableS,
-                   Outt => K_Vin);
+	Port map( In0  => CDB_V,
+			In1  => Vk_ISSUE,
+			Sel  => AvailableS,
+			Outt => K_Vin);
 
 	Qk_In : Mux_2x5bits 
-		 Port map( In0  => "00000",
-                   In1  => Qk,
-                   Sel  => AvailableS,
-                   Outt => K_Qin);
+	Port map( In0  => "00000",
+			In1  => Qk,
+			Sel  => AvailableS,
+			Outt => K_Qin);
 					  
 	-- Data and Tag Register
 	-- Input Values are based on RS Availability, in order to store (when it needs) the values, you have to enable Register's Write (K_EN)
 	-- When a RS has been executed, just reset it (K_RST)
 	K : Reg_V_Q
-		 Port map( CLK  => CLK,
-                   RST  => K_RST,
-                   EN   => K_EN,
-                   VIN  => K_Vin,
-                   QIN  => K_Qin,
-                   VOUT => Vk,
-                   QOUT => K_Q); 
+	Port map( CLK  => CLK,
+			RST  => K_RST,
+			EN   => K_EN,
+			VIN  => K_Vin,
+			QIN  => K_Qin,
+			VOUT => Vk,
+			QOUT => K_Q); 
 					  	
 end Behavioral;

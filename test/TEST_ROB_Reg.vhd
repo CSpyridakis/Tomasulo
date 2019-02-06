@@ -3,10 +3,10 @@
 -- Engineer:                  Spyridakis Christos 
 --                            Bellonias Panagiotis
 -- 
--- Create Date:   				19:58:59 12/18/2018
+-- Create Date:   			  19:58:59 12/18/2018
 -- Design Name:   
--- Module Name:   				Tomasulo/TEST_ROB_Reg.vhd
--- Project Name:  				Tomasulo
+-- Module Name:   			  Tomasulo/TEST_ROB_Reg.vhd
+-- Project Name:  			  Tomasulo
 -- Target Devices:            NONE
 -- Tool versions:             Xilinx ISE 14.7 --TODO: VIVADO
 -- Description:               Introduction in Dynamic Instruction Scheduling (Advanced Computer Architecture)

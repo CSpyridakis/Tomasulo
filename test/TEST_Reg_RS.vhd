@@ -5,7 +5,7 @@
 --
 -- Create Date:               18:35:19 10/26/2018
 -- Design Name:   
--- Module Name:               /Tomasulo/TEST_Reg_RS.vhd
+-- Module Name:               Tomasulo/TEST_Reg_RS.vhd
 -- Project Name:              Tomasulo
 -- Target Devices:            NONE
 -- Tool versions:             Xilinx ISE 14.7 --TODO: VIVADO
@@ -125,12 +125,12 @@ BEGIN
    -- Stimulus process
    stim_proc: process
    begin		
-      -- hold reset state for 100 ns.
-      wait for 100 ns;	
+		-- hold reset state for 100 ns.
+		wait for 100 ns;	
 		
 		
 		ID <="10101";
-		
+
 		------------------------------------------------------------CC:1
 		RST <='1';
 		--
@@ -145,9 +145,9 @@ BEGIN
 		CDB_Q <="00000";
 		--
 		Accepted <='0';
-      wait for CLK_period*1;
+		wait for CLK_period*1;
 
-      ------------------------------------------------------------CC:2
+		------------------------------------------------------------CC:2
 		RST <='0';
 		--
 		ISSUE <='0';
@@ -161,8 +161,8 @@ BEGIN
 		CDB_Q <="00000";
 		--
 		Accepted <='0';
-      wait for CLK_period*3;
-		
+		wait for CLK_period*3;
+
 		------------------------------------------------------------CC:5   ISSUE with k valid
 		RST <='0';
 		--
@@ -177,7 +177,7 @@ BEGIN
 		CDB_Q <="00000";
 		--
 		Accepted <='0';
-      wait for CLK_period*1;
+		wait for CLK_period*1;
 
 		------------------------------------------------------------CC:6   CDB_Q = J_Q
 		RST <='0';
@@ -193,8 +193,8 @@ BEGIN
 		CDB_Q <="00001";
 		--
 		Accepted <='0';
-      wait for CLK_period*1;
-		
+		wait for CLK_period*1;
+
 		------------------------------------------------------------CC:7   RS Accepted
 		RST <='0';
 		--
@@ -209,8 +209,8 @@ BEGIN
 		CDB_Q <="00011";
 		--
 		Accepted <='1';
-      wait for CLK_period*1;
-		
+		wait for CLK_period*1;
+
 		------------------------------------------------------------CC:8   STALL
 		RST <='0';
 		--
@@ -225,7 +225,7 @@ BEGIN
 		CDB_Q <="00110";
 		--
 		Accepted <='0';
-      wait for CLK_period*2;
+		wait for CLK_period*2;
 
 		------------------------------------------------------------CC:10   Operation Completed
 		RST <='0';
@@ -241,7 +241,7 @@ BEGIN
 		CDB_Q <="10101";
 		--
 		Accepted <='0';
-      wait for CLK_period*1;
+		wait for CLK_period*1;
 		
 		---------------------------------------------------------CC:11   END
 		RST <='0';
@@ -257,7 +257,8 @@ BEGIN
 		CDB_Q <="10010";
 		--
 		Accepted <='0';
-      wait for CLK_period*1;      wait;
+		wait for CLK_period*1;      
+		wait;
    end process;
 
 END;

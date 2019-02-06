@@ -5,7 +5,7 @@
 -- 
 -- Create Date:               21:56:43 10/23/2018
 -- Design Name:   
--- Module Name:               /Tomasulo/TEST_FU.vhd
+-- Module Name:               Tomasulo/TEST_FU.vhd
 -- Project Name:              Tomasulo
 -- Target Devices:            NONE
 -- Tool versions:             Xilinx ISE 14.7 --TODO: VIVADO
@@ -136,8 +136,8 @@ BEGIN
    -- Stimulus process
    stim_proc: process
    begin		
-      -- hold reset state for 100 ns.
-      wait for 100 ns;	
+		-- hold reset state for 100 ns.
+		wait for 100 ns;	
 		---------------------------------------------------------------------- CLK=1 | RST
 		RST        <='1';
 		
@@ -154,7 +154,7 @@ BEGIN
 		L_Op       <="00";
 		L_Vj       <="00000000000000000000000000000000";
 		L_Vk       <="00000000000000000000000000000000";
-      wait for CLK_period*1;
+		wait for CLK_period*1;
 
 		---------------------------------------------------------------------- CLK=2 
 		RST        <='0';
@@ -172,7 +172,7 @@ BEGIN
 		L_Op       <="00";
 		L_Vj       <="00000000000000000000000000000000";
 		L_Vk       <="00000000000000000000000000000000";
-      wait for CLK_period*1;
+		wait for CLK_period*1;
 
 
 
@@ -192,7 +192,7 @@ BEGIN
 		L_Op       <="01";
 		L_Vj       <="00000000000000000000000000000001";
 		L_Vk       <="00000000000000000000000000000010";
-      wait for CLK_period*1;
+		wait for CLK_period*1;
 		
 		
 		
@@ -212,7 +212,7 @@ BEGIN
 		L_Op       <="00";
 		L_Vj       <="00000000000000000000000000001010";
 		L_Vk       <="00000000000000000000000000000110";
-      wait for CLK_period*1;
+		wait for CLK_period*1;
 		
 		
 		---------------------------------------------------------------------- CLK=5
@@ -231,7 +231,7 @@ BEGIN
 		L_Op       <="00";
 		L_Vj       <="00000000000000000000000000000000";
 		L_Vk       <="00000000000000000000000000000000";
-      wait for CLK_period*1;		
+		wait for CLK_period*1;		
 
 		---------------------------------------------------------------------- CLK=6
 		RST        <='0';
@@ -249,7 +249,7 @@ BEGIN
 		L_Op       <="00";
 		L_Vj       <="00000000000000000000000000000000";
 		L_Vk       <="00000000000000000000000000000000";
-      wait for CLK_period*1;	
+		wait for CLK_period*1;	
 		
 		---------------------------------------------------------------------- CLK=7
 		RST        <='0';
@@ -267,8 +267,8 @@ BEGIN
 		L_Op       <="00";
 		L_Vj       <="00000000000000000000000000000000";
 		L_Vk       <="00000000000000000000000000000000";
-      wait for CLK_period*1;	
-      wait;
+		wait for CLK_period*1;	
+		wait;
    end process;
 
 END;

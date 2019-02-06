@@ -14,8 +14,8 @@
 --
 -- Dependencies:              NONE
 --
--- Revision:                  2.0 
--- Revision                   2.0 - ROB
+-- Revision:                  2.1 
+-- Revision                   2.1 - ROB
 -- Additional Comments: 
 --
 ----------------------------------------------------------------------------------
@@ -24,37 +24,37 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
 entity ROB_Reg is
- Port (    CLK : in  STD_LOGIC;
+    Port ( CLK : in  STD_LOGIC;
            RST : in  STD_LOGIC;
-			  MY_TAG : in STD_LOGIC_VECTOR (4 downto 0);
+           MY_TAG : in STD_LOGIC_VECTOR (4 downto 0);
 			  
-			  --FROM ISSUE (PUSH INTO QUEUE)
-			  ISSUE : in STD_LOGIC;
-			  ISSUE_PC : in STD_LOGIC_VECTOR (31 downto 0);
-			  ISSUE_I_type : in STD_LOGIC_VECTOR (1 downto 0);
-			  ISSUE_Dest : in STD_LOGIC_VECTOR (4 downto 0);
+           --FROM ISSUE (PUSH INTO QUEUE)
+           ISSUE : in STD_LOGIC;
+           ISSUE_PC : in STD_LOGIC_VECTOR (31 downto 0);
+           ISSUE_I_type : in STD_LOGIC_VECTOR (1 downto 0);
+           ISSUE_Dest : in STD_LOGIC_VECTOR (4 downto 0);
 
-			  --FROM CDB (UPDATE QUEUE)
-			  CDB_Q: in STD_LOGIC_VECTOR (4 downto 0);
-			  CDB_V : in STD_LOGIC_VECTOR (31 downto 0);
+           --FROM CDB (UPDATE QUEUE)
+           CDB_Q: in STD_LOGIC_VECTOR (4 downto 0);
+           CDB_V : in STD_LOGIC_VECTOR (31 downto 0);
 
-			  --EXCEPTION
+           --EXCEPTION
            I_EXCEPTION : in STD_LOGIC_VECTOR (4 downto 0);
 			  
-			  --TO RF/MEM (POP FROM QUEUE, only if instruction has been executed)
-			  EXECUTED : out STD_LOGIC;
-			  POP : in STD_LOGIC;
-			  DEST_RF : out STD_LOGIC_VECTOR (4 downto 0);
-			  DEST_MEM : out STD_LOGIC_VECTOR (4 downto 0);
-			  VALUE : out STD_LOGIC_VECTOR (31 downto 0); 
+           --TO RF/MEM (POP FROM QUEUE, only if instruction has been executed)
+           EXECUTED : out STD_LOGIC;
+           POP : in STD_LOGIC;
+           DEST_RF : out STD_LOGIC_VECTOR (4 downto 0);
+           DEST_MEM : out STD_LOGIC_VECTOR (4 downto 0);
+           VALUE : out STD_LOGIC_VECTOR (31 downto 0); 
 			  
-			  --EXCEPTION HANDLER
-			  EXCEPTION : out STD_LOGIC_VECTOR (4 downto 0);
-			  PC : out STD_LOGIC_VECTOR (31 downto 0);
+           --EXCEPTION HANDLER
+           EXCEPTION : out STD_LOGIC_VECTOR (4 downto 0);
+           PC : out STD_LOGIC_VECTOR (31 downto 0);
 			  
-			  --MY TAG AND STATUS
-			  EMPTY : out  STD_LOGIC;
-			  TAG : out STD_LOGIC_VECTOR (4 downto 0));
+           --MY TAG AND STATUS
+           EMPTY : out  STD_LOGIC;
+           TAG : out STD_LOGIC_VECTOR (4 downto 0));
 end ROB_Reg;
 
 architecture Behavioral of ROB_Reg is
@@ -151,11 +151,11 @@ EMPTY_RST     <='1' WHEN RST='1' OR (RST='0' AND ISSUE='0' AND EXEC='1' AND I_EX
 
 --DEBUG MESSAGES
 DEBUG_ME <= RST_S       WHEN RST='1' ELSE
-				PUSH_S      WHEN RST='0' AND EMPTY_TMP='1' AND ISSUE='1' AND EXEC='0' ELSE
-				UPDATE_S    WHEN RST='0' AND EMPTY_TMP='0' AND ISSUE='0' AND EXEC='0' AND I_EXCEPTION="00000" AND CDB_Q=MY_TAG  ELSE
-				EXCEPTION_S WHEN RST='0' AND EMPTY_TMP='0' AND ISSUE='0' AND EXEC='0' AND I_EXCEPTION/="00000" ELSE
-				POP_S       WHEN RST='0' AND EMPTY_TMP='0' AND ISSUE='0' AND EXEC='1' AND I_EXCEPTION="00000" AND POP='1' ELSE
-				NONE_S;
+            PUSH_S      WHEN RST='0' AND EMPTY_TMP='1' AND ISSUE='1' AND EXEC='0' ELSE
+            UPDATE_S    WHEN RST='0' AND EMPTY_TMP='0' AND ISSUE='0' AND EXEC='0' AND I_EXCEPTION="00000" AND CDB_Q=MY_TAG  ELSE
+            EXCEPTION_S WHEN RST='0' AND EMPTY_TMP='0' AND ISSUE='0' AND EXEC='0' AND I_EXCEPTION/="00000" ELSE
+            POP_S       WHEN RST='0' AND EMPTY_TMP='0' AND ISSUE='0' AND EXEC='1' AND I_EXCEPTION="00000" AND POP='1' ELSE
+            NONE_S;
 
 --EMPTY
 EMPTY_R : Reg_1bit_N

@@ -14,8 +14,8 @@
 --
 -- Dependencies:              NONE
 --
--- Revision:                  1.0
--- Revision                   1.0 - File Created
+-- Revision:                  2.1
+-- Revision                   2.1 - ROB
 -- Additional Comments: 
 --
 ----------------------------------------------------------------------------------
@@ -36,9 +36,12 @@ begin
    process(CLK,RST)
 	begin
 		if (rising_edge(CLK)) then
-			if (RST='1') then                 --RST
-	         	OUTT<='1';
-			elsif (EN='1') then               --Write Enable
+			--RST
+			if (RST='1') then                 
+				 OUTT<='1';
+			
+			--Write Enable
+			elsif (EN='1') then               
 				OUTT<=INN;
 			end if;
 		end if;

@@ -14,8 +14,8 @@
 --
 -- Dependencies:              NONE
 --
--- Revision:                  2.0 
--- Revision                   2.0 - ROB
+-- Revision:                  2.1
+-- Revision                   2.1 - ROB
 -- Additional Comments: 
 --
 ----------------------------------------------------------------------------------
@@ -124,11 +124,13 @@ PROCESS(CLK, ISSUE, L1_Available, L2_Available)
 BEGIN
 		L_Available <= L1_Available OR L2_Available;
 		L_Ready <= L1_Ready OR L2_Ready;
-		
-		IF (ISSUE='1' AND L1_Available='1' AND CLK='0' ) THEN                             -- IF L_RS1 is available will accept next instruction
+        
+         -- IF L_RS1 is available will accept next instruction
+		IF (ISSUE='1' AND L1_Available='1' AND CLK='0' ) THEN                            
 			L1_ISSUE <= '1';
-			L2_ISSUE <= '0';
-		ELSIF (ISSUE='1' AND L1_Available='0' AND L2_Available='1' AND CLK='0') THEN      -- IF L_RS2 is available will accept next instruction
+            L2_ISSUE <= '0';
+        -- IF L_RS2 is available will accept next instruction
+		ELSIF (ISSUE='1' AND L1_Available='0' AND L2_Available='1' AND CLK='0') THEN      
 			L1_ISSUE <= '0';
 			L2_ISSUE <= '1';
 		ELSE

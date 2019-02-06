@@ -14,8 +14,8 @@
 --
 -- Dependencies:              NONE
 --
--- Revision:                  1.0
--- Revision                   1.0 - File Created
+-- Revision:                  2.1
+-- Revision                   2.1 - ROB
 -- Additional Comments: 
 --
 ----------------------------------------------------------------------------------
@@ -40,12 +40,14 @@ begin
 	 process (CLK)
 	 begin
 		if (falling_edge(CLK)) then
-			if A_Available='1' AND Issue_I='1' AND Fu_type="01" then     -- Issue Arithmetical Instruction AND available Arithmetical RS
-			     ACCE<='1';
-		   elsif L_Available='1' AND Issue_I='1' AND Fu_type="00" then  -- Issue Logical Instruction AND available Logical RS
-			     ACCE<='1';
+			-- Issue Arithmetical Instruction AND available Arithmetical RS
+			if A_Available='1' AND Issue_I='1' AND Fu_type="01" then     
+				ACCE<='1';
+			-- Issue Logical Instruction AND available Logical RS
+			elsif L_Available='1' AND Issue_I='1' AND Fu_type="00" then  
+			    ACCE<='1';
 			else
-			     ACCE<='0';
+			    ACCE<='0';
 			end if;
 		end if;
 	 end process;

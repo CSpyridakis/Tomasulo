@@ -14,8 +14,8 @@
 --
 -- Dependencies:              NUMERIC_STD.ALL
 --
--- Revision:                  2.0 
--- Revision                   2.0 - ROB
+-- Revision:                  2.1 
+-- Revision                   2.1 - ROB
 -- Additional Comments: 
 --
 ----------------------------------------------------------------------------------
@@ -25,76 +25,76 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
 entity ROB is
- Port (    CLK : in  STD_LOGIC;
-           RST : in  STD_LOGIC;
+    Port ( CLK : in  STD_LOGIC;
+		   RST : in  STD_LOGIC;
 			  
-			  --ISSUE
-			  ISSUE : in STD_LOGIC;
-			  ISSUE_PC : in STD_LOGIC_VECTOR (31 downto 0);
-			  ISSUE_I_type : in STD_LOGIC_VECTOR (1 downto 0);
-			  ISSUE_Dest : in STD_LOGIC_VECTOR (4 downto 0);
-			  ROB_TAG_ACCEPTED : out STD_LOGIC_VECTOR (4 downto 0);
+		   --ISSUE
+		   ISSUE : in STD_LOGIC;
+		   ISSUE_PC : in STD_LOGIC_VECTOR (31 downto 0);
+           ISSUE_I_type : in STD_LOGIC_VECTOR (1 downto 0);
+		   ISSUE_Dest : in STD_LOGIC_VECTOR (4 downto 0);
+		   ROB_TAG_ACCEPTED : out STD_LOGIC_VECTOR (4 downto 0);
 			  
-			  ISSUE_RF_Rj : in STD_LOGIC_VECTOR (4 downto 0);
-			  ISSUE_RF_Rj_Exists : out STD_LOGIC;
-			  ISSUE_RF_Rj_Value : out STD_LOGIC_VECTOR (31 downto 0);
-			  ISSUE_RF_Rj_Tag : out STD_LOGIC_VECTOR (4 downto 0);
+		   ISSUE_RF_Rj : in STD_LOGIC_VECTOR (4 downto 0);
+		   ISSUE_RF_Rj_Exists : out STD_LOGIC;
+		   ISSUE_RF_Rj_Value : out STD_LOGIC_VECTOR (31 downto 0);
+		   ISSUE_RF_Rj_Tag : out STD_LOGIC_VECTOR (4 downto 0);
 			  
-			  ISSUE_RF_Rk : in STD_LOGIC_VECTOR (4 downto 0);
-			  ISSUE_RF_Rk_Exists : out STD_LOGIC;
-			  ISSUE_RF_Rk_Value : out STD_LOGIC_VECTOR (31 downto 0);
-			  ISSUE_RF_Rk_Tag : out STD_LOGIC_VECTOR (4 downto 0);
+		   ISSUE_RF_Rk : in STD_LOGIC_VECTOR (4 downto 0);
+		   ISSUE_RF_Rk_Exists : out STD_LOGIC;
+		   ISSUE_RF_Rk_Value : out STD_LOGIC_VECTOR (31 downto 0);
+		   ISSUE_RF_Rk_Tag : out STD_LOGIC_VECTOR (4 downto 0);
 			  
-			  --FROM CDB (UPDATE QUEUE)
-			  CDB_Q: in STD_LOGIC_VECTOR (4 downto 0);
-			  CDB_V : in STD_LOGIC_VECTOR (31 downto 0);
+		   --FROM CDB (UPDATE QUEUE)
+		   CDB_Q: in STD_LOGIC_VECTOR (4 downto 0);
+		   CDB_V : in STD_LOGIC_VECTOR (31 downto 0);
 			  
-			  --POP
-			  DEST_RF : out STD_LOGIC_VECTOR (4 downto 0);
-			  DEST_MEM : out STD_LOGIC_VECTOR (4 downto 0);
-			  VALUE : out STD_LOGIC_VECTOR (31 downto 0);
+		   --POP
+		   DEST_RF : out STD_LOGIC_VECTOR (4 downto 0);
+		   DEST_MEM : out STD_LOGIC_VECTOR (4 downto 0);
+		   VALUE : out STD_LOGIC_VECTOR (31 downto 0);
            WB_TAG: out STD_LOGIC_VECTOR (4 downto 0);			  
 			  
-			  --EXCEPTION HANDLER
-			  EXCEPTION_IN : in STD_LOGIC_VECTOR (4 downto 0);
-			  EXCEPTION : out STD_LOGIC_VECTOR (4 downto 0);
-			  PC : out STD_LOGIC_VECTOR (31 downto 0));
+		   --EXCEPTION HANDLER
+		   EXCEPTION_IN : in STD_LOGIC_VECTOR (4 downto 0);
+		   EXCEPTION : out STD_LOGIC_VECTOR (4 downto 0);
+		   PC : out STD_LOGIC_VECTOR (31 downto 0));
 end ROB;
 
 architecture Behavioral of ROB is
 
 component ROB_Reg is
- Port (    CLK : in  STD_LOGIC;
+    Port ( CLK : in  STD_LOGIC;
            RST : in  STD_LOGIC;
-			  MY_TAG : in STD_LOGIC_VECTOR (4 downto 0);
+		   MY_TAG : in STD_LOGIC_VECTOR (4 downto 0);
 			  
-			  --FROM ISSUE (PUSH INTO QUEUE)
-			  ISSUE : in STD_LOGIC;
-			  ISSUE_PC : in STD_LOGIC_VECTOR (31 downto 0);
-			  ISSUE_I_type : in STD_LOGIC_VECTOR (1 downto 0);
-			  ISSUE_Dest : in STD_LOGIC_VECTOR (4 downto 0);
+		   --FROM ISSUE (PUSH INTO QUEUE)
+		   ISSUE : in STD_LOGIC;
+		   ISSUE_PC : in STD_LOGIC_VECTOR (31 downto 0);
+		   ISSUE_I_type : in STD_LOGIC_VECTOR (1 downto 0);
+		   ISSUE_Dest : in STD_LOGIC_VECTOR (4 downto 0);
 
-			  --FROM CDB (UPDATE QUEUE)
-			  CDB_Q: in STD_LOGIC_VECTOR (4 downto 0);
-			  CDB_V : in STD_LOGIC_VECTOR (31 downto 0);
+		   --FROM CDB (UPDATE QUEUE)
+		   CDB_Q: in STD_LOGIC_VECTOR (4 downto 0);
+		   CDB_V : in STD_LOGIC_VECTOR (31 downto 0);
 
-			  --EXCEPTION
+		   --EXCEPTION
            I_EXCEPTION : in STD_LOGIC_VECTOR (4 downto 0);
 			  
-			  --TO RF/MEM (POP FROM QUEUE, only if instruction has been executed)
-			  EXECUTED : out STD_LOGIC;
-			  POP : in STD_LOGIC;
-			  DEST_RF : out STD_LOGIC_VECTOR (4 downto 0);
-			  DEST_MEM : out STD_LOGIC_VECTOR (4 downto 0);
-			  VALUE : out STD_LOGIC_VECTOR (31 downto 0); 
+		   --TO RF/MEM (POP FROM QUEUE, only if instruction has been executed)
+		   EXECUTED : out STD_LOGIC;
+		   POP : in STD_LOGIC;
+		   DEST_RF : out STD_LOGIC_VECTOR (4 downto 0);
+		   DEST_MEM : out STD_LOGIC_VECTOR (4 downto 0);
+		   VALUE : out STD_LOGIC_VECTOR (31 downto 0); 
 			  
-			  --EXCEPTION HANDLER
-			  EXCEPTION : out STD_LOGIC_VECTOR (4 downto 0);
-			  PC : out STD_LOGIC_VECTOR (31 downto 0);
+		   --EXCEPTION HANDLER
+		   EXCEPTION : out STD_LOGIC_VECTOR (4 downto 0);
+		   PC : out STD_LOGIC_VECTOR (31 downto 0);
 			  
-			  --MY TAG AND STATUS
-			  EMPTY : out  STD_LOGIC;
-			  TAG : out STD_LOGIC_VECTOR (4 downto 0));
+		   --MY TAG AND STATUS
+		   EMPTY : out  STD_LOGIC;
+		   TAG : out STD_LOGIC_VECTOR (4 downto 0));
 end component;
 
 
@@ -118,7 +118,7 @@ signal S_EXECUTED : signal_30x1 := "000000000000000000000000000000";
 signal S_DEST_RF : signal_30x5 := (others => (others => '0'));
 signal S_DEST_MEM : signal_30x5 := (others => (others => '0'));
 signal S_VALUE : signal_30x32 := (others => (others => '0'));
-signal S_POP: signal_30x1 := "000000000000000000000000000000";			--CONTROL SIGNAL
+signal S_POP: signal_30x1 := "000000000000000000000000000000";		--CONTROL SIGNAL
 
 --ROB SLOT EXTRA INFO AND CONTROL
 signal S_TAG : signal_30x5 := (others => (others => '0'));
@@ -145,7 +145,6 @@ begin
 PROCESS(CLK, RST, ISSUE)
 variable n, k, tmp : integer;
 BEGIN
-		
 		--RST
 		IF (RST='1') THEN 
 			 FOR i IN 0 TO 29 LOOP
@@ -217,9 +216,11 @@ BEGIN
 				
 				COMMIT_LAST<=PO_LOW;
 			END IF;
-			
-			--ROB EXISTS OR CDB
-			--RJ
+			------------------------------------------
+            --          ROB EXISTS OR CDB
+            ------------------------------------------
+            
+            ------RJ
 			IF(ISSUE_RF_Rj/="00000" AND ISSUE_RF_Rj/="11111") THEN
 				tmp:=to_integer(UNSIGNED(ISSUE_RF_Rj));
 				tmp:=tmp-1;
@@ -244,7 +245,8 @@ BEGIN
 				RJ_EX<=ZERO_ONE;
 				ISSUE_RF_Rj_Exists <= '0';
 			END IF;
-			--RK
+            
+            -----RK
 			IF(ISSUE_RF_Rk/="00000" AND ISSUE_RF_Rk/="11111") THEN
 				tmp:=to_integer(UNSIGNED(ISSUE_RF_Rk));
 				tmp:=tmp-1;
