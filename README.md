@@ -1,7 +1,8 @@
-# Tomasulo
+# Tomasulo ![MIT license](https://img.shields.io/github/license/CSpyridakis/Tomasulo.svg?style=plastic) ![Size](https://img.shields.io/github/repo-size/CSpyridakis/Tomasulo.svg?style=plastic)
+
 Introduction in Dynamic Instruction Scheduling (Advanced Computer Architecture). This project is an educational proof of concept implementation of Tomasulo's Algorithm with following specifications:
 
-### 5 x Reservation Stations where:  
+### 5 x Reservation Stations:  
 * 3 of them are for arithmetical operations 
 * 2 of them are for logical operations
 
@@ -62,4 +63,3 @@ In order to import project and run simulations:
 5. If you want to run my test code import all [test files](./test) and open [simulation files](./sim)
 
 (Simulation screenshots are included [here](./doc/sim))
-
