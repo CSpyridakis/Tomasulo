@@ -3,12 +3,12 @@
 Introduction in Dynamic Instruction Scheduling (Advanced Computer Architecture). This project is an educational proof of concept implementation of Tomasulo's Algorithm with following specifications:
 
 ### 5 x Reservation Stations:  
-* 3 of them are for arithmetical operations 
-* 2 of them are for logical operations
+* 3 of them are for arithmetic operations 
+* 2 of them are for logic operations
 
 ### 2 x Functional Units (one for each operation type): 
-* Arithmetic FU is a 3 level pipeline unit 
-* Logical FU is a 2 level pipeline unit
+* Arithmetic FU is a 3 stage pipeline unit 
+* Logic FU is a 2 stage pipeline unit
 
 ### Register File:
 * 32 x 32bits Registers for Data
