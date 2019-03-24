@@ -2,6 +2,8 @@
 
 Introduction in Dynamic Instruction Scheduling (Advanced Computer Architecture). This project is an educational proof of concept implementation of Tomasulo's Algorithm with following specifications:
 
+![Top Module](https://github.com/CSpyridakis/Tomasulo/blob/master/doc/schematics/Top%20Module.png)
+
 ### 5 x Reservation Stations:  
 * 3 of them are for arithmetic operations 
 * 2 of them are for logic operations
